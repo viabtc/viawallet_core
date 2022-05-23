@@ -2418,5 +2418,37 @@
       "clientPublic": "https://rest.bd.evmos.org:1317",
       "clientDocs": ""
     }
+  },
+  {
+    "id": "freecash",
+    "name": "Freecash",
+    "coinId": 485,
+    "symbol": "FCH",
+    "decimals": 8,
+    "blockchain": "Bitcoin",
+    "derivation": [
+      {
+        "path": "m/44'/485'/0'/0/0",
+        "xpub": "xpub",
+        "xprv": "xprv"
+      }
+    ],
+    "curve": "secp256k1",
+    "publicKeyType": "secp256k1",
+    "p2pkhPrefix": 35,
+    "p2shPrefix": 0,
+    "publicKeyHasher": "sha256ripemd",
+    "base58Hasher": "sha256d",
+    "explorer": {
+      "url": "https://explorer.viawallet.com",
+      "txPath": "/fch/tx/",
+      "accountPath": "/fch/address/"
+    },
+    "info": {
+      "url": "https://freecash.org",
+      "source": "https://github.com/freecashorg/freecash",
+      "rpc": "",
+      "documentation": "https://github.com/freecashorg/freecash/blob/master/doc/README.md"
+    }
   }
 ]

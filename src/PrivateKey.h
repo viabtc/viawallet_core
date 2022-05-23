@@ -79,6 +79,9 @@ class PrivateKey {
     /// Signs a digest using given ECDSA curve, returns schnorr signature
     Data signSchnorr(const Data& message, TWCurve curve) const;
 
+    /// Signs a digest using given ECDSA curve, returns schnorr signature
+    Data signBCHSchnorr(const Data& message) const;
+
     /// Cleanup contents (fill with 0s), called before destruction
     void cleanup();
 };

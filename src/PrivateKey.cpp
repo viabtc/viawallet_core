@@ -18,8 +18,9 @@
 #include <TrezorCrypto/schnorr.h>
 #include <TrezorCrypto/secp256k1.h>
 #include <TrezorCrypto/sodium/keypair.h>
-
 #include <iterator>
+#include <secp256k1.h>
+#include <secp256k1_schnorr.h>
 
 using namespace TW;
 
@@ -302,6 +303,35 @@ Data PrivateKey::signSchnorr(const Data& message, TWCurve curve) const {
     default:
         // not support
         break;
+    }
+
+    if (!success) {
+        return {};
+    }
+    return sig;
+}
+
+Data PrivateKey::signBCHSchnorr(const Data& message) const {
+    Data sig(64);
+
+    secp256k1_context *ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN);
+
+    uint8_t data[32];
+    random_buffer(data, 32);
+    bool ret = secp256k1_context_randomize(ctx, data);
+    assert(ret);
+
+    int success = secp256k1_schnorr_sign(
+        ctx,
+        sig.data(),
+        message.data(),
+        bytes.data(),
+        secp256k1_nonce_function_rfc6979,
+        nullptr
+    );
+
+    if (ctx) {
+        secp256k1_context_destroy(ctx);
     }
 
     if (!success) {

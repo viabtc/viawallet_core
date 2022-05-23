@@ -240,8 +240,12 @@ Data SignatureBuilder<Transaction>::createSignature(
     Amount amount,
     uint32_t version
 ) {
+    auto coinType = input.coinType;
     if (signingMode == SigningMode_SizeEstimationOnly) {
         // Don't sign, only estimate signature size. It is 71-72 bytes.  Return placeholder.
+        if (coinType == TWCoinTypeFreecash) {
+            return Data(64);
+        }
         return Data(72);
     }
 
@@ -286,7 +290,11 @@ Data SignatureBuilder<Transaction>::createSignature(
     const auto key = std::get<0>(pair.value());
     const auto pk = PrivateKey(key);
 
-    auto sig = pk.signAsDER(sighash, TWCurveSECP256k1);
+    auto sig = (coinType == TWCoinTypeFreecash) ?
+                    pk.signBCHSchnorr(Data(begin(sighash), end(sighash))) :
+                    pk.signAsDER(sighash, TWCurveSECP256k1);
+
+
     if (!sig.empty()) {
         sig.push_back(static_cast<byte>(input.hashType));
     }

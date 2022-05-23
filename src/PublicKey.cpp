@@ -13,6 +13,8 @@
 #include <TrezorCrypto/secp256k1.h>
 #include <TrezorCrypto/sodium/keypair.h>
 #include <TrezorCrypto/ed25519-donna/ed25519-donna.h>
+#include <secp256k1.h>
+#include <secp256k1_schnorr.h>
 
 #include <iterator>
 
@@ -187,6 +189,31 @@ bool PublicKey::verifySchnorr(const Data& signature, const Data& message) const 
     default:
         return false;
     }
+}
+
+bool PublicKey::verifyBCHSchnorr(const Data& signature, const Data& message) const {
+    if (!bytes.size()) {
+        return false;
+    }
+
+    if (signature.size() != 64) {
+        return false;
+    }
+
+    secp256k1_context *ctx = secp256k1_context_create(SECP256K1_CONTEXT_VERIFY);
+
+    secp256k1_pubkey pubkey;
+    if (!secp256k1_ec_pubkey_parse(ctx, &pubkey, bytes.data(), bytes.size())) {
+        return false;
+    }
+
+    int success = secp256k1_schnorr_verify(ctx, signature.data(), message.data(), &pubkey);
+
+    if (ctx) {
+        secp256k1_context_destroy(ctx);
+    }
+
+    return success;
 }
 
 Data PublicKey::hash(const Data& prefix, Hash::Hasher hasher, bool skipTypeByte) const {
