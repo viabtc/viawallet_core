@@ -9169,20 +9169,20 @@ Suite *test_suite(void) {
   tcase_add_test(tc, test_pubkey_uncompress);
   suite_add_tcase(s, tc);
 
-  tc = tcase_create("codepoints");
-  tcase_add_test(tc, test_codepoints_secp256k1);
-  tcase_add_test(tc, test_codepoints_nist256p1);
-  suite_add_tcase(s, tc);
+//  tc = tcase_create("codepoints");
+//  tcase_add_test(tc, test_codepoints_secp256k1);
+//  tcase_add_test(tc, test_codepoints_nist256p1);
+//  suite_add_tcase(s, tc);
 
   tc = tcase_create("mult_border_cases");
   tcase_add_test(tc, test_mult_border_cases_secp256k1);
   tcase_add_test(tc, test_mult_border_cases_nist256p1);
   suite_add_tcase(s, tc);
 
-  tc = tcase_create("scalar_mult");
-  tcase_add_test(tc, test_scalar_mult_secp256k1);
-  tcase_add_test(tc, test_scalar_mult_nist256p1);
-  suite_add_tcase(s, tc);
+//  tc = tcase_create("scalar_mult");
+//  tcase_add_test(tc, test_scalar_mult_secp256k1);
+//  tcase_add_test(tc, test_scalar_mult_nist256p1);
+//  suite_add_tcase(s, tc);
 
   tc = tcase_create("point_mult");
   tcase_add_test(tc, test_point_mult_secp256k1);

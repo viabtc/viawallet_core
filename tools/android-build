@@ -8,8 +8,9 @@ source $(dirname $0)/library
 version=$(wc_read_version)
 
 pushd android
-./gradlew assembleRelease
+./gradlew clean
+./gradlew assembleRelease --stacktrace
 cp trustwalletcore/build/outputs/aar/trustwalletcore-release.aar ../build/trustwalletcore.aar
 popd
 
-echo "Now upload build/trustwalletcore.aar to https://github.com/TrustWallet/trust-wallet-core/releases/tag/$version"
+echo "Android build success"
