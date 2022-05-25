@@ -24,6 +24,7 @@ bool Entry::validateAddress(TWCoinType coin, const string& address, byte p2pkh, 
         case TWCoinTypeQtum:
         case TWCoinTypeViacoin:
         case TWCoinTypeBitcoinGold:
+        case TWCoinTypeSyscoin:
             return SegwitAddress::isValid(address, hrp)
                 || Address::isValid(address, {{p2pkh}, {p2sh}});
 
@@ -102,6 +103,7 @@ string Entry::deriveAddress(TWCoinType coin, TWDerivation derivation, const Publ
         case TWCoinTypeRavencoin:
         case TWCoinTypeFiro:
         case TWCoinTypeFreecash:
+        case TWCoinTypeSyscoin:
         default:
             return Address(publicKey, p2pkh).string();
     }

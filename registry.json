@@ -2478,5 +2478,38 @@
       "rpc": "https://api.coinex.net/",
       "documentation": "https://docs.coinex.org/#/"
     }
+  },
+  {
+    "id": "syscoin",
+    "name": "Syscoin",
+    "coinId": 57,
+    "symbol": "SYS",
+    "decimals": 8,
+    "blockchain": "Bitcoin",
+    "derivation": [
+      {
+        "path": "m/44'/57'/0'/0/0",
+        "xpub": "xpub",
+        "xprv": "xprv"
+      }
+    ],
+    "curve": "secp256k1",
+    "publicKeyType": "secp256k1",
+    "p2pkhPrefix": 63,
+    "p2shPrefix": 5,
+    "hrp": "sys",
+    "publicKeyHasher": "sha256ripemd",
+    "base58Hasher": "sha256d",
+    "explorer": {
+      "url": "https://sys1.bcfn.ca/",
+      "txPath": "/tx/",
+      "accountPath": "/address/"
+    },
+    "info": {
+      "url": "https://syscoin.org/",
+      "source": "https://github.com/syscoin/syscoin",
+      "rpc": "",
+      "documentation": "https://syscoin.readme.io/v4.2.0/docs"
+    }
   }
 ]

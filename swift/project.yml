@@ -4,8 +4,10 @@ options:
   createIntermediateGroups: true
 settings:
   base:
-    HEADER_SEARCH_PATHS: $(SRCROOT)/wallet-core ${SRCROOT}/trezor-crypto/crypto
+    HEADER_SEARCH_PATHS: $(SRCROOT)/wallet-core ${SRCROOT}/trezor-crypto/crypto ${SRCROOT}/secp256k1-abc/build/ios/include
     SYSTEM_HEADER_SEARCH_PATHS: ${SRCROOT}/include ${SRCROOT}/../build/local/include ${SRCROOT}/trezor-crypto/include $(SRCROOT)/protobuf /usr/local/include /opt/homebrew/include
+    LIBRARY_SEARCH_PATHS: $(SRCROOT)/secp256k1-abc/build/ios/lib
+    OTHER_LDFLAGS: -lsecp256k1
     CLANG_CXX_LANGUAGE_STANDARD: c++17
     SWIFT_VERSION: 5.1
     IPHONEOS_DEPLOYMENT_TARGET: 13.0

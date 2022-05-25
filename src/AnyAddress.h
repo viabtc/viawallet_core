@@ -87,6 +87,7 @@ class AnyAddress {
         }
 
         case TWCoinTypeDash:
+        case TWCoinTypeSyscoin:
         case TWCoinTypeDogecoin:
         case TWCoinTypeMonacoin:
         case TWCoinTypeQtum:
