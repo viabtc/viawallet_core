@@ -191,6 +191,8 @@ CoinEntry* coinDispatcher(TWCoinType coinType) {
         case TWCoinTypeEvmos: entry = &ethereumDP; break;
         case TWCoinTypeNativeEvmos: entry = &nativeEvmosDP; break;
         case TWCoinTypeFreecash: entry = &bitcoinDP; break;
+        case TWCoinTypeCoinExSmartChain: entry = &ethereumDP; break;
+
         // end_of_coin_dipatcher_switch_marker_do_not_modify
 
         default: entry = nullptr; break;

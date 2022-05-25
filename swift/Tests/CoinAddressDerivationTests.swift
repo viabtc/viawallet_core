@@ -87,6 +87,7 @@ class CoinAddressDerivationTests: XCTestCase {
                      .metis,
                      .aurora,
                      .evmos:
+                     .coinexsmartchain:
                     let expectedResult = "0x8f348F300873Fd5DA36950B2aC75a26584584feE"
                     assertCoinDerivation(coin, expectedResult, derivedAddress, address)
                 case .ronin:
@@ -238,6 +239,9 @@ class CoinAddressDerivationTests: XCTestCase {
                     assertCoinDerivation(coin, expectedResult, derivedAddress, address)
                 case .nativeEvmos:
                     let expectedResult = "evmos13u6g7vqgw074mgmf2ze2cadzvkz9snlwstd20d"
+                    assertCoinDerivation(coin, expectedResult, derivedAddress, address)
+                case .freecash:
+                    let expectedResult = "FU5EChYVrn1zYpoYL6WXeyawCy5y9iZq6k"
                     assertCoinDerivation(coin, expectedResult, derivedAddress, address)
                 @unknown default:
                     fatalError()

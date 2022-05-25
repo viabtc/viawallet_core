@@ -2450,5 +2450,33 @@
       "rpc": "",
       "documentation": "https://github.com/freecashorg/freecash/blob/master/doc/README.md"
     }
+  },
+  {
+    "id": "coinexsmartchain",
+    "name": "CoinEx Smart Chain",
+    "coinId": 1000052,
+    "symbol": "CET",
+    "decimals": 18,
+    "blockchain": "Ethereum",
+    "derivation": [
+      {
+        "path": "m/44'/60'/0'/0/0"
+      }
+    ],
+    "curve": "secp256k1",
+    "publicKeyType": "secp256k1Extended",
+    "explorer": {
+      "url": "https://www.coinex.net/",
+      "txPath": "/tx/",
+      "accountPath": "/address/",
+      "sampleTx": "0x43ccea7dc49124287c3744fc6ab573f406ceb0694cb3d58a8ccd0caa6dd98ce2",
+      "sampleAccount": "0xd0b4140bDa0aA2B59227572ff93DB492c45949c2"
+    },
+    "info": {
+      "url": "https://www.coinex.org/",
+      "source": "https://www.coinex.org/",
+      "rpc": "https://api.coinex.net/",
+      "documentation": "https://docs.coinex.org/#/"
+    }
   }
 ]
