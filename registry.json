@@ -2478,5 +2478,38 @@
       "rpc": "https://api.coinex.net/",
       "documentation": "https://docs.coinex.org/#/"
     }
+  },
+  {
+    "id": "simpleledger",
+    "name": "Simple Ledger",
+    "coinId": 245,
+    "symbol": "SLP",
+    "decimals": 8,
+    "blockchain": "Bitcoin",
+    "derivation": [
+      {
+        "path": "m/44'/245'/0'/0/0",
+        "xpub": "xpub",
+        "xprv": "xprv"
+      }
+    ],
+    "curve": "secp256k1",
+    "publicKeyType": "secp256k1",
+    "p2pkhPrefix": 0,
+    "p2shPrefix": 5,
+    "hrp": "simpleledger",
+    "publicKeyHasher": "sha256ripemd",
+    "base58Hasher": "sha256d",
+    "explorer": {
+      "url": "https://simpleledger.info",
+      "txPath": "/#tx/",
+      "accountPath": "/#address/"
+    },
+    "info": {
+      "url": "https://SimpleLedger.cash",
+      "source": "https://github.com/simpleledger/Electron-Cash-SLP",
+      "rpc": "",
+      "documentation": "https://github.com/simpleledger/slp-specifications"
+    }
   }
 ]

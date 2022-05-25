@@ -1,0 +1,130 @@
+// Copyright © 2017-2020 Trust Wallet.
+//
+// This file is part of Trust. The full Trust copyright notice, including
+// terms governing use, modification, and redistribution, is contained in the
+// file LICENSE at the root of the source code distribution tree.
+
+syntax = "proto3";
+
+package TW.SimpleLedger.Proto;
+option java_package = "wallet.core.jni.proto";
+
+import "Bitcoin.proto";
+
+message UnspentTransaction {
+    Bitcoin.Proto.OutPoint out_point = 1;
+    bytes script = 2;
+    int64 amount = 3;
+    int64 simple_ledger_amount = 4;
+}
+
+message SimpleLedgerPlan {
+    // Token id
+    bytes token_id = 1;
+
+    // Amount to be received at the other end.
+    int64 amount = 2;
+
+    // Maximum available amount.
+    int64 available_amount = 3;
+
+    // Change.
+    int64 change = 4;
+
+    // Recipient's address.
+    string to_address = 5;
+
+    // Change address.
+    string change_address = 6;
+
+    // Selected unspent transaction outputs.
+    repeated UnspentTransaction utxos = 7;
+
+}
+
+message BitcoinCashPlan {
+
+    // BitcoinCash Maximum available amount.
+    int64 available_amount = 1;
+
+    // BitcoinCash change
+    int64 change = 2;
+
+    // Change address.
+    string change_address = 3;
+
+    // BitcoinCash Selected unspent transaction outputs.
+    repeated Bitcoin.Proto.UnspentTransaction utxos = 4;
+}
+
+// Describes a preliminary transaction plan.
+message TransactionPlan {
+
+    // Estimated transaction fee.
+    int64 fee = 1;
+
+    SimpleLedgerPlan simple_ledger_plan = 2;
+
+    BitcoinCashPlan bitcoin_cash_plan = 3;
+};
+
+message SimpleLedgerInput {
+    // Token id
+    bytes token_id = 1;
+
+    // Amount to send.
+    int64 amount = 2;
+
+    // Recipient's address.
+    string to_address = 3;
+
+    // Change address.
+    string change_address = 4;
+
+    // Available unspent transaction outputs.
+    repeated UnspentTransaction utxo = 5;
+
+    // Available private keys.
+    repeated bytes private_key = 6;
+}
+
+message BitcoinCashInput {
+    // Change address.
+    string change_address = 1;
+
+    // Available unspent transaction outputs.
+    repeated Bitcoin.Proto.UnspentTransaction utxo = 2;
+
+    // Available private keys.
+    repeated bytes private_key = 3;
+}
+
+message SigningInput {
+    // Transaction fee per byte.
+    int64 byte_fee = 1;
+
+    // If sending max amount.
+    bool use_max_amount = 2;
+
+    // SimpleLedger input.
+    SimpleLedgerInput simple_ledger_input = 3;
+
+    // BitcoinCash input.
+    BitcoinCashInput bitcoin_cash_input = 4;
+}
+
+// Transaction signing output.
+message SigningOutput {
+    // Resulting transaction. Note that the amount may be different than the requested amount to account for fees and available funds.
+    Bitcoin.Proto.Transaction transaction = 1;
+
+    // Signed and encoded transaction bytes.
+    bytes encoded = 2;
+
+    // Transaction id
+    string transaction_id = 3;
+
+    // Optional error message
+    string error = 4;
+}
+

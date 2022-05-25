@@ -243,6 +243,9 @@ class CoinAddressDerivationTests: XCTestCase {
                 case .freecash:
                     let expectedResult = "FU5EChYVrn1zYpoYL6WXeyawCy5y9iZq6k"
                     assertCoinDerivation(coin, expectedResult, derivedAddress, address)
+                case .simpleLedger:
+                    let expectedResult = "simpleledger:qzqc9j4vmn96zrlaz3ytwzeepyj0lqkauch2rv8n8g"
+                    AssetCoinDerivation(coin, expectedResult, derivedAddress, address)
                 @unknown default:
                     fatalError()
                 }

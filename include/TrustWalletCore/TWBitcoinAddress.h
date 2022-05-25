@@ -34,6 +34,10 @@ bool TWBitcoinAddressIsValidString(TWString *_Nonnull string);
 TW_EXPORT_STATIC_METHOD
 struct TWBitcoinAddress *_Nullable TWBitcoinAddressCreateWithString(TWString *_Nonnull string);
 
+/// Convert an CashAddress to a legacyAddress sring.
+TW_EXPORT_STATIC_METHOD
+TWString *_Nullable TWBitcoinAddressConvertCashAddress(TWString *_Nonnull string, TWString *_Nonnull hrp);
+
 /// Initializes an address from raw data.
 TW_EXPORT_STATIC_METHOD
 struct TWBitcoinAddress *_Nullable TWBitcoinAddressCreateWithData(TWData *_Nonnull data);
