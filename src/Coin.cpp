@@ -193,6 +193,7 @@ CoinEntry* coinDispatcher(TWCoinType coinType) {
         case TWCoinTypeFreecash: entry = &bitcoinDP; break;
         case TWCoinTypeCoinExSmartChain: entry = &ethereumDP; break;
         case TWCoinTypeSyscoin: entry = &bitcoinDP; break;
+        case TWCoinTypeBitcoinSV: entry = &bitcoinDP; break;
 
         // end_of_coin_dipatcher_switch_marker_do_not_modify
 

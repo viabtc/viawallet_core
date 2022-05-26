@@ -30,6 +30,7 @@ This list is generated from [./registry.json](../registry.json)
 | 194     | EOS              | EOS    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/eos/info/logo.png" width="32" />          | <http://eos.io>               |
 | 195     | Tron             | TRX    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/tron/info/logo.png" width="32" />         | <https://tron.network>        |
 | 235     | FIO              | FIO    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/fio/info/logo.png" width="32" />          | <https://fioprotocol.io>      |
+| 236     | Bitcoin SV       | BSV    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/bitcoinsv/info/logo.png" width="32" />    | <https://bitcoinsv.io>        |
 | 242     | Nimiq            | NIM    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/nimiq/info/logo.png" width="32" />        | <https://nimiq.com>           |
 | 283     | Algorand         | ALGO   | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/algorand/info/logo.png" width="32" />     | <https://www.algorand.com/>   |
 | 304     | IoTeX            | IOTX   | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/iotex/info/logo.png" width="32" />        | <https://iotex.io>            |

@@ -2511,5 +2511,37 @@
       "rpc": "",
       "documentation": "https://syscoin.readme.io/v4.2.0/docs"
     }
+  },
+  {
+    "id": "bitcoinsv",
+    "name": "Bitcoin SV",
+    "coinId": 236,
+    "symbol": "BSV",
+    "decimals": 8,
+    "blockchain": "Bitcoin",
+    "derivation": [
+      {
+        "path": "m/44'/236'/0'/0/0",
+        "xpub": "xpub",
+        "xprv": "xprv"
+      }
+    ],
+    "curve": "secp256k1",
+    "publicKeyType": "secp256k1",
+    "p2pkhPrefix": 0,
+    "p2shPrefix": 5,
+    "publicKeyHasher": "sha256ripemd",
+    "base58Hasher": "sha256d",
+    "explorer": {
+      "url": "https://explorer.viawallet.com",
+      "txPath": "/bsv/tx/",
+      "accountPath": "/bsv/address/"
+    },
+    "info": {
+      "url": "https://bitcoinsv.io",
+      "source": "https://github.com/bitcoin-sv/bitcoin-sv",
+      "rpc": "",
+      "documentation": "https://github.com/bitcoin-sv/bitcoin-sv/tree/master/doc"
+    }
   }
 ]
