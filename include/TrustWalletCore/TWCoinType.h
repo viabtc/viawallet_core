@@ -73,7 +73,6 @@ enum TWCoinType {
     TWCoinTypeZelcash = 19167,
     TWCoinTypeRavencoin = 175,
     TWCoinTypeWaves = 5741564,
-    TWCoinTypeTerra = 330,
     TWCoinTypeHarmony = 1023,
     TWCoinTypeAlgorand = 283,
     TWCoinTypeKusama = 434,
@@ -110,6 +109,8 @@ enum TWCoinType {
     TWCoinTypeCoinExSmartChain = 1000052,
     TWCoinTypeSyscoin = 57,
     TWCoinTypeBitcoinSV = 236,
+    TWCoinTypeTerra = 20000330,
+    TWCoinTypeTerraClassic = 10000330,
 };
 
 /// Returns the blockchain for a coin type.

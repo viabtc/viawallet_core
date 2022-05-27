@@ -127,6 +127,7 @@ CoinEntry* coinDispatcher(TWCoinType coinType) {
         case TWCoinTypeCosmos: entry = &cosmosDP; break;
         case TWCoinTypeKava: entry = &cosmosDP; break;
         case TWCoinTypeTerra: entry = &cosmosDP; break;
+        case TWCoinTypeTerraClassic: entry = &cosmosDP; break;
         case TWCoinTypeBandChain: entry = &cosmosDP; break;
         case TWCoinTypeBluzelle: entry = &cosmosDP; break;
         case TWCoinTypeElrond: entry = &elrondDP; break;
@@ -194,6 +195,7 @@ CoinEntry* coinDispatcher(TWCoinType coinType) {
         case TWCoinTypeCoinExSmartChain: entry = &ethereumDP; break;
         case TWCoinTypeSyscoin: entry = &bitcoinDP; break;
         case TWCoinTypeBitcoinSV: entry = &bitcoinDP; break;
+
 
         // end_of_coin_dipatcher_switch_marker_do_not_modify
 

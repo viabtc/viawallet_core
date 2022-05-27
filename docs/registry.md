@@ -35,7 +35,6 @@ This list is generated from [./registry.json](../registry.json)
 | 283     | Algorand         | ALGO   | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/algorand/info/logo.png" width="32" />     | <https://www.algorand.com/>   |
 | 304     | IoTeX            | IOTX   | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/iotex/info/logo.png" width="32" />        | <https://iotex.io>            |
 | 313     | Zilliqa          | ZIL    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/zilliqa/info/logo.png" width="32" />      | <https://zilliqa.com>         |
-| 330     | Terra            | LUNA   | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/terra/info/logo.png" width="32" />        | <https://terra.money>         |
 | 354     | Polkadot         | DOT    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/polkadot/info/logo.png" width="32" />     | <https://polkadot.network/>   |
 | 394     | Crypto.org       | CRO    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/cryptoorg/info/logo.png" width="32" />    | <https://crypto.org/>         |
 | 397     | NEAR             | NEAR   | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/near/info/logo.png" width="32" />         | <https://nearprotocol.com>    |
@@ -81,12 +80,14 @@ This list is generated from [./registry.json](../registry.json)
 | 10000250 | Fantom           | FTM    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/fantom/info/logo.png" width="32" />       | <https://fantom.foundation>   |
 | 10000288 | Boba             | BOBAETH | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/boba/info/logo.png" width="32" />         | <https://boba.network/>       |
 | 10000321 | KuCoin Community Chain | KCS    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/kcc/info/logo.png" width="32" />          | <https://www.kcc.io/>         |
+| 10000330 | Terra Classic    | LUNC   | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/terraclassic/info/logo.png" width="32" /> | <https://terra.money>         |
 | 10000553 | Huobi ECO Chain  | HT     | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/heco/info/logo.png" width="32" />         | <https://www.hecochain.com/en-us> |
 | 10001088 | Metis            | METIS  | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/metis/info/logo.png" width="32" />        | <https://www.metis.io/>       |
 | 10002020 | Ronin            | RON    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ronin/info/logo.png" width="32" />        | <https://whitepaper.axieinfinity.com/technology/ronin-ethereum-sidechain> |
 | 10009000 | Avalanche C-Chain | AVAX   | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/avalanchec/info/logo.png" width="32" />   | <https://www.avalabs.org/>    |
 | 10009001 | Evmos            | EVMOS  | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/evmos/info/logo.png" width="32" />        | <https://evmos.org/>          |
 | 10042221 | Arbitrum         | ARETH  | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/arbitrum/info/logo.png" width="32" />     | <https://arbitrum.io>         |
+| 20000330 | Terra            | LUNA   | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/terra/info/logo.png" width="32" />        | <https://terra.money>         |
 | 20000714 | BNB Smart Chain  | BNB    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/smartchain/info/logo.png" width="32" />   | <https://www.binance.org/en/smartChain> |
 | 20009001 | Native Evmos     | EVMOS  | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/nativeevmos/info/logo.png" width="32" />  | <https://evmos.org/>          |
 | 1323161554 | Aurora           | AURORAETH | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/aurora/info/logo.png" width="32" />       | <https://aurora.dev/>         |

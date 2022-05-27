@@ -42,6 +42,7 @@ class AnyAddress {
         case TWCoinTypeCosmos:
         case TWCoinTypeKava:
         case TWCoinTypeTerra:
+        case TWCoinTypeTerraClassic:
         case TWCoinTypeBandChain:
         case TWCoinTypeTHORChain:
         case TWCoinTypeBluzelle:

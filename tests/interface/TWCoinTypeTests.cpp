@@ -22,6 +22,7 @@ TEST(TWCoinType, TWPurpose) {
     ASSERT_EQ(TWPurposeBIP84, TWCoinTypePurpose(TWCoinTypeViacoin));
     ASSERT_EQ(TWPurposeBIP44, TWCoinTypePurpose(TWCoinTypeQtum));
     ASSERT_EQ(TWPurposeBIP44, TWCoinTypePurpose(TWCoinTypeZilliqa));
+    ASSERT_EQ(TWPurposeBIP44, TWCoinTypePurpose(TWCoinTypeTerraClassic));
     ASSERT_EQ(TWPurposeBIP44, TWCoinTypePurpose(TWCoinTypeTerra));
     ASSERT_EQ(TWPurposeBIP44, TWCoinTypePurpose(TWCoinTypeMonacoin));
     ASSERT_EQ(TWPurposeBIP44, TWCoinTypePurpose(TWCoinTypeKava));
@@ -94,6 +95,7 @@ TEST(TWCoinType, TWPublicKeyType) {
     ASSERT_EQ(TWPublicKeyTypeSECP256k1, TWCoinTypePublicKeyType(TWCoinTypeViacoin));
     ASSERT_EQ(TWPublicKeyTypeSECP256k1, TWCoinTypePublicKeyType(TWCoinTypeQtum));
     ASSERT_EQ(TWPublicKeyTypeSECP256k1, TWCoinTypePublicKeyType(TWCoinTypeZilliqa));
+    ASSERT_EQ(TWPublicKeyTypeSECP256k1, TWCoinTypePublicKeyType(TWCoinTypeTerraClassic));
     ASSERT_EQ(TWPublicKeyTypeSECP256k1, TWCoinTypePublicKeyType(TWCoinTypeTerra));
     ASSERT_EQ(TWPublicKeyTypeSECP256k1, TWCoinTypePublicKeyType(TWCoinTypeMonacoin));
     ASSERT_EQ(TWPublicKeyTypeSECP256k1, TWCoinTypePublicKeyType(TWCoinTypeKava));

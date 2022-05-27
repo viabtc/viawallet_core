@@ -24,7 +24,6 @@ TEST(TWHRP, StringForHRP) {
     ASSERT_STREQ(stringForHRP(TWHRPQtum), "qc");
     ASSERT_STREQ(stringForHRP(TWHRPZilliqa), "zil");
     ASSERT_STREQ(stringForHRP(TWHRPViacoin), "via");
-    ASSERT_STREQ(stringForHRP(TWHRPTerra), "terra");
     ASSERT_STREQ(stringForHRP(TWHRPMonacoin), "mona");
     ASSERT_STREQ(stringForHRP(TWHRPKava), "kava");
     ASSERT_STREQ(stringForHRP(TWHRPBandChain), "band");
@@ -50,7 +49,6 @@ TEST(TWHRP, HRPForString) {
     ASSERT_EQ(hrpForString("qc"), TWHRPQtum);
     ASSERT_EQ(hrpForString("zil"), TWHRPZilliqa);
     ASSERT_EQ(hrpForString("via"), TWHRPViacoin);
-    ASSERT_EQ(hrpForString("terra"), TWHRPTerra);
     ASSERT_EQ(hrpForString("mona"), TWHRPMonacoin);
     ASSERT_EQ(hrpForString("kava"), TWHRPKava);
     ASSERT_EQ(hrpForString("band"), TWHRPBandChain);
