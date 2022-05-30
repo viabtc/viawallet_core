@@ -1,0 +1,100 @@
+// Copyright © 2017-2020 Trust Wallet.
+//
+// This file is part of Trust. The full Trust copyright notice, including
+// terms governing use, modification, and redistribution, is contained in the
+// file LICENSE at the root of the source code distribution tree.
+
+syntax = "proto3";
+
+package TW.Ergo.Proto;
+option java_package = "wallet.core.jni.proto";
+
+message SigningInput {
+
+    // Private keys
+    repeated bytes private_key = 1;
+
+    // Creation height
+    uint32 creation_height = 2;
+
+    // Fee amount
+    uint64 fee = 3;
+
+    // Fee address.
+    string fee_address = 4;
+
+    // Amount to send.
+    uint64 value = 5;
+
+    // Recipient's address.
+    string to_address = 6;
+
+    // Change address.
+    string change_address = 7;
+
+    // Available unspent ergoBox.
+    repeated ErgoBox unspentOutput = 8;
+
+}
+
+message ErgoBox {
+
+    // Box id
+    string boxId = 1;
+
+    // Box amount
+    uint64 value = 2;
+
+    // Box creationHeight
+    uint32 creationHeight = 3;
+
+    // Box address
+    string address = 4;
+
+    // Box ergoTree
+    string ergoTree = 5;
+
+}
+
+message SigningOutput {
+
+    // Signing output json
+    string json = 1;
+
+    // Base64 of json
+    string encode = 2;
+
+    // Optional error message
+    string error = 3;
+
+}
+
+message Transaction {
+
+    // Inputs
+    repeated Input inputs = 1;
+
+    // DataInputs
+    repeated Input dataInputs = 2;
+
+    // Outputs ErgoBox
+    repeated ErgoBox outputs = 3;
+
+}
+
+message Input {
+
+    // Box id
+    string boxId = 1;
+
+    // SpendingProof
+    SpendingProof spendingProof = 2;
+
+}
+
+message SpendingProof {
+
+    // ProofBytes
+    string proofBytes = 1;
+
+}

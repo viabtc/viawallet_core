@@ -47,6 +47,7 @@ enum TWBlockchain {
     TWBlockchainOasisNetwork = 34,
     TWBlockchainConflux = 35,
     TWBlockchainNervos = 36,
+    TWBlockchainErgo = 37,
 };
 
 TW_EXTERN_C_END

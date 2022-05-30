@@ -104,5 +104,6 @@ class CoinAddressDerivationTests {
         ECASH -> assertEquals("ecash:qpelrdn7a0hcucjlf9ascz3lkxv7r3rffgzn6x5377", address)
         NATIVEEVMOS -> assertEquals("evmos13u6g7vqgw074mgmf2ze2cadzvkz9snlwstd20d", address)
         FREECASH -> assertEquals("FU5EChYVrn1zYpoYL6WXeyawCy5y9iZq6k", address)
+        ERGO -> assertEquals("9gqy7gkUt6wati2AT5hXPiWeRSe5F74J2o34oWxJxgnkqiuUuAQ", address)
     }
 }

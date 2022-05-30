@@ -250,6 +250,9 @@ class CoinAddressDerivationTests: XCTestCase {
                 case .nervosCKB:
                     let expectedResult = "ckb1qyq2kgql2kcz75anshmekdxl442gu4ymfr7qg53gkl"
                     assertCoinDerivation(coin, expectedResult, derivedAddress, address)
+                case .ergo:
+                    let expectedResult = "9gqy7gkUt6wati2AT5hXPiWeRSe5F74J2o34oWxJxgnkqiuUuAQ"
+                    assertCoinDerivation(coin, expectedResult, derivedAddress, address)
                 @unknown default:
                     fatalError()
                 }
