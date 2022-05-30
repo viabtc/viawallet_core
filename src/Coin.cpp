@@ -196,6 +196,7 @@ CoinEntry* coinDispatcher(TWCoinType coinType) {
         case TWCoinTypeSyscoin: entry = &bitcoinDP; break;
         case TWCoinTypeBitcoinSV: entry = &bitcoinDP; break;
         case TWCoinTypeLBRYCredits: entry = &bitcoinDP; break;
+        case TWCoinTypeIRISnet: entry = &cosmosDP; break;
 
 
         // end_of_coin_dipatcher_switch_marker_do_not_modify

@@ -2605,5 +2605,32 @@
       "rpc": "",
       "documentation": "https://github.com/lbryio/lbry-sdk/blob/master/docs/api.json"
     }
+  },
+  {
+    "id": "iris",
+    "name": "IRISnet",
+    "coinId": 20000118,
+    "symbol": "IRIS",
+    "decimals": 6,
+    "blockchain": "Cosmos",
+    "derivation": [
+      {
+        "path": "m/44'/118'/0'/0/0"
+      }
+    ],
+    "curve": "secp256k1",
+    "publicKeyType": "secp256k1",
+    "hrp": "iaa",
+    "explorer": {
+      "url": "https://www.irisplorer.io",
+      "txPath": "/#/tx?txHash=",
+      "accountPath": "/#/address/"
+    },
+    "info": {
+      "url": "https://www.irisnet.org",
+      "source": "https://github.com/irisnet/irishub",
+      "rpc": "",
+      "documentation": "https://www.irisnet.org/docs"
+    }
   }
 ]
