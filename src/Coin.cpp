@@ -54,6 +54,7 @@
 #include "Zcash/Entry.h"
 #include "Zilliqa/Entry.h"
 #include "ConfluxNetwork/Entry.h"
+#include "NervosCKB/Entry.h"
 // end_of_coin_includes_marker_do_not_modify
 
 using namespace TW;
@@ -101,6 +102,7 @@ Waves::Entry wavesDP;
 Zcash::Entry zcashDP;
 Zilliqa::Entry zilliqaDP;
 ConfluxNetwork::Entry confluxNetworkDP;
+NervosCKB::Entry nervosCKBDP;
 // end_of_coin_dipatcher_declarations_marker_do_not_modify
 
 CoinEntry* coinDispatcher(TWCoinType coinType) {
@@ -200,6 +202,7 @@ CoinEntry* coinDispatcher(TWCoinType coinType) {
         case TWCoinTypeLBRYCredits: entry = &bitcoinDP; break;
         case TWCoinTypeIRISnet: entry = &cosmosDP; break;
         case TWCoinTypeConfluxNetwork: entry = &confluxNetworkDP; break;
+        case TWCoinTypeNervosCKB: entry = &nervosCKBDP; break;
         // end_of_coin_dipatcher_switch_marker_do_not_modify
 
         default: entry = nullptr; break;

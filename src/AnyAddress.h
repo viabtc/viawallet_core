@@ -29,6 +29,7 @@
 #include "Solana/Address.h"
 #include "Zcash/TAddress.h"
 #include "Zilliqa/Address.h"
+#include "NervosCKB/Address.h"
 
 #include <string>
 
@@ -202,6 +203,10 @@ class AnyAddress {
                 break;
             }
             return addr.getKeyHash();
+        }
+        case TWCoinTypeNervosCKB: {
+            auto addr = NervosCKB::Address(string);
+            return Data(addr.payload.begin(), addr.payload.end());
         }
         default:
             break;

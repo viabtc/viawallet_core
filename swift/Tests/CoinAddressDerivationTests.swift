@@ -247,6 +247,9 @@ class CoinAddressDerivationTests: XCTestCase {
                 case .irisnet:
                     let expectedResult = "iaa142j9u5eaduzd7faumygud6ruhdwme98q9x2g5z"
                     assertCoinDerivation(coin, expectedResult, derivedAddress, address)
+                case .nervosCKB:
+                    let expectedResult = "ckb1qyq2kgql2kcz75anshmekdxl442gu4ymfr7qg53gkl"
+                    assertCoinDerivation(coin, expectedResult, derivedAddress, address)
                 @unknown default:
                     fatalError()
                 }
