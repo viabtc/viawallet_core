@@ -38,3 +38,8 @@ void TWNEARAccountDelete(struct TWNEARAccount *_Nonnull account) {
 TWString *_Nonnull TWNEARAccountDescription(struct TWNEARAccount *_Nonnull account) {
     return TWStringCreateWithUTF8Bytes(account->description.c_str());
 }
+
+bool TWNEARAccountIsValid(TWString *_Nonnull string) {
+    const auto& account = *reinterpret_cast<const std::string*>(string);
+    return Address::isValid(account) || Account::isValid(account);
+}

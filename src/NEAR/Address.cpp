@@ -14,6 +14,9 @@ using namespace TW;
 using namespace TW::NEAR;
 
 bool Address::isValid(const std::string& string) {
+    if (string.empty()) {
+        return false;
+    }
     const auto data = Address::decodeLegacyAddress(string);
     if (data.has_value()) {
         return true;

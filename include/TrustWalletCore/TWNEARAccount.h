@@ -25,4 +25,8 @@ void TWNEARAccountDelete(struct TWNEARAccount *_Nonnull account);
 TW_EXPORT_PROPERTY
 TWString *_Nonnull TWNEARAccountDescription(struct TWNEARAccount *_Nonnull account);
 
+/// Determines if a near account is valid.
+TW_EXPORT_STATIC_METHOD
+bool TWNEARAccountIsValid(TWString *_Nonnull string);
+
 TW_EXTERN_C_END
