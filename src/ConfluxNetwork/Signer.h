@@ -1,0 +1,57 @@
+// Copyright © 2017-2020 Trust Wallet.
+//
+// This file is part of Trust. The full Trust copyright notice, including
+// terms governing use, modification, and redistribution, is contained in the
+// file LICENSE at the root of the source code distribution tree.
+
+#pragma once
+
+#include "RLP.h"
+#include "Transaction.h"
+#include "../Data.h"
+#include "../PrivateKey.h"
+#include "../proto/ConfluxNetwork.pb.h"
+#include "../uint256.h"
+
+namespace TW::ConfluxNetwork {
+
+/// Helper class that performs ConfluxNetwork transaction signing.
+class Signer {
+public:
+    uint256_t chainID;
+
+    /// Initializes a signer with a chain identifier.
+    explicit Signer(uint256_t chainID) : chainID(std::move(chainID)) {}
+
+    /// Signs the given transaction.
+    void sign(const PrivateKey &privateKey, Transaction &transaction) const noexcept;
+
+    /// Signs a Proto::SigningInput transaction
+    static Proto::SigningOutput sign(const Proto::SigningInput& input) noexcept;
+
+    /// build Transaction from signing input
+    static Transaction build(const Proto::SigningInput &input);
+
+    /// Signs a hash with the given private key for the given chain identifier.
+    ///
+    /// @returns the r, s, and v values of the transaction signature
+    static std::tuple<uint256_t, uint256_t, uint256_t>
+    sign(const uint256_t &chainID, const PrivateKey &privateKey, const Data& hash) noexcept;
+
+    /// R, S, and V values for the given chain identifier and signature.
+    ///
+    /// @returns the r, s, and v values of the transaction signature
+    static std::tuple<uint256_t, uint256_t, uint256_t> values(const uint256_t &chainID,
+                                                              const Data& signature) noexcept;
+
+  protected:
+    /// Computes the transaction hash.
+    Data hash(const Transaction &transaction) const noexcept;
+};
+
+} // namespace TW::ConfluxNetwork
+
+/// Wrapper for C interface.
+struct TWConfluxNetworkSigner {
+    TW::ConfluxNetwork::Signer impl;
+};

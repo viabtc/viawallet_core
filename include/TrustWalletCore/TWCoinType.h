@@ -113,6 +113,7 @@ enum TWCoinType {
     TWCoinTypeTerraClassic = 10000330,
     TWCoinTypeLBRYCredits = 140,
     TWCoinTypeIRISnet = 20000118,
+    TWCoinTypeConfluxNetwork = 503,
 };
 
 /// Returns the blockchain for a coin type.

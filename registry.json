@@ -2632,5 +2632,31 @@
       "rpc": "",
       "documentation": "https://www.irisnet.org/docs"
     }
+  },
+  {
+    "id": "conflux",
+    "name": "Conflux Network",
+    "coinId": 503,
+    "symbol": "CFX",
+    "decimals": 18,
+    "blockchain": "Conflux",
+    "derivation": [
+      {
+        "path": "m/44'/503'/0'/0/0"
+      }
+    ],
+    "curve": "secp256k1",
+    "publicKeyType": "secp256k1Extended",
+    "explorer": {
+      "url": "https://www.confluxscan.io",
+      "txPath": "/transaction/",
+      "accountPath": "/address/"
+    },
+    "info": {
+      "url": "https://confluxnetwork.org/",
+      "source": "https://github.com/conflux-chain",
+      "rpc": "",
+      "documentation": "https://github.com/Conflux-Chain/conflux-doc"
+    }
   }
 ]
