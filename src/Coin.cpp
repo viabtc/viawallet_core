@@ -56,6 +56,7 @@
 #include "ConfluxNetwork/Entry.h"
 #include "NervosCKB/Entry.h"
 #include "Ergo/Entry.h"
+#include "Horizen/Entry.h"
 // end_of_coin_includes_marker_do_not_modify
 
 using namespace TW;
@@ -105,6 +106,7 @@ Zilliqa::Entry zilliqaDP;
 ConfluxNetwork::Entry confluxNetworkDP;
 NervosCKB::Entry nervosCKBDP;
 Ergo::Entry ergoDP;
+Horizen::Entry horizenDP;
 // end_of_coin_dipatcher_declarations_marker_do_not_modify
 
 CoinEntry* coinDispatcher(TWCoinType coinType) {
@@ -206,6 +208,7 @@ CoinEntry* coinDispatcher(TWCoinType coinType) {
         case TWCoinTypeConfluxNetwork: entry = &confluxNetworkDP; break;
         case TWCoinTypeNervosCKB: entry = &nervosCKBDP; break;
         case TWCoinTypeErgo: entry = &ergoDP; break;
+        case TWCoinTypeHorizen: entry = &horizenDP; break;
         // end_of_coin_dipatcher_switch_marker_do_not_modify
 
         default: entry = nullptr; break;

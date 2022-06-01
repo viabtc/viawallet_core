@@ -137,6 +137,12 @@ message TransactionPlan {
 
     // Optional zero-amount, OP_RETURN output
     bytes output_op_return = 8;
+
+    // Horizen block height
+    uint32 block_height = 9;
+
+    // Horizen block hash
+    string block_hash = 10;
 };
 
 // Transaction signing output.

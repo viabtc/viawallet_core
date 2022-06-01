@@ -326,7 +326,7 @@ TEST(TWTransactionCompiler, ExternalSignatureSignBitcoin) {
     // Serialize input
     const auto txInputDataData = data(input.SerializeAsString());
     const auto txInputData = WRAPD(TWDataCreateWithBytes(txInputDataData.data(), txInputDataData.size()));
-    EXPECT_EQ((int)TWDataSize(txInputData.get()), 692);
+    EXPECT_EQ((int)TWDataSize(txInputData.get()), 698);
 
     /// Step 2: Obtain preimage hashes
     const auto preImageHashes = WRAPD(TWTransactionCompilerPreImageHashes(coin, txInputData.get()));

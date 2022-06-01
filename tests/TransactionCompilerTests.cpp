@@ -225,7 +225,7 @@ TEST(TransactionCompiler, BitcoinCompileWithSignatures) {
 
     // Serialize input
     const auto txInputData = data(input.SerializeAsString());
-    EXPECT_EQ((int)txInputData.size(), 692);
+    EXPECT_EQ((int)txInputData.size(), 698);
 
     /// Step 2: Obtain preimage hashes
     const auto preImageHashes = TransactionCompiler::preImageHashes(coin, txInputData);

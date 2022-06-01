@@ -35,6 +35,12 @@ struct TransactionPlan {
 
     Data outputOpReturn;
 
+    /// Horizen block height
+    uint32_t blockHeight;
+
+    /// Horizen block hash
+    std::string blockHash;
+
     Common::Proto::SigningError error = Common::Proto::SigningError::OK;
 
     TransactionPlan() = default;
@@ -47,6 +53,8 @@ struct TransactionPlan {
         , utxos(std::vector<UTXO>(plan.utxos().begin(), plan.utxos().end()))
         , branchId(plan.branch_id().begin(), plan.branch_id().end())
         , outputOpReturn(plan.output_op_return().begin(), plan.output_op_return().end())
+        , blockHeight(plan.block_height())
+        , blockHash(plan.block_hash())
         , error(plan.error())
     {}
 
@@ -61,6 +69,8 @@ struct TransactionPlan {
         }
         plan.set_branch_id(branchId.data(), branchId.size());
         plan.set_output_op_return(outputOpReturn.data(), outputOpReturn.size());
+        plan.set_block_height(blockHeight);
+        plan.set_block_hash(blockHash);
         plan.set_error(error);
         return plan;
     }

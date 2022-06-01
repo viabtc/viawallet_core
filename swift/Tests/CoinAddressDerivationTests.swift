@@ -253,6 +253,9 @@ class CoinAddressDerivationTests: XCTestCase {
                 case .ergo:
                     let expectedResult = "9gqy7gkUt6wati2AT5hXPiWeRSe5F74J2o34oWxJxgnkqiuUuAQ"
                     assertCoinDerivation(coin, expectedResult, derivedAddress, address)
+                case .horizen:
+                    let expectedResult = "znUmzvod1f4P9LYsBhNxjqCDQvNSStAmYEX"
+                    assertCoinDerivation(coin, expectedResult, derivedAddress, address)
                 @unknown default:
                     fatalError()
                 }
