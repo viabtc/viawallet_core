@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <TrezorCrypto/hasher.h>
 #include "../PublicKey.h"
 #include "../Data.h"
 
@@ -46,6 +47,9 @@ class SegwitAddress {
     /// Initializes a segwit-version-0 Bech32 address with a public key and a HRP prefix.
     /// Taproot (v>=1) is not supported by this method.
     SegwitAddress(const PublicKey& publicKey, std::string hrp);
+
+    /// Initializes a Bech32 address with a public key and a HRP prefix by hasher.
+    SegwitAddress(const PublicKey& publicKey, int witver, std::string hrp, HasherType hasher);
 
     /// Decodes a SegWit address.
     ///

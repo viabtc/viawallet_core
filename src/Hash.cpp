@@ -79,6 +79,12 @@ Data Hash::blake256(const byte* data, size_t size) {
     return result;
 }
 
+Data Hash::blake2b(const byte* data, size_t dataSize) {
+    Data result(32);
+    ::blake2b(data, static_cast<uint32_t>(dataSize), result.data(), 32);
+    return result;
+}
+
 Data Hash::blake2b(const byte* data, size_t dataSize, size_t hashSize) {
     Data result(hashSize);
     ::blake2b(data, static_cast<uint32_t>(dataSize), result.data(), hashSize);

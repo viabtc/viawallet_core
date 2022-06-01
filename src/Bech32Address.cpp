@@ -84,6 +84,15 @@ Bech32Address::Bech32Address(const std::string& hrp, HasherType hasher, const Pu
             }
             break;
 
+        case HASHER_BLAKE2B:
+            {
+                const auto hash = Hash::blake2b(publicKey.bytes, 20);
+                auto key = Data(20);
+                std::copy(hash.end() - 20, hash.end(), key.begin());
+                setKey(key);
+            }
+            break;
+
         default:
             throw std::invalid_argument("Invalid HasherType in Bech32Address");
     }

@@ -61,6 +61,7 @@ class AnyAddress {
         case TWCoinTypeBitcoin:
         case TWCoinTypeDigiByte:
         case TWCoinTypeGroestlcoin:
+        case TWCoinTypeHandshake:
         case TWCoinTypeLitecoin:
         case TWCoinTypeViacoin: {
             auto decoded = Bitcoin::SegwitAddress::decode(string);

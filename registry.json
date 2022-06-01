@@ -2746,5 +2746,34 @@
       "rpc": "",
       "documentation": "https://github.com/HorizenOfficial/zen/tree/master/doc"
     }
+  },
+  {
+    "id": "handshake",
+    "name": "Handshake",
+    "coinId": 5353,
+    "symbol": "HNS",
+    "decimals": 6,
+    "blockchain": "Bitcoin",
+    "derivation": [
+      {
+        "path": "m/44'/5353'/0'/0/0"
+      }
+    ],
+    "curve": "secp256k1",
+    "publicKeyType": "secp256k1",
+    "hrp": "hs",
+    "publicKeyHasher": "sha256ripemd",
+    "base58Hasher": "sha256d",
+    "explorer": {
+      "url": "https://hnscan.com",
+      "txPath": "/tx/",
+      "accountPath": "/address/"
+    },
+    "info": {
+      "url": "https://handshake.org",
+      "source": "https://github.com/handshake-org/hsd",
+      "rpc": "",
+      "documentation": "https://hsd-dev.org"
+    }
   }
 ]

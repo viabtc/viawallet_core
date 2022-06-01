@@ -41,6 +41,35 @@ SegwitAddress::SegwitAddress(const PublicKey& publicKey, std::string hrp)
                          witnessProgram.data());
 }
 
+SegwitAddress::SegwitAddress(const PublicKey& publicKey, int witver, std::string hrp, HasherType hasher)
+    : hrp(std::move(hrp)), witnessVersion(witver), witnessProgram() {
+    if (publicKey.type != TWPublicKeyTypeSECP256k1) {
+        throw std::invalid_argument("SegwitAddress needs a compressed SECP256k1 public key.");
+    }
+
+    switch (hasher) {
+    case HASHER_SHA2_RIPEMD:
+    {
+        witnessProgram.resize(20);
+        ecdsa_get_pubkeyhash(publicKey.compressed().bytes.data(),
+                             HASHER_SHA2_RIPEMD, witnessProgram.data());
+    }
+    break;
+
+    case HASHER_BLAKE2B:
+    {
+        const auto hash = Hash::blake2b(publicKey.bytes, 20);
+        witnessProgram.resize(20);
+        std::copy(hash.end() - 20, hash.end(), witnessProgram.begin());
+    }
+    break;
+
+    default:
+        throw std::invalid_argument("Invalid HasherType in SegwitAddress");
+    }
+
+}
+
 std::tuple<SegwitAddress, std::string, bool> SegwitAddress::decode(const std::string& addr) {
     auto resp = std::make_tuple(SegwitAddress(), "", false);
     auto dec = Bech32::decode(addr);

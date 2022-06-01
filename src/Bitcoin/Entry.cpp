@@ -25,6 +25,7 @@ bool Entry::validateAddress(TWCoinType coin, const string& address, byte p2pkh, 
         case TWCoinTypeViacoin:
         case TWCoinTypeBitcoinGold:
         case TWCoinTypeSyscoin:
+        case TWCoinTypeHandshake:
             return SegwitAddress::isValid(address, hrp)
                 || Address::isValid(address, {{p2pkh}, {p2sh}});
 

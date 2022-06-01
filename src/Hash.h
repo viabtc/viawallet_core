@@ -59,6 +59,9 @@ Data ripemd(const byte* data, size_t size);
 /// Computes the Blake256 hash.
 Data blake256(const byte* data, size_t size);
 
+/// Computes the Blake2b hash(hashSize = 32).
+Data blake2b(const byte* data, size_t dataSize);
+
 /// Computes the Blake2b hash.
 Data blake2b(const byte* data, size_t dataSize, size_t hashSize);
 
@@ -133,6 +136,12 @@ Data ripemd(const T& data) {
 template <typename T>
 Data blake256(const T& data) {
     return blake256(reinterpret_cast<const byte*>(data.data()), data.size());
+}
+
+/// Computes the Blake2b hash(hashSize = 32).
+template <typename T>
+Data blake2b(const T& data) {
+    return blake2b(reinterpret_cast<const byte*>(data.data()), data.size());
 }
 
 /// Computes the Blake2b hash.

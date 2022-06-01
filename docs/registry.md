@@ -70,6 +70,7 @@ This list is generated from [./registry.json](../registry.json)
 | 1815    | Cardano          | ADA    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/cardano/info/logo.png" width="32" />      | <https://www.cardano.org>     |
 | 2301    | Qtum             | QTUM   | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/qtum/info/logo.png" width="32" />         | <https://qtum.org>            |
 | 2718    | Nebulas          | NAS    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/nebulas/info/logo.png" width="32" />      | <https://nebulas.io>          |
+| 5353    | Handshake        | HNS    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/handshake/info/logo.png" width="32" />    | <https://handshake.org>       |
 | 6060    | GoChain          | GO     | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/gochain/info/logo.png" width="32" />      | <https://gochain.io>          |
 | 8964    | NULS             | NULS   | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/nuls/info/logo.png" width="32" />         | <https://nuls.io>             |
 | 19167   | Flux             | FLUX   | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/zelcash/info/logo.png" width="32" />      | <https://runonflux.io>        |

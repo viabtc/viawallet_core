@@ -105,6 +105,7 @@ class CoinAddressDerivationTests {
         NATIVEEVMOS -> assertEquals("evmos13u6g7vqgw074mgmf2ze2cadzvkz9snlwstd20d", address)
         FREECASH -> assertEquals("FU5EChYVrn1zYpoYL6WXeyawCy5y9iZq6k", address)
         ERGO -> assertEquals("9gqy7gkUt6wati2AT5hXPiWeRSe5F74J2o34oWxJxgnkqiuUuAQ", address)
-        HANDSHAKE -> assertEquals("hs1qucnsnmnhp6el5js76vhcvfm8ukfkrazgnf97wv", address)
+        HORIZEN -> assertEquals("znUmzvod1f4P9LYsBhNxjqCDQvNSStAmYEX", address)
+        HANDSHAKE -> assertEquals("hs1q8nds85ejsvl2t7xvj8lauyvgjm9ar4t7dzssk0", address)
     }
 }
