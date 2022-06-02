@@ -133,6 +133,17 @@ targets:
       - trezor-crypto/crypto/sodium/private/ed25519_ref10.c
       - trezor-crypto/crypto/sodium/private/ed25519_ref10_fe_25_5.c
       - trezor-crypto/crypto/sodium/keypair.c
+      - trezor-crypto/crypto/mina/base10.c
+      - trezor-crypto/crypto/mina/libbase58.c
+      - trezor-crypto/crypto/mina/blake2b-ref.c
+      - trezor-crypto/crypto/mina/crypto.c
+      - trezor-crypto/crypto/mina/curve_checks.c
+      - trezor-crypto/crypto/mina/pasta_fp.c
+      - trezor-crypto/crypto/mina/pasta_fq.c
+      - trezor-crypto/crypto/mina/poseidon.c
+      - trezor-crypto/crypto/mina/sha256.c
+      - trezor-crypto/crypto/mina/utils.c
+      - trezor-crypto/crypto/mina/mina.c
     settings:
       GCC_WARN_64_TO_32_BIT_CONVERSION: NO
       OTHER_CFLAGS: $(inherited) -Wno-comma

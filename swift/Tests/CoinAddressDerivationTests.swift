@@ -256,8 +256,11 @@ class CoinAddressDerivationTests: XCTestCase {
                 case .horizen:
                     let expectedResult = "znUmzvod1f4P9LYsBhNxjqCDQvNSStAmYEX"
                     assertCoinDerivation(coin, expectedResult, derivedAddress, address)
-                 case .handshake:
+                case .handshake:
                     let expectedResult = "hs1qucnsnmnhp6el5js76vhcvfm8ukfkrazgnf97wv"
+                    assertCoinDerivation(coin, expectedResult, derivedAddress, address)
+                case .mina:
+                    let expectedResult = "B62qkZY3vEc5TAgQf7PA38ra1ivTFE55oV1mePMBkdkTYwnFSF4DadQ"
                     assertCoinDerivation(coin, expectedResult, derivedAddress, address)
                 @unknown default:
                     fatalError()

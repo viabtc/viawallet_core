@@ -2775,5 +2775,35 @@
       "rpc": "",
       "documentation": "https://hsd-dev.org"
     }
+  },
+  {
+    "id": "mina",
+    "name": "Mina",
+    "coinId": 12586,
+    "symbol": "MINA",
+    "decimals": 9,
+    "blockchain": "Mina",
+    "derivation": [
+      {
+        "path": "m/44'/12586'/0'/0/0"
+      }
+    ],
+    "curve": "secp256k1Mina",
+    "publicKeyType": "Mina",
+    "p2pkhPrefix": 0,
+    "p2shPrefix": 5,
+    "publicKeyHasher": "sha256ripemd",
+    "base58Hasher": "sha256d",
+    "explorer": {
+      "url": "https://minaexplorer.com",
+      "txPath": "/transaction/",
+      "accountPath": "/wallet/"
+    },
+    "info": {
+      "url": "https://minaprotocol.com/",
+      "source": "https://github.com/MinaProtocol/mina",
+      "rpc": "",
+      "documentation": "https://github.com/MinaProtocol/mina/blob/develop/README.md"
+    }
   }
 ]

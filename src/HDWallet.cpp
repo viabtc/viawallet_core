@@ -142,7 +142,12 @@ PrivateKey HDWallet::getKey(TWCoinType coin, const DerivationPath& derivationPat
 
                 return PrivateKey(pkData, extData, chainCode, pkData2, extData2, chainCode2);
             }
-
+        case PrivateKeyTypeMina:
+            {
+                auto data = Data(node.private_key, node.private_key + PrivateKey::size);
+                data[0] &= 0x3f;
+                return PrivateKey(data);
+            }
         case PrivateKeyTypeDefault32:
         default:
             // default path
@@ -248,6 +253,9 @@ HDWallet::PrivateKeyType HDWallet::getPrivateKeyType(TWCurve curve) {
     case TWCurve::TWCurveED25519Extended:
         // used by Cardano
         return PrivateKeyTypeDoubleExtended;
+    case TWCurve::TWCurveSECP256k1Mina:
+        // used by Mina
+        return PrivateKeyTypeMina;
     default:
         // default
         return PrivateKeyTypeDefault32;
@@ -320,6 +328,7 @@ HDNode getNode(const HDWallet& wallet, TWCurve curve, const DerivationPath& deri
             case HDWallet::PrivateKeyTypeDoubleExtended: // used by Cardano, special handling
                 hdnode_private_ckd_cardano(&node, index.derivationIndex());
                 break;
+           case HDWallet::PrivateKeyTypeMina:
            case HDWallet::PrivateKeyTypeDefault32:
             default:
                 hdnode_private_ckd(&node, index.derivationIndex());
@@ -338,6 +347,7 @@ HDNode getMasterNode(const HDWallet& wallet, TWCurve curve) {
             hdnode_from_entropy_cardano_icarus((const uint8_t*)"", 0, wallet.getEntropy().data(), (int)wallet.getEntropy().size(), &node);
             break;
 
+        case HDWallet::PrivateKeyTypeMina:
         case HDWallet::PrivateKeyTypeDefault32:
         default:
             hdnode_from_seed(wallet.getSeed().data(), HDWallet::seedSize, curveName(curve), &node);
@@ -349,6 +359,7 @@ HDNode getMasterNode(const HDWallet& wallet, TWCurve curve) {
 const char* curveName(TWCurve curve) {
     switch (curve) {
     case TWCurveSECP256k1:
+    case TWCurveSECP256k1Mina:
         return SECP256K1_NAME;
     case TWCurveED25519:
         return ED25519_NAME;

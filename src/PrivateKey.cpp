@@ -18,9 +18,12 @@
 #include <TrezorCrypto/schnorr.h>
 #include <TrezorCrypto/secp256k1.h>
 #include <TrezorCrypto/sodium/keypair.h>
+#include <TrezorCrypto/mina/mina.h>
 #include <iterator>
 #include <secp256k1.h>
 #include <secp256k1_schnorr.h>
+#include "HexCoding.h"
+#include "Base58.h"
 
 using namespace TW;
 
@@ -62,6 +65,7 @@ bool PrivateKey::isValid(const Data& data, TWCurve curve)
     case TWCurveED25519Blake2bNano:
     case TWCurveED25519Extended:
     case TWCurveCurve25519:
+    case TWCurveSECP256k1Mina:
     case TWCurveNone:
     default:
         break;
@@ -147,7 +151,12 @@ PublicKey PrivateKey::getPublicKey(TWPublicKeyType type) const {
             append(result, secondChainCode());
         }
         break;
-
+    case TWPublicKeyTypeMina: {
+            char target[56];
+            privhex_to_address(target, sizeof(target), hex(bytes).c_str());
+            auto decodeData = Base58::bitcoin.decodeCheck(target);
+            return PublicKey(decodeData, type);
+        }
     case TWPublicKeyTypeCURVE25519:
         result.resize(PublicKey::ed25519Size);
         PublicKey ed25519PublicKey = getPublicKey(TWPublicKeyTypeED25519);
@@ -226,6 +235,7 @@ Data PrivateKey::sign(const Data& digest, TWCurve curve) const {
         success = ecdsa_sign_digest_checked(&nist256p1, key().data(), digest.data(), digest.size(), result.data(),
                                     result.data() + 64, nullptr) == 0;
     } break;
+    case TWCurveSECP256k1Mina:
     case TWCurveNone:
     default: 
         break;

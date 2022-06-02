@@ -38,6 +38,8 @@ bool PublicKey::isValid(const Data& data, enum TWPublicKeyType type) {
     case TWPublicKeyTypeSECP256k1:
     case TWPublicKeyTypeNIST256p1:
         return size == secp256k1Size && (data[0] == 0x02 || data[0] == 0x03);
+    case TWPublicKeyTypeMina:
+        return size == minaSize;
     case TWPublicKeyTypeSECP256k1Extended:
     case TWPublicKeyTypeNIST256p1Extended:
         return size == secp256k1ExtendedSize && data[0] == 0x04;
@@ -56,6 +58,7 @@ PublicKey::PublicKey(const Data& data, enum TWPublicKeyType type) : type(type) {
     switch (type) {
     case TWPublicKeyTypeSECP256k1:
     case TWPublicKeyTypeNIST256p1:
+    case TWPublicKeyTypeMina:
     case TWPublicKeyTypeSECP256k1Extended:
     case TWPublicKeyTypeNIST256p1Extended:
         bytes.reserve(data.size());
@@ -121,6 +124,7 @@ PublicKey PublicKey::extended() const {
     case TWPublicKeyTypeCURVE25519:
     case TWPublicKeyTypeED25519Blake2b:
     case TWPublicKeyTypeED25519Extended:
+    case TWPublicKeyTypeMina:
        return *this;
     }
 }
@@ -138,6 +142,7 @@ bool PublicKey::verify(const Data& signature, const Data& message) const {
     case TWPublicKeyTypeED25519Blake2b:
         return ed25519_sign_open_blake2b(message.data(), message.size(), bytes.data(), signature.data()) == 0;
     case TWPublicKeyTypeED25519Extended:
+    case TWPublicKeyTypeMina:
         throw std::logic_error("Not yet implemented");
         //ed25519_sign_open(message.data(), message.size(), bytes.data(), signature.data()) == 0;
     case TWPublicKeyTypeCURVE25519:

@@ -1,0 +1,51 @@
+// Copyright © 2017-2020 Trust Wallet.
+//
+// This file is part of Trust. The full Trust copyright notice, including
+// terms governing use, modification, and redistribution, is contained in the
+// file LICENSE at the root of the source code distribution tree.
+
+syntax = "proto3";
+
+package TW.Mina.Proto;
+option java_package = "wallet.core.jni.proto";
+
+message SigningInput {
+    // Private key.
+    bytes private_key = 1;
+
+    // Sender.
+    string from = 2;
+
+    // Receiver.
+    string to = 3;
+
+    // Amount to send.
+    uint64 amount = 4;
+
+    // Fee
+    uint64 fee = 5;
+
+    // Nonce
+    uint32 nonce = 6;
+
+    // Global Slot valid until
+    uint64 valid_until = 7;
+
+    // Memo
+    string memo = 8;
+
+    // Delegation
+    bool delegation = 9;
+}
+
+// Transaction signing output.
+message SigningOutput {
+    // Signing output json.
+    string json = 1;
+
+    // Signature
+    string signature = 2;
+
+    // Optional error message.
+    string error = 3;
+}

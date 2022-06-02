@@ -113,6 +113,7 @@ class HDWallet {
     enum PrivateKeyType {
       PrivateKeyTypeDefault32 = 0, // 32-byte private key
       PrivateKeyTypeDoubleExtended = 1, // used by Cardano
+      PrivateKeyTypeMina = 2, // 32-byte private key of Mina
     };
     
     // obtain privateKeyType used by the coin/curve
