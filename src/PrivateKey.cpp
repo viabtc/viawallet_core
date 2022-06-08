@@ -30,7 +30,7 @@ using namespace TW;
 
 bool PrivateKey::isValid(const Data& data) {
     // Check length
-    if (data.size() != size && data.size() != doubleExtendedSize) {
+    if (data.size() != size && data.size() != extendedSize && data.size() != doubleExtendedSize) {
         return false;
     }
 
@@ -65,6 +65,7 @@ bool PrivateKey::isValid(const Data& data, TWCurve curve)
     case TWCurveED25519Blake2bNano:
     case TWCurveED25519Extended:
     case TWCurveCurve25519:
+    case TWCurveED25519ExtendedKDA:
     case TWCurveSECP256k1Mina:
     case TWCurveNone:
     default:
@@ -151,6 +152,10 @@ PublicKey PrivateKey::getPublicKey(TWPublicKeyType type) const {
             append(result, secondChainCode());
         }
         break;
+    case TWPublicKeyTypeKadena:
+        result.resize(PublicKey::ed25519Size);
+        ed25519_publickey_kda(bytes.data(), result.data());
+        break;
     case TWPublicKeyTypeMina: {
             char target[56];
             privhex_to_address(target, sizeof(target), hex(bytes).c_str());
@@ -217,6 +222,12 @@ Data PrivateKey::sign(const Data& digest, TWCurve curve) const {
     case TWCurveED25519Extended: {
         result.resize(64);
         const auto publicKey = getPublicKey(TWPublicKeyTypeED25519Extended);
+        ed25519_sign_ext(digest.data(), digest.size(), key().data(), extension().data(), publicKey.bytes.data(), result.data());
+        success = true;
+    } break;
+    case TWCurveED25519ExtendedKDA: {
+        result.resize(64);
+        const auto publicKey = getPublicKey(TWPublicKeyTypeKadena);
         ed25519_sign_ext(digest.data(), digest.size(), key().data(), extension().data(), publicKey.bytes.data(), result.data());
         success = true;
     } break;

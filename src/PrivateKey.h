@@ -17,6 +17,8 @@ class PrivateKey {
   public:
     /// The number of bytes in a private key.
     static const size_t size = 32;
+    /// The number of bytes in an extended private key.
+    static const size_t extendedSize = 3 * 32;
     /// The number of bytes in a double extended key (used by Cardano)
     static const size_t doubleExtendedSize = 2 * 3 * 32;
 

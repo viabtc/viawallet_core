@@ -58,6 +58,7 @@ add_library(TrezorCrypto
     crypto/rfc6979.c
     crypto/schnorr.c
     crypto/shamir.c
+    crypto/kadena/kadena_encrypted_sign.c
     crypto/mina/base10.c crypto/mina/libbase58.c crypto/mina/blake2b-ref.c crypto/mina/sha256.c crypto/mina/crypto.c crypto/mina/pasta_fp.c crypto/mina/pasta_fq.c crypto/mina/poseidon.c crypto/mina/utils.c crypto/mina/curve_checks.c crypto/mina/mina.c
 )
 

@@ -20,6 +20,7 @@
 #include <TrezorCrypto/bip39.h>
 #include <TrezorCrypto/curves.h>
 #include <TrezorCrypto/memzero.h>
+#include <TrezorCrypto/kadena/kadena_encrypted_sign.h>
 
 #include <array>
 #include <cstring>
@@ -142,6 +143,23 @@ PrivateKey HDWallet::getKey(TWCoinType coin, const DerivationPath& derivationPat
 
                 return PrivateKey(pkData, extData, chainCode, pkData2, extData2, chainCode2);
             }
+        case PrivateKeyTypeExtended96KDA:
+            {
+                auto kdaPriKey = PrivateKey(Data(node.private_key, node.private_key + PrivateKey::size));
+                auto kdaPubKey = kdaPriKey.getPublicKey(TWPublicKeyTypeKadena);
+
+                encrypted_key parentKey;
+                std::copy(node.private_key, node.private_key + 32, parentKey.ekey);
+                std::copy(node.private_key_extension, node.private_key_extension + 32, parentKey.ekey + 32);
+                std::copy(kdaPubKey.bytes.begin(), kdaPubKey.bytes.end(), parentKey.pkey);
+                std::copy(node.chain_code, node.chain_code + 32, parentKey.cc);
+
+
+                uint8_t result[96];
+                wallet_encrypted_derive_private(&parentKey, 0x80000000, result, static_cast<derivation_scheme_mode>(2));
+                auto data = Data(result, result + PrivateKey::extendedSize);
+                return PrivateKey(data);
+            }
         case PrivateKeyTypeMina:
             {
                 auto data = Data(node.private_key, node.private_key + PrivateKey::size);
@@ -253,6 +271,9 @@ HDWallet::PrivateKeyType HDWallet::getPrivateKeyType(TWCurve curve) {
     case TWCurve::TWCurveED25519Extended:
         // used by Cardano
         return PrivateKeyTypeDoubleExtended;
+    case TWCurve::TWCurveED25519ExtendedKDA:
+        // used by Kadena
+        return PrivateKeyTypeExtended96KDA;
     case TWCurve::TWCurveSECP256k1Mina:
         // used by Mina
         return PrivateKeyTypeMina;
@@ -328,6 +349,8 @@ HDNode getNode(const HDWallet& wallet, TWCurve curve, const DerivationPath& deri
             case HDWallet::PrivateKeyTypeDoubleExtended: // used by Cardano, special handling
                 hdnode_private_ckd_cardano(&node, index.derivationIndex());
                 break;
+            case HDWallet::PrivateKeyTypeExtended96KDA:
+                break;
            case HDWallet::PrivateKeyTypeMina:
            case HDWallet::PrivateKeyTypeDefault32:
             default:
@@ -346,7 +369,9 @@ HDNode getMasterNode(const HDWallet& wallet, TWCurve curve) {
             // special handling for extended, use entropy (not seed)
             hdnode_from_entropy_cardano_icarus((const uint8_t*)"", 0, wallet.getEntropy().data(), (int)wallet.getEntropy().size(), &node);
             break;
-
+        case HDWallet::PrivateKeyTypeExtended96KDA:
+            hdnode_from_seed_kadena(wallet.getSeed().data(), (int)wallet.getSeed().size() , &node);
+            break;
         case HDWallet::PrivateKeyTypeMina:
         case HDWallet::PrivateKeyTypeDefault32:
         default:

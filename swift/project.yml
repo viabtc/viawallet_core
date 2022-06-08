@@ -133,6 +133,7 @@ targets:
       - trezor-crypto/crypto/sodium/private/ed25519_ref10.c
       - trezor-crypto/crypto/sodium/private/ed25519_ref10_fe_25_5.c
       - trezor-crypto/crypto/sodium/keypair.c
+      - trezor-crypto/crypto/kadena/kadena_encrypted_sign.c
       - trezor-crypto/crypto/mina/base10.c
       - trezor-crypto/crypto/mina/libbase58.c
       - trezor-crypto/crypto/mina/blake2b-ref.c

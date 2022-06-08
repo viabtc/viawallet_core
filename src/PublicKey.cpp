@@ -32,6 +32,7 @@ bool PublicKey::isValid(const Data& data, enum TWPublicKeyType type) {
         return size == ed25519Size || (size == ed25519Size + 1 && data[0] == 0x01);
     case TWPublicKeyTypeCURVE25519:
     case TWPublicKeyTypeED25519Blake2b:
+    case TWPublicKeyTypeKadena:
         return size == ed25519Size;
     case TWPublicKeyTypeED25519Extended:
         return size == ed25519DoubleExtendedSize;
@@ -75,6 +76,7 @@ PublicKey::PublicKey(const Data& data, enum TWPublicKeyType type) : type(type) {
         }
         break;
     case TWPublicKeyTypeED25519Blake2b:
+    case TWPublicKeyTypeKadena:
         bytes.reserve(ed25519Size);
         assert(data.size() == ed25519Size); // ensured by isValid() above
         std::copy(std::begin(data), std::end(data), std::back_inserter(bytes));
@@ -125,6 +127,7 @@ PublicKey PublicKey::extended() const {
     case TWPublicKeyTypeED25519Blake2b:
     case TWPublicKeyTypeED25519Extended:
     case TWPublicKeyTypeMina:
+    case TWPublicKeyTypeKadena:
        return *this;
     }
 }
@@ -143,6 +146,7 @@ bool PublicKey::verify(const Data& signature, const Data& message) const {
         return ed25519_sign_open_blake2b(message.data(), message.size(), bytes.data(), signature.data()) == 0;
     case TWPublicKeyTypeED25519Extended:
     case TWPublicKeyTypeMina:
+    case TWPublicKeyTypeKadena:
         throw std::logic_error("Not yet implemented");
         //ed25519_sign_open(message.data(), message.size(), bytes.data(), signature.data()) == 0;
     case TWPublicKeyTypeCURVE25519:

@@ -24,7 +24,7 @@
 
 #include <stdbool.h>
 #include <string.h>
-
+#include <stdio.h>
 #include <TrezorCrypto/options.h>
 
 #include <TrezorCrypto/address.h>
@@ -430,6 +430,77 @@ int hdnode_from_entropy_cardano_icarus(const uint8_t *pass, int pass_len,
   return ret;
 }
 #endif
+
+
+static int hdnode_from_secret_kadena(const uint8_t *k,
+                                     const uint8_t *chain_code, HDNode *out) {
+    memzero(out, sizeof(HDNode));
+    out->depth = 0;
+    out->child_num = 0;
+    out->curve = &ed25519_cardano_info;
+    memcpy(out->private_key, k, 32);
+    memcpy(out->private_key_extension, k + 32, 32);
+    memcpy(out->chain_code, chain_code, 32);
+
+    out->private_key[0] &= 0xf8;
+    out->private_key[31] &= 0x1f;
+    out->private_key[31] |= 0x40;
+
+    out->public_key[0] = 0;
+    hdnode_fill_public_key(out);
+
+    return 0;
+}
+
+static int trySeedChainCodeToKeypairV1(const uint8_t *seed, int seed_len, HDNode *out, const char* sha512input) {
+    CONFIDENTIAL uint8_t I[SHA512_DIGEST_LENGTH];
+    CONFIDENTIAL uint8_t k[SHA512_DIGEST_LENGTH];
+    CONFIDENTIAL HMAC_SHA512_CTX ctx;
+
+    hmac_sha512_Init(&ctx, seed, seed_len);
+
+    hmac_sha512_Update(&ctx, (const uint8_t *)sha512input, strlen(sha512input));
+    hmac_sha512_Final(&ctx, I);
+
+    uint8_t tempSeed[32];
+    uint8_t chainCode[32];
+    memcpy(tempSeed, I, 32);
+    memcpy(chainCode, I + 32, 32);
+
+    if (ed25519_extend(tempSeed, chainCode)) {
+        memzero(&tempSeed, sizeof(tempSeed));
+        memzero(&chainCode, sizeof(chainCode));
+        return 1;
+    }
+
+    sha512_Raw(I, 32, k);
+
+    int ret = hdnode_from_secret_kadena(k, I + 32, out);
+
+    memzero(I, sizeof(I));
+    memzero(k, sizeof(k));
+    memzero(&ctx, sizeof(ctx));
+    memzero(&tempSeed, sizeof(tempSeed));
+    memzero(&chainCode, sizeof(chainCode));
+
+    return ret;
+}
+
+int hdnode_from_seed_kadena(const uint8_t *seed, int seed_len, HDNode *out) {
+    int result = 1;
+
+    char buffer [100];
+
+    for (int i = 1; result && i <= 1000; i++) {
+        snprintf(buffer, 100, "Root Seed Chain %d", i);
+        result = trySeedChainCodeToKeypairV1(seed, seed_len, out, buffer);
+    }
+
+    return result;
+}
+
+
+
 
 int hdnode_public_ckd_cp(const ecdsa_curve *curve, const curve_point *parent,
                          const uint8_t *parent_chain_code, uint32_t i,

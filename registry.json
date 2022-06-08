@@ -2805,5 +2805,31 @@
       "rpc": "",
       "documentation": "https://github.com/MinaProtocol/mina/blob/develop/README.md"
     }
+  },
+  {
+    "id": "kadena",
+    "name": "Kadena",
+    "coinId": 626,
+    "symbol": "KDA",
+    "decimals": 12,
+    "blockchain": "Kadena",
+    "derivation": [
+      {
+        "path": "m/44'/626'/0'"
+      }
+    ],
+    "curve": "ed25519ExtendedKDA",
+    "publicKeyType": "Kadena",
+    "explorer": {
+      "url": "https://explorer.chainweb.com/mainnet",
+      "txPath": "/tx/",
+      "accountPath": ""
+    },
+    "info": {
+      "url": "https://kadena.io/",
+      "source": "https://github.com/kadena-io/chainweb-node",
+      "rpc": "",
+      "documentation": "https://github.com/kadena-io/chainweb-node/blob/master/README.md"
+    }
   }
 ]

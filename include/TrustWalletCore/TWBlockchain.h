@@ -49,6 +49,7 @@ enum TWBlockchain {
     TWBlockchainNervos = 36,
     TWBlockchainErgo = 37,
     TWBlockchainMina = 38,
+    TWBlockchainKadena = 39,
 };
 
 TW_EXTERN_C_END

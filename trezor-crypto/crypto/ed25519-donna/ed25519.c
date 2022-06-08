@@ -54,6 +54,21 @@ ED25519_FN(ed25519_publickey) (const ed25519_secret_key sk, ed25519_public_key p
 	ge25519_pack(pk, &A);
 }
 
+void
+ED25519_FN(ed25519_publickey_kda) (const ed25519_secret_key sk, ed25519_public_key pk) {
+    bignum256modm a = {0};
+    ge25519 ALIGN(16) A;
+    hash_512bits extsk = {0};
+
+    /* we don't stretch the key through hashing first since its already 64 bytes */
+
+    memcpy(extsk, sk, 32);
+    /*memcpy(extsk+32, skext, 32);*/
+    expand256_modm(a, extsk, 32);
+    ge25519_scalarmult_base_niels(&A, ge25519_niels_base_multiples, a);
+    ge25519_pack(pk, &A);
+}
+
 #if USE_CARDANO
 void
 ED25519_FN(ed25519_publickey_ext) (const ed25519_secret_key sk, const ed25519_secret_key skext, ed25519_public_key pk) {
@@ -218,6 +233,16 @@ ED25519_FN(ed25519_scalarmult) (ed25519_public_key res, const ed25519_secret_key
 	curve25519_neg(A.x, A.x);
 	ge25519_pack(res, &A);
 	return 0;
+}
+
+int
+ED25519_FN(ed25519_extend) (const ed25519_secret_key seed, ed25519_secret_key secret) {
+    ed25519_extsk(secret, seed);
+
+    /* invalid if 3rd highest bit set */
+    if (secret[31] & 0x20)
+        return 1;
+    return 0;
 }
 
 

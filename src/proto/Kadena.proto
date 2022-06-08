@@ -1,0 +1,68 @@
+// Copyright © 2017-2020 Trust Wallet.
+//
+// This file is part of Trust. The full Trust copyright notice, including
+// terms governing use, modification, and redistribution, is contained in the
+// file LICENSE at the root of the source code distribution tree.
+
+syntax = "proto3";
+
+package TW.Kadena.Proto;
+option java_package = "wallet.core.jni.proto";
+
+// Transaction signing input.
+message SigningInput {
+    // Private key.
+    bytes privateKey = 1;
+
+    // Network Id.
+    string networkId = 2;
+
+    // Sender.
+    string sender = 3;
+
+    // Receiver.
+    string receiver = 4;
+
+    // Amount to send.
+    string amount = 5;
+
+    // Gas price.
+    string gasPrice = 6;
+
+    // Gas limit.
+    uint64 gasLimit = 7;
+
+    //Nonce.
+    string nonce = 8;
+
+    // Creation time.
+    uint64 creationTime = 9;
+
+    // TTL.
+    uint64 ttl = 10;
+
+    //Sender chain identifier.
+    string chainId = 11;
+
+    //Receiver chain identifier.
+    string targetChainId = 12;
+
+    //Receiver's publicKeys.
+    repeated string receiverPubKeys = 13;
+
+    // Receiver account predicate.
+    string pred = 14;
+
+}
+
+// Transaction signing output.
+message SigningOutput {
+    // Signing output json.
+    string json = 1;
+
+    // Transaction hash.
+    string hash = 2;
+
+    // Optional error message.
+    string error = 3;
+}

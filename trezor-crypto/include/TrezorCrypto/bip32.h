@@ -87,6 +87,8 @@ int hdnode_from_entropy_cardano_icarus(const uint8_t *pass, int pass_len,
                                        HDNode *out);
 #endif
 
+int hdnode_from_seed_kadena(const uint8_t *seed, int seed_len, HDNode *out);
+
 int hdnode_public_ckd_cp(const ecdsa_curve *curve, const curve_point *parent,
                          const uint8_t *parent_chain_code, uint32_t i,
                          curve_point *child, uint8_t *child_chain_code);

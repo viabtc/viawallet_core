@@ -16,6 +16,7 @@ typedef unsigned char curve25519_key[32];
 typedef unsigned char ed25519_cosi_signature[32];
 
 void ed25519_publickey(const ed25519_secret_key sk, ed25519_public_key pk);
+void ed25519_publickey_kda(const ed25519_secret_key sk, ed25519_public_key pk);
 #if USE_CARDANO
 void ed25519_publickey_ext(const ed25519_secret_key sk, const ed25519_secret_key skext, ed25519_public_key pk);
 #endif
@@ -27,6 +28,7 @@ void ed25519_sign_ext(const unsigned char *m, size_t mlen, const ed25519_secret_
 #endif
 
 int ed25519_scalarmult(ed25519_public_key res, const ed25519_secret_key sk, const ed25519_public_key pk);
+int ed25519_extend(const ed25519_secret_key seed, ed25519_secret_key secret);
 
 void curve25519_scalarmult(curve25519_key mypublic, const curve25519_key secret, const curve25519_key basepoint);
 void curve25519_scalarmult_basepoint(curve25519_key mypublic, const curve25519_key secret);

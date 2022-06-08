@@ -83,4 +83,12 @@ string encodeBase64Url(const Data& val) {
     return encoded;
 }
 
+string encodeBase64UrlNoPadding(const Data& val) {
+    using namespace boost::archive::iterators;
+    using It = base64_from_binary<transform_width<Data::const_iterator, 6, 8>>;
+    auto encoded = string(It(begin(val)), It(end(val)));
+    convertToBase64Url(encoded);
+    return encoded;
+}
+
 } // namespace TW::Base64

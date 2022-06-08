@@ -119,6 +119,7 @@ enum TWCoinType {
     TWCoinTypeHorizen = 121,
     TWCoinTypeHandshake = 5353,
     TWCoinTypeMina = 12586,
+    TWCoinTypeKadena = 626,
 };
 
 /// Returns the blockchain for a coin type.

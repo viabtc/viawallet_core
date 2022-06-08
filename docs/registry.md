@@ -55,6 +55,7 @@ This list is generated from [./registry.json](../registry.json)
 | 501     | Solana           | SOL    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/solana/info/logo.png" width="32" />       | <https://solana.com>          |
 | 503     | Conflux Network  | CFX    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/conflux/info/logo.png" width="32" />      | <https://confluxnetwork.org/> |
 | 508     | Elrond           | eGLD   | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/elrond/info/logo.png" width="32" />       | <https://elrond.com/>         |
+| 626     | Kadena           | KDA    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/kadena/info/logo.png" width="32" />       | <https://kadena.io/>          |
 | 714     | BNB Beacon Chain | BNB    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/binance/info/logo.png" width="32" />      | <https://binance.org>         |
 | 818     | VeChain          | VET    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/vechain/info/logo.png" width="32" />      | <https://vechain.org>         |
 | 820     | Callisto         | CLO    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/callisto/info/logo.png" width="32" />     | <https://callisto.network>    |

@@ -23,4 +23,6 @@ Data decodeBase64Url(const std::string& val);
 // Encode bytes into Base64Url string (uses '-' and '_' as pecial characters)
 std::string encodeBase64Url(const Data& val);
 
+std::string encodeBase64UrlNoPadding(const Data& val);
+
 } // namespace TW::Base64
