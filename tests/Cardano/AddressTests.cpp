@@ -400,3 +400,14 @@ TEST(CardanoAddress, AssignmentOperatorLegacy) {
     EXPECT_TRUE(address.legacyAddressV2.has_value());
     EXPECT_TRUE(*address.legacyAddressV2 == *addr3leg.legacyAddressV2);
 }
+
+TEST(CardanoAddress, Mnemonic) {
+    const auto mnemonic = "return custom two home gain guilt kangaroo supply market current curtain tomorrow heavy blue robot";
+    auto wallet = HDWallet(mnemonic, "");
+    PrivateKey privKey0 = wallet.getKey(TWCoinTypeCardano, DerivationPath("m/1852'/1815'/0'"));
+    PublicKey pubKey0 = privKey0.getPublicKey(TWPublicKeyTypeED25519Extended);
+
+    // public key + chaincode for m/1852'/1815'/0'
+    Data data = TW::subData(pubKey0.bytes, 64);
+    ASSERT_EQ("279068fbbe03dff062f22a0c98f2858752241d8a560310211503a4ac2a28f00b6ed5a229573cf54ac261d2946451e5293cddeb1b1db75a7b4da81af9282faf5d", hex(data));
+}

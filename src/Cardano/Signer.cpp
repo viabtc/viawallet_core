@@ -10,7 +10,6 @@
 #include "PrivateKey.h"
 #include "Cbor.h"
 #include "HexCoding.h"
-
 #include <vector>
 #include <cassert>
 #include <cmath>
@@ -21,7 +20,8 @@ using namespace TW;
 using namespace std;
 
 
-static const Data placeholderPrivateKey = parse_hex("000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f");
+static const Data placeholderPrivateKey = parse_hex("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+static const uint64_t MIN_UTXO_AMOUNT = 1000000;
 
 Proto::SigningOutput Signer::sign() {
     // plan if needed
@@ -88,9 +88,7 @@ Common::Proto::SigningError Signer::assembleSignatures(std::vector<std::pair<Dat
         if (!AddressV3::isValid(u.address)) {
             return Common::Proto::Error_invalid_address;
         }
-        if (std::find(addresses.begin(), addresses.end(), u.address) == addresses.end()) {
-            addresses.push_back(u.address);
-        }
+        addresses.push_back(u.address);
     }
 
     // create signature for each address
@@ -191,50 +189,11 @@ Common::Proto::SigningError Signer::encodeTransaction(Data& encoded, Data& txId,
     return Common::Proto::OK;
 }
 
-// Select a subset of inputs, to cover desired amount. Simple algorithm: pick largest ones
-vector<TxInput> Signer::selectInputsSimple(const vector<TxInput>& inputs, Amount amount) {
-    auto ii = vector<TxInput>(inputs);
-    sort(ii.begin(), ii.end(), [](TxInput t1, TxInput t2) {
-        return t1.amount > t2.amount;
-    });
-    auto selected = vector<TxInput>();
-    Amount selectedAmount = 0;
-    for (const auto& i: ii) {
-        selected.push_back(i);
-        selectedAmount += i.amount;
-        if (selectedAmount >= amount) {
-            break;
-        }
-    }
-    return selected;
-}
-
-// Create a simple plan, used for estimation
-TransactionPlan simplePlan(const vector<TxInput>& inputs, Amount amount) {
-    TransactionPlan plan;
-    plan.amount = amount;
-    plan.utxos = Signer::selectInputsSimple(inputs, amount);
-    // Sum availableAmount
-    plan.availableAmount = 0;
-    for (auto& u: plan.utxos) {
-        plan.availableAmount += u.amount;
-    }
-    plan.fee = 100000; // placeholder value
-    plan.change = plan.availableAmount - plan.amount;
-    return plan;
-}
-
 // Estimates size of transaction in bytes.
-uint64_t estimateTxSize(const Proto::SigningInput& input, Amount amount) {
-    auto inputs = vector<TxInput>();
-    for (auto i = 0; i < input.utxos_size(); ++i) {
-        inputs.push_back(TxInput::fromProto(input.utxos(i)));
-    }
-    const auto _simplePlan = simplePlan(inputs, amount);
-
+uint64_t estimateTxSize(const Proto::SigningInput& input, TransactionPlan& plan) {
     Data encoded;
     Data txId;
-    const auto encodeError = Signer::encodeTransaction(encoded, txId, input, _simplePlan, true);
+    const auto encodeError = Signer::encodeTransaction(encoded, txId, input, plan, true);
     if (encodeError != Common::Proto::OK) {
         return 0;
     }
@@ -246,14 +205,112 @@ uint64_t estimateTxSize(const Proto::SigningInput& input, Amount amount) {
 
 Amount txFeeFunction(uint64_t txSizeInBytes) {
     const double fixedTerm = 155381;
-    const double linearTerm = 43.946;
+    const double linearTerm = 44;
 
     const Amount fee = (Amount)(ceil(fixedTerm + (double)txSizeInBytes * linearTerm));
     return fee;
 }
 
-Amount Signer::estimateFee(const Proto::SigningInput& input, Amount amount) {
-    return txFeeFunction(estimateTxSize(input, amount));
+TransactionPlan useMaxAmount(const Proto::SigningInput &input) {
+
+    auto utxos = vector<TxInput>();
+    for (auto i = 0; i < input.utxos_size(); ++i) {
+        utxos.push_back(TxInput::fromProto(input.utxos(i)));
+    }
+
+    TransactionPlan plan;
+    // Use for estimate fee
+    plan.amount = input.transfer_message().amount();
+    plan.utxos = utxos;
+    // Sum availableAmount
+    plan.availableAmount = 0;
+    for (auto& u: plan.utxos) {
+        plan.availableAmount += u.amount;
+    }
+    plan.change = 0;
+    plan.fee = 100000; // placeholder value
+    plan.fee = txFeeFunction(estimateTxSize(input, plan));
+
+    // Real output amount
+    plan.amount = plan.availableAmount - plan.fee;
+
+    if (plan.amount <= 0) {
+        plan.error = Common::Proto::Error_low_balance;
+        return plan;
+    }
+    if (plan.amount < MIN_UTXO_AMOUNT) {
+        plan.error = Common::Proto::Error_dust_utxo_output;
+        return plan;
+    }
+
+    return plan;
+}
+
+std::pair<vector<TxInput>, Amount> sliceInputs(const vector<TxInput>& inputs, uint32_t sliceIndex) {
+    auto ii = vector<TxInput>(inputs);
+    sort(ii.begin(), ii.end(), [](TxInput t1, TxInput t2) {
+        return t1.amount > t2.amount;
+    });
+
+    auto selected = vector<TxInput>();
+    Amount selectedAmount = 0;
+    for(int i = 0; i < sliceIndex; i++) {
+        selected.push_back(ii[i]);
+        selectedAmount += ii[i].amount;
+    }
+    return std::make_pair(selected, selectedAmount);
+}
+
+
+TransactionPlan validate(const Proto::SigningInput &input,
+                         vector<TxInput>& utxos,
+                         Amount totalInput) {
+
+    TransactionPlan plan;
+    plan.amount = input.transfer_message().amount();;
+    plan.utxos = utxos;
+    // Sum availableAmount
+    plan.availableAmount = 0;
+    for (auto& u: plan.utxos) {
+        plan.availableAmount += u.amount;
+    }
+    plan.change = 0;
+    plan.fee = 100000; // placeholder value
+
+    auto withoutChangeFee = txFeeFunction(estimateTxSize(input, plan));
+    plan.change = 1000000; // placeholder value
+    auto withChangeFee = txFeeFunction(estimateTxSize(input, plan));
+
+
+    if (totalInput < plan.amount + withoutChangeFee) {
+        plan.change = 0;
+        plan.error = Common::Proto::Error_low_balance;
+        return plan;
+    }
+
+    if (totalInput == plan.amount + withoutChangeFee) {
+        plan.change = 0;
+        plan.fee = withoutChangeFee;
+        return plan;
+    }
+
+    //totalInput - totalOutput - withoutChangeFee > 0 && totalInput - totalOutput - withChangeFee < MIN_UTXO_AMOUNT
+    auto change = totalInput - plan.amount - withChangeFee;
+    if (change < MIN_UTXO_AMOUNT) {
+        if (utxos.size() == input.utxos_size()) {
+            plan.change = 0;
+            plan.fee = totalInput - plan.amount;
+            return plan;
+        } else {
+            plan.change = change;
+            plan.error = Common::Proto::Error_not_enough_utxos;
+            return plan;
+        }
+    }
+
+    plan.change = change;
+    plan.fee = withChangeFee;
+    return plan;
 }
 
 TransactionPlan Signer::doPlan() const {
@@ -281,7 +338,6 @@ TransactionPlan Signer::doPlan() const {
         return plan;
     }
     assert(inputSum > 0);
-
     // select UTXOs
     plan.amount = input.transfer_message().amount();
     assert(plan.amount > 0 || maxAmount);
@@ -292,57 +348,34 @@ TransactionPlan Signer::doPlan() const {
         maxAmount = true;
     }
 
-    // select UTXOs
     if (!maxAmount) {
-        // aim for 1.5x of target
-        plan.utxos = selectInputsSimple(utxos, plan.amount * 3 / 2 + 1);
+        TransactionPlan planSlice;
+        for (uint32_t i = 1; i <= utxos.size(); i++) {
+            auto pair = sliceInputs(utxos, i);
+            planSlice = validate(input, pair.first, pair.second);
+            if (planSlice.error == Common::Proto::OK) {
+                break;
+            }
+        }
+        plan.amount = planSlice.amount;
+        plan.utxos = planSlice.utxos;
+        plan.availableAmount = planSlice.availableAmount;
+        plan.change = planSlice.change;
+        plan.fee = planSlice.fee;
+        plan.error = planSlice.error;
+
     } else {
-        // maxAmount, select all
-        plan.utxos = utxos;
+        // maxAmount
+        auto planMax = useMaxAmount(input);
+        plan.amount = planMax.amount;
+        plan.utxos = planMax.utxos;
+        plan.availableAmount = planMax.availableAmount;
+        plan.change = planMax.change;
+        plan.fee = planMax.fee;
+        plan.error = planMax.error;
     }
-    assert(plan.utxos.size() > 0);
-
-    // Sum availableAmount
-    plan.availableAmount = 0;
-    for (auto& u: plan.utxos) {
-        plan.availableAmount += u.amount;
-    }
-    if (plan.availableAmount == 0) {
-        plan.error = Common::Proto::Error_missing_input_utxos;
-        return plan;
-    }
-    assert(plan.availableAmount > 0);
-
-    if (plan.amount > plan.availableAmount) {
-        plan.error = Common::Proto::Error_low_balance;
-        return plan;
-    }
-    assert(plan.amount <= plan.availableAmount);
-
-    plan.fee = estimateFee(input, plan.amount);
-
-    // adjust/compute amount
-    if (!maxAmount) {
-        // reduce amount if needed
-        plan.amount = std::max(Amount(0), std::min(plan.amount, plan.availableAmount - plan.fee));
-    } else {
-        // max available amount
-        plan.amount = std::max(Amount(0), plan.availableAmount - plan.fee);
-    }
-    assert(plan.amount >= 0 && plan.amount <= plan.availableAmount);
-
-    if (plan.amount + plan.fee > plan.availableAmount) {
-        plan.error = Common::Proto::Error_low_balance;
-        return plan;
-    }
-    assert(plan.amount + plan.fee <= plan.availableAmount);
-
-    // compute change
-    plan.change = plan.availableAmount - (plan.amount + plan.fee);
-
-    assert(plan.change >= 0 && plan.change <= plan.availableAmount);
-    assert(!maxAmount || plan.change == 0); // change is 0 in max amount case
-    assert(plan.amount + plan.change + plan.fee == plan.availableAmount);
 
     return plan;
 }
+
+
