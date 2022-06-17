@@ -62,6 +62,10 @@ struct TWPublicKey *_Nonnull TWPrivateKeyGetPublicKeyMina(struct TWPrivateKey *_
 
 /// Returns the public key associated with this private key.
 TW_EXPORT_METHOD
+struct TWPublicKey *_Nonnull TWPrivateKeyGetPublicKeyKadena(struct TWPrivateKey *_Nonnull pk);
+
+/// Returns the public key associated with this private key.
+TW_EXPORT_METHOD
 struct TWPublicKey *_Nonnull TWPrivateKeyGetPublicKeyCurve25519(struct TWPrivateKey *_Nonnull pk);
 
 /// Computes an EC Diffie-Hellman secret in constant time

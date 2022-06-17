@@ -89,6 +89,11 @@ struct TWPublicKey *_Nonnull TWPrivateKeyGetPublicKeyMina(struct TWPrivateKey *_
     return new TWPublicKey{ pk->impl.getPublicKey(TWPublicKeyTypeMina) };
 }
 
+TW_EXPORT_METHOD
+struct TWPublicKey *_Nonnull TWPrivateKeyGetPublicKeyKadena(struct TWPrivateKey *_Nonnull pk) {
+    return new TWPublicKey{ pk->impl.getPublicKey(TWPublicKeyTypeKadena) };
+}
+
 struct TWPublicKey *_Nonnull TWPrivateKeyGetPublicKeyCurve25519(struct TWPrivateKey *_Nonnull pk) {
     return new TWPublicKey{pk->impl.getPublicKey(TWPublicKeyTypeCURVE25519)};
 }

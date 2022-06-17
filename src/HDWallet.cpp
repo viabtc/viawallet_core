@@ -126,6 +126,16 @@ PrivateKey HDWallet::getKey(TWCoinType coin, const DerivationPath& derivationPat
         case PrivateKeyTypeDoubleExtended: // special handling for Cardano
             {
                 if (derivationPath.indices.size() < 4 || derivationPath.indices[3].value > 1) {
+
+                    if (derivationPath.indices.size() == 3) {
+                        // use for m/1852'/1815'/0'
+                        auto pkData = Data(node.private_key, node.private_key + PrivateKey::size);
+                        auto extData = Data(node.private_key_extension, node.private_key_extension + PrivateKey::size);
+                        auto chainCode = Data(node.chain_code, node.chain_code + PrivateKey::size);
+
+                        return PrivateKey(pkData, extData, chainCode,pkData,extData,chainCode);
+                    }
+
                     // invalid derivation path
                     return PrivateKey(Data(192));
                 }

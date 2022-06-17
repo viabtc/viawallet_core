@@ -6,7 +6,7 @@
 
 #include "../Base58.h"
 #include "../Bitcoin/Address.h"
-
+#include "../Bitcoin/CashAddress.h"
 #include <TrezorCrypto/ecdsa.h>
 #include <TrustWalletCore/TWBitcoinAddress.h>
 #include <TrustWalletCore/TWPublicKey.h>
@@ -32,6 +32,16 @@ struct TWBitcoinAddress *_Nullable TWBitcoinAddressCreateWithString(TWString *_N
     auto& s = *reinterpret_cast<const std::string*>(string);
     try {
         return new TWBitcoinAddress{ Address(s) };
+    } catch (...) {
+        return nullptr;
+    }
+}
+
+struct TWBitcoinAddress *_Nullable TWBitcoinAddressCreateWithCashAddressString(TWString *_Nonnull hrp, TWString *_Nonnull string) {
+    auto& h = *reinterpret_cast<const std::string*>(hrp);
+    auto& s = *reinterpret_cast<const std::string*>(string);
+    try {
+        return new TWBitcoinAddress{ CashAddress(h,s).legacyAddress() };
     } catch (...) {
         return nullptr;
     }

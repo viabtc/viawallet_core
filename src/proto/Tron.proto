@@ -159,4 +159,5 @@ message SigningOutput {
     bytes ref_block_hash = 4;
 
     string json = 5;
+    bytes encoded = 6;
 }

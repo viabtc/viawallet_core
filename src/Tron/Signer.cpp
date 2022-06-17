@@ -314,14 +314,21 @@ Proto::SigningOutput Signer::sign(const Proto::SigningInput& input) noexcept {
     const auto serialized = internal.raw_data().SerializeAsString();
     const auto hash = Hash::sha256(Data(serialized.begin(), serialized.end()));
 
-    const auto key = PrivateKey(Data(input.private_key().begin(), input.private_key().end()));
-    const auto signature = key.sign(hash, TWCurveSECP256k1);
+    const auto keyData = Data(input.private_key().begin(), input.private_key().end());
+    auto signature = Data();
+    if (PrivateKey::isValid(keyData)) {
+        const auto key = PrivateKey(keyData);
+        signature = key.sign(hash, TWCurveSECP256k1);
+        internal.add_signature(signature.data(), signature.size());
+    }
 
     const auto json = transactionJSON(internal, hash, signature).dump();
 
     output.set_id(hash.data(), hash.size());
     output.set_signature(signature.data(), signature.size());
     output.set_json(json.data(), json.size());
+    auto encoded = internal.SerializeAsString();
+    output.set_encoded(encoded.data(),encoded.size());
 
     return output;
 }
