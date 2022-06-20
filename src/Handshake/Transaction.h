@@ -31,7 +31,7 @@ struct Transaction {
     /// A list of 1 or more transaction outputs or destinations for coins
     std::vector<TransactionOutput> outputs;
 
-    TW::Hash::Hasher hasher = static_cast<Hash::HasherSimpleType>(Hash::blake2b);
+    TW::Hash::Hasher hasher = Hash::HasherBlake2b;
 
     /// Used for diagnostics; store previously estimated virtual size (if any; size in bytes)
     int previousEstimatedVirtualSize = 0;

@@ -8,6 +8,7 @@
 
 #include "../proto/TransactionCompiler.pb.h"
 #include "Address.h"
+#include "Coin.h"
 #include "Signer.h"
 
 using namespace TW::Binance;
@@ -20,6 +21,14 @@ bool Entry::validateAddress(TWCoinType coin, const string& address, TW::byte, TW
 
 string Entry::deriveAddress(TWCoinType coin, const PublicKey& publicKey, TW::byte, const char*) const {
     return Address(publicKey).string();
+}
+
+Data Entry::addressToData(TWCoinType coin, const std::string& address) const {
+    Address addr;
+    if (!Address::decode(address, addr)) {
+        return Data();
+    }
+    return addr.getKeyHash();
 }
 
 void Entry::sign(TWCoinType coin, const TW::Data& dataIn, TW::Data& dataOut) const {
@@ -61,7 +70,7 @@ void Entry::compile(TWCoinType coin, const Data& txInputData, const std::vector<
 
 Data Entry::buildTransactionInput(TWCoinType coinType, const std::string& from, const std::string& to, const uint256_t& amount, const std::string& asset, const std::string& memo, const std::string& chainId) const {
     auto input = Proto::SigningInput();
-    input.set_chain_id(chainId.length() > 0 ? chainId : "Binance-Chain-Nile");
+    input.set_chain_id(chainId);
     input.set_account_number(0);
     input.set_sequence(0);
     input.set_source(0);

@@ -227,7 +227,7 @@ bool PublicKey::verifyBCHSchnorr(const Data& signature, const Data& message) con
 
 Data PublicKey::hash(const Data& prefix, Hash::Hasher hasher, bool skipTypeByte) const {
     const auto offset = std::size_t(skipTypeByte ? 1 : 0);
-    const auto hash = hasher(bytes.data() + offset, bytes.size() - offset);
+    const auto hash = Hash::hash(hasher, bytes.data() + offset, bytes.size() - offset);
 
     auto result = Data();
     result.reserve(prefix.size() + hash.size());

@@ -23,7 +23,7 @@ TEST(HorizenCoinType, TWCoinType) {
     auto name = WRAPS(TWCoinTypeConfigurationGetName(TWCoinTypeHorizen));
 
     ASSERT_EQ(TWCoinTypeConfigurationGetDecimals(TWCoinTypeHorizen), 8);
-    ASSERT_EQ(TWBlockchainBitcoin, TWCoinTypeBlockchain(TWCoinTypeHorizen));
+    ASSERT_EQ(TWBlockchainHorizen, TWCoinTypeBlockchain(TWCoinTypeHorizen));
     ASSERT_EQ(0x96, TWCoinTypeP2shPrefix(TWCoinTypeHorizen));
     ASSERT_EQ(0x20, TWCoinTypeStaticPrefix(TWCoinTypeHorizen));
     assertStringsEqual(symbol, "ZEN");

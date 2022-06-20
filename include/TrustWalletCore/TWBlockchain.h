@@ -45,11 +45,19 @@ enum TWBlockchain {
     TWBlockchainFilecoin = 32,
     TWBlockchainElrondNetwork = 33,
     TWBlockchainOasisNetwork = 34,
-    TWBlockchainConflux = 35,
-    TWBlockchainNervos = 36,
-    TWBlockchainErgo = 37,
-    TWBlockchainMina = 38,
-    TWBlockchainKadena = 39,
+    TWBlockchainDecred = 35, // Bitcoin
+    TWBlockchainZcash = 36, // Bitcoin
+    TWBlockchainGroestlcoin = 37, // Bitcoin
+    TWBlockchainThorchain = 38, // Cosmos
+    TWBlockchainRonin = 39, // Ethereum
+    TWBlockchainKusama = 40, // Polkadot
+    TWBlockchainConflux = 41,
+    TWBlockchainNervos = 42,
+    TWBlockchainErgo = 43,
+    TWBlockchainMina = 44,
+    TWBlockchainKadena = 45,
+    TWBlockchainHorizen = 46,
+    TWBlockchainHandshake = 47,
 };
 
 TW_EXTERN_C_END

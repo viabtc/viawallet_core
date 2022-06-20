@@ -22,7 +22,7 @@ TEST(Coin, DeriveAddress) {
     auto dummyKeyDataMina = parse_hex("0x4646464646464646464646464646464646464646464646464646464646464646");
     dummyKeyDataMina[0] &= 0x3f;
     const auto privateKeyMina = PrivateKey(dummyKeyDataMina);
-    
+
     EXPECT_EQ(TW::deriveAddress(TWCoinTypeAion, privateKey), "0xa0010b0ea04ba4d76ca6e5e9900bacf19bc4402eaec7e36ea7ddd8eed48f60f3");
     EXPECT_EQ(TW::deriveAddress(TWCoinTypeBinance, privateKey), "bnb1hkfq3zahaqkkzx5mjnamwjsfpq2jk7z0mlq0d0");
     EXPECT_EQ(TW::deriveAddress(TWCoinTypeBitcoin, privateKey), "bc1qhkfq3zahaqkkzx5mjnamwjsfpq2jk7z00ppggv");
@@ -85,7 +85,7 @@ TEST(Coin, DeriveAddress) {
     EXPECT_EQ(TW::deriveAddress(TWCoinTypeAvalancheCChain, privateKey), "0x9d8A62f656a8d1615C1294fd71e9CFb3E4855A4F");
     EXPECT_EQ(TW::deriveAddress(TWCoinTypeXDai, privateKey), "0x9d8A62f656a8d1615C1294fd71e9CFb3E4855A4F");
     EXPECT_EQ(TW::deriveAddress(TWCoinTypeCelo, privateKey), "0x9d8A62f656a8d1615C1294fd71e9CFb3E4855A4F");
-    EXPECT_EQ(TW::deriveAddress(TWCoinTypeRonin, privateKey), "ronin:9d8a62f656a8d1615c1294fd71e9cfb3e4855a4f");
+    EXPECT_EQ(TW::deriveAddress(TWCoinTypeRonin, privateKey), "ronin:9d8A62f656a8d1615C1294fd71e9CFb3E4855A4F");
     EXPECT_EQ(TW::deriveAddress(TWCoinTypeFreecash, privateKey), "FP7U7dkzdZF9SGsze34RfhRc7k8CQNcWrP");
     EXPECT_EQ(TW::deriveAddress(TWCoinTypeCoinExSmartChain, privateKey), "0x9d8A62f656a8d1615C1294fd71e9CFb3E4855A4F");
     EXPECT_EQ(TW::deriveAddress(TWCoinTypeMina, privateKeyMina), "B62qnDZG9yKrQgxpBkK1GQAvaQjBdcmbBBo6F4dKzZLtQNhJKqyXgap");
@@ -121,15 +121,6 @@ TEST(Coin, InitMultithread) {
     }
     // check that all completed OK
     ASSERT_EQ(countThreadReady, numThread);
-}
-
-TEST(Coin, SupportedCoins) {
-    const auto coinTypes = TW::getCoinTypes();
-    for (auto c: coinTypes) {
-        const auto similarTypes = TW::getSimilarCoinTypes(c);
-        // For all coins, supported coins should include this coin as well
-        EXPECT_TRUE(std::find(similarTypes.begin(), similarTypes.end(), c) != similarTypes.end());
-    }
 }
 
 } // namespace TW

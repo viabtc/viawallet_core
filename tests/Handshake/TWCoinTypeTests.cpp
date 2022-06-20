@@ -23,7 +23,7 @@ TEST(TWHandshakeCoinType, TWCoinType) {
     auto name = WRAPS(TWCoinTypeConfigurationGetName(TWCoinTypeHandshake));
 
     ASSERT_EQ(TWCoinTypeConfigurationGetDecimals(TWCoinTypeHandshake), 6);
-    ASSERT_EQ(TWBlockchainBitcoin, TWCoinTypeBlockchain(TWCoinTypeHandshake));
+    ASSERT_EQ(TWBlockchainHandshake, TWCoinTypeBlockchain(TWCoinTypeHandshake));
     ASSERT_EQ(0x0, TWCoinTypeP2shPrefix(TWCoinTypeHandshake));
     ASSERT_EQ(0x0, TWCoinTypeStaticPrefix(TWCoinTypeHandshake));
     assertStringsEqual(symbol, "HNS");

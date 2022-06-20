@@ -41,7 +41,7 @@ SegwitAddress::SegwitAddress(const PublicKey& publicKey, std::string hrp)
                          witnessProgram.data());
 }
 
-SegwitAddress::SegwitAddress(const PublicKey& publicKey, int witver, std::string hrp, HasherType hasher)
+SegwitAddress::SegwitAddress(const PublicKey& publicKey, byte witver, std::string hrp, HasherType hasher)
     : hrp(std::move(hrp)), witnessVersion(witver), witnessProgram() {
     if (publicKey.type != TWPublicKeyTypeSECP256k1) {
         throw std::invalid_argument("SegwitAddress needs a compressed SECP256k1 public key.");

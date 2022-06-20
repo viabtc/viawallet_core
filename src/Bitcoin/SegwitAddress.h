@@ -49,7 +49,7 @@ class SegwitAddress {
     SegwitAddress(const PublicKey& publicKey, std::string hrp);
 
     /// Initializes a Bech32 address with a public key and a HRP prefix by hasher.
-    SegwitAddress(const PublicKey& publicKey, int witver, std::string hrp, HasherType hasher);
+    SegwitAddress(const PublicKey& publicKey, byte witver, std::string hrp, HasherType hasher);
 
     /// Decodes a SegWit address.
     ///

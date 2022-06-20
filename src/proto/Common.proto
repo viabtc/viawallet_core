@@ -34,6 +34,7 @@ enum SigningError {
     Error_no_support_n2n = 20; // e.g. Not support multi-input and multi-output transaction
     Error_signatures_count = 21; // Incorrect count of signatures passed to compile
     Error_invalid_params = 22; // Incorrect parameters
-    Error_dust_utxo_output = 23; // dust output utxo
-    Error_dust_utxo_change = 24; // dust change utxo
+    Error_invalid_requested_token_amount = 23;
+    Error_dust_utxo_output = 24; // dust output utxo
+    Error_dust_utxo_change = 25; // dust change utxo
 }

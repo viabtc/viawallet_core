@@ -105,6 +105,9 @@ enum TWCoinType {
     TWCoinTypeAurora = 1323161554,
     TWCoinTypeEvmos = 10009001,
     TWCoinTypeNativeEvmos = 20009001,
+    TWCoinTypeMoonriver = 10001285,
+    TWCoinTypeMoonbeam = 10001284,
+    TWCoinTypeKlaytn = 10008217,
     TWCoinTypeFreecash = 485,
     TWCoinTypeCoinExSmartChain = 1000052,
     TWCoinTypeSyscoin = 57,
@@ -175,6 +178,10 @@ uint8_t TWCoinTypeP2shPrefix(enum TWCoinType coin);
 /// Static prefix for this coin type
 TW_EXPORT_PROPERTY
 uint8_t TWCoinTypeStaticPrefix(enum TWCoinType coin);
+
+/// ChainID for this coin type.  Caller must free return object.
+TW_EXPORT_PROPERTY
+TWString* _Nonnull TWCoinTypeChainId(enum TWCoinType coin);
 
 /// SLIP-0044 id for this coin type
 TW_EXPORT_PROPERTY
