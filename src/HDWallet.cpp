@@ -21,7 +21,7 @@
 #include <TrezorCrypto/curves.h>
 #include <TrezorCrypto/memzero.h>
 #include <TrezorCrypto/kadena/kadena_encrypted_sign.h>
-
+#include <sr25519.h>
 #include <array>
 #include <cstring>
 
@@ -176,6 +176,15 @@ PrivateKey HDWallet::getKey(TWCoinType coin, const DerivationPath& derivationPat
                 data[0] &= 0x3f;
                 return PrivateKey(data);
             }
+        case PrivateKeyTypeSR25519:
+            {
+                std::array<byte, seedSize> seedOfEntropy{};
+                seed_from_pass(entropy.data(), entropy.size(), passphrase.c_str(), seedOfEntropy.data(), nullptr);
+
+                Data keypair(PrivateKey::sr25519Size);
+                sr25519_keypair_from_seed(keypair.data(), seedOfEntropy.data());
+                return PrivateKey(keypair);
+            }
         case PrivateKeyTypeDefault32:
         default:
             // default path
@@ -242,7 +251,7 @@ std::optional<PublicKey> HDWallet::getPublicKeyFromExtended(const std::string& e
     hdnode_fill_public_key(&node);
 
     // These public key type are not applicable.  Handled above, as node.curve->params is null
-    assert(curve != TWCurveED25519 && curve != TWCurveED25519Blake2bNano && curve != TWCurveED25519Extended && curve != TWCurveCurve25519);
+    assert(curve != TWCurveED25519 && curve != TWCurveED25519Blake2bNano && curve != TWCurveED25519Extended && curve != TWCurveCurve25519 && curve != TWCurveSR25519);
     TWPublicKeyType keyType = TW::publicKeyType(coin);
     if (curve == TWCurveSECP256k1) {
         auto pubkey = PublicKey(Data(node.public_key, node.public_key + 33), TWPublicKeyTypeSECP256k1);
@@ -287,6 +296,9 @@ HDWallet::PrivateKeyType HDWallet::getPrivateKeyType(TWCurve curve) {
     case TWCurve::TWCurveSECP256k1Mina:
         // used by Mina
         return PrivateKeyTypeMina;
+    case TWCurve::TWCurveSR25519:
+        // used by Polkadot、Kusama
+        return PrivateKeyTypeSR25519;
     default:
         // default
         return PrivateKeyTypeDefault32;
@@ -360,6 +372,7 @@ HDNode getNode(const HDWallet& wallet, TWCurve curve, const DerivationPath& deri
                 hdnode_private_ckd_cardano(&node, index.derivationIndex());
                 break;
             case HDWallet::PrivateKeyTypeExtended96KDA:
+            case HDWallet::PrivateKeyTypeSR25519:
                 break;
            case HDWallet::PrivateKeyTypeMina:
            case HDWallet::PrivateKeyTypeDefault32:
@@ -381,6 +394,8 @@ HDNode getMasterNode(const HDWallet& wallet, TWCurve curve) {
             break;
         case HDWallet::PrivateKeyTypeExtended96KDA:
             hdnode_from_seed_kadena(wallet.getSeed().data(), (int)wallet.getSeed().size() , &node);
+            break;
+        case HDWallet::PrivateKeyTypeSR25519:
             break;
         case HDWallet::PrivateKeyTypeMina:
         case HDWallet::PrivateKeyTypeDefault32:

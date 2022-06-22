@@ -8,6 +8,7 @@
 #include "Kusama/Address.h"
 #include "PublicKey.h"
 #include "PrivateKey.h"
+#include "HDWallet.h"
 #include <gtest/gtest.h>
 #include <vector>
 
@@ -48,4 +49,12 @@ TEST(KusamaAddress, FromPublicKey) {
 TEST(KusamaAddress, FromString) {
     auto address = Address("CeVXtoU4py9e7F6upfM2ZarVave299TjcdaTSxhDDZrYgnM");
     ASSERT_EQ(address.string(), "CeVXtoU4py9e7F6upfM2ZarVave299TjcdaTSxhDDZrYgnM");
+}
+
+TEST(KusamaAddress, FromPhrase) {
+    const auto wallet = HDWallet("need dune cherry fantasy undo mail pole dolphin update shine ticket office", "");
+    const auto privateKey = wallet.getKey(TWCoinTypeKusama, TWDerivation::TWDerivationDefault);
+    const auto publicKey = privateKey.getPublicKey(TWPublicKeyTypeSR25519);
+    auto address = Address(publicKey);
+    ASSERT_EQ(address.string(), "DQB9HjgvdgBZpAQqJBWs1jEFMRvqT6xkH1CQ2tA3gFE57gG");
 }

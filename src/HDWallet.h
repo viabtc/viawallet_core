@@ -115,6 +115,7 @@ class HDWallet {
       PrivateKeyTypeDoubleExtended = 1, // used by Cardano
       PrivateKeyTypeExtended96KDA = 2, // 3*32-byte extended private key of kadena
       PrivateKeyTypeMina = 3, // 32-byte private key of Mina
+      PrivateKeyTypeSR25519 = 4, // 32-byte private key of Mina
     };
     
     // obtain privateKeyType used by the coin/curve

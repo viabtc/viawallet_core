@@ -8,6 +8,11 @@ enum Network {
     KUSAMA = 2;
 }
 
+enum Curve {
+    ED25519 = 0;
+    SR25519 = 1;
+}
+
 enum RewardDestination {
     STAKED = 0;
     STASH = 1;
@@ -104,6 +109,8 @@ message SigningInput {
         Balance balance_call = 10;
         Staking staking_call = 11;
     }
+
+    Curve curve = 12;
 }
 
 // Transaction signing output.

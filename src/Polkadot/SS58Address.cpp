@@ -54,8 +54,8 @@ SS58Address::SS58Address(const std::string& string, uint32_t network) {
 
 /// Initializes an address with a public key and network.
 SS58Address::SS58Address(const PublicKey& publicKey, uint32_t network) {
-    if (publicKey.type != TWPublicKeyTypeED25519) {
-        throw std::invalid_argument("SS58Address expects an ed25519 public key.");
+    if (publicKey.type != TWPublicKeyTypeED25519 && publicKey.type != TWPublicKeyTypeSR25519) {
+        throw std::invalid_argument("SS58Address expects an ed25519 or sr25519 public key.");
     }
     if (!encodeNetwork(network, bytes)) {
         throw std::invalid_argument(std::string("network out of range ") + std::to_string(network));

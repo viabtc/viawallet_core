@@ -247,6 +247,32 @@ void mnemonic_to_seed(const char *mnemonic, const char *passphrase,
 #endif
 }
 
+void seed_from_pass(const uint8_t *entropy, size_t len, const char *passphrase,
+                      uint8_t seed[512 / 8],
+                      void (*progress_callback)(uint32_t current,
+                                                uint32_t total)) {
+    int mnemoniclen = len;
+    int passphraselen = strnlen(passphrase, 256);
+    uint8_t salt[8 + 256] = {0};
+    memcpy(salt, "mnemonic", 8);
+    memcpy(salt + 8, passphrase, passphraselen);
+    CONFIDENTIAL PBKDF2_HMAC_SHA512_CTX pctx;
+    pbkdf2_hmac_sha512_Init(&pctx, entropy, mnemoniclen, salt,
+                            passphraselen + 8, 1);
+    if (progress_callback) {
+        progress_callback(0, BIP39_PBKDF2_ROUNDS);
+    }
+    for (int i = 0; i < 16; i++) {
+        pbkdf2_hmac_sha512_Update(&pctx, BIP39_PBKDF2_ROUNDS / 16);
+        if (progress_callback) {
+            progress_callback((i + 1) * BIP39_PBKDF2_ROUNDS / 16,
+                              BIP39_PBKDF2_ROUNDS);
+        }
+    }
+    pbkdf2_hmac_sha512_Final(&pctx, seed);
+    memzero(salt, sizeof(salt));
+}
+
 // binary search for finding the word in the wordlist
 int mnemonic_find_word(const char *word) {
   int lo = 0, hi = BIP39_WORDS - 1;

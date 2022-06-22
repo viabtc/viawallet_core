@@ -14,16 +14,37 @@ using namespace TW::Polkadot;
 
 static constexpr size_t hashTreshold = 256;
 
+TWCurve TWCurveType(Proto::Curve curve) {
+    switch (curve) {
+    case Proto::Curve::SR25519:
+        return TWCurveSR25519;
+    default:
+        return TWCurveED25519;
+    }
+}
+
+TWPublicKeyType TWPublicKeyType(Proto::Curve curve) {
+    switch (curve) {
+    case Proto::Curve::SR25519:
+        return TWPublicKeyTypeSR25519;
+    default:
+        return TWPublicKeyTypeED25519;
+    }
+}
+
 Proto::SigningOutput Signer::sign(const Proto::SigningInput &input) noexcept {
+    auto curve = TWCurveType(input.curve());
+    auto publicKeyType = TWPublicKeyType(input.curve());
+
     auto privateKey = PrivateKey(Data(input.private_key().begin(), input.private_key().end()));
-    auto publicKey = privateKey.getPublicKey(TWPublicKeyTypeED25519);
+    auto publicKey = privateKey.getPublicKey(publicKeyType);
     auto extrinsic = Extrinsic(input);
     auto payload = extrinsic.encodePayload();
     // check if need to hash
     if (payload.size() > hashTreshold) {
         payload = Hash::blake2b(payload, 32);
     }
-    auto signature = privateKey.sign(payload, TWCurveED25519);
+    auto signature = privateKey.sign(payload, curve);
     auto encoded = extrinsic.encodeSignature(publicKey, signature);
 
     auto protoOutput = Proto::SigningOutput();

@@ -21,6 +21,7 @@ enum TWCurve {
     TWCurveNIST256p1              /* "nist256p1" */,
     TWCurveED25519Extended        /* "ed25519-cardano-seed" */,
     TWCurveED25519ExtendedKDA     /* "ed25519ExtendedKDA" */,
+    TWCurveSR25519                /* "sr25519" */,
     TWCurveNone
 };
 

@@ -22,6 +22,7 @@
 #include <iterator>
 #include <secp256k1.h>
 #include <secp256k1_schnorr.h>
+#include <sr25519.h>
 #include "HexCoding.h"
 #include "Base58.h"
 
@@ -30,7 +31,11 @@ using namespace TW;
 
 bool PrivateKey::isValid(const Data& data) {
     // Check length
-    if (data.size() != size && data.size() != extendedSize && data.size() != doubleExtendedSize) {
+    if (data.size() != size &&
+        data.size() != extendedSize &&
+        data.size() != doubleExtendedSize &&
+        data.size() != sr25519Size) {
+
         return false;
     }
 
@@ -67,6 +72,7 @@ bool PrivateKey::isValid(const Data& data, TWCurve curve)
     case TWCurveCurve25519:
     case TWCurveED25519ExtendedKDA:
     case TWCurveSECP256k1Mina:
+    case TWCurveSR25519:
     case TWCurveNone:
     default:
         break;
@@ -133,23 +139,28 @@ PublicKey PrivateKey::getPublicKey(TWPublicKeyType type) const {
         result.resize(PublicKey::ed25519Size);
         ed25519_publickey_blake2b(key().data(), result.data());
         break;
-    case TWPublicKeyTypeED25519Extended:
-        {
+    case TWPublicKeyTypeED25519Extended: {
             // must be double extended key
             if (bytes.size() != doubleExtendedSize) {
                 throw std::invalid_argument("Invalid extended key");
             }
             Data tempPub(64);
             ed25519_publickey_ext(key().data(), extension().data(), tempPub.data());
-            result = Data();
-            append(result, subData(tempPub, 0, 32));
-            // copy chainCode
-            append(result, chainCode());
+            result.resize(0);
+
+            // first key
+            auto firstKey = subData(tempPub, 0, 32);
+            auto firstChainCode = chainCode();
+            std::copy(std::begin(firstKey), std::end(firstKey), std::back_inserter(result));
+            std::copy(std::begin(firstChainCode), std::end(firstChainCode), std::back_inserter(result));
 
             // second key
             ed25519_publickey_ext(secondKey().data(), secondExtension().data(), tempPub.data());
-            append(result, subData(tempPub, 0, 32));
-            append(result, secondChainCode());
+            auto secKey = subData(tempPub, 0, 32);
+            auto secChainCode = secondChainCode();
+
+            std::copy(std::begin(secKey), std::end(secKey), std::back_inserter(result));
+            std::copy(std::begin(secChainCode), std::end(secChainCode), std::back_inserter(result));
         }
         break;
     case TWPublicKeyTypeKadena:
@@ -162,6 +173,8 @@ PublicKey PrivateKey::getPublicKey(TWPublicKeyType type) const {
             auto decodeData = Base58::bitcoin.decodeCheck(target);
             return PublicKey(decodeData, type);
         }
+    case TWPublicKeyTypeSR25519:
+        return PublicKey(TW::data(bytes.data() + 64, 32), type);
     case TWPublicKeyTypeCURVE25519:
         result.resize(PublicKey::ed25519Size);
         PublicKey ed25519PublicKey = getPublicKey(TWPublicKeyTypeED25519);
@@ -246,6 +259,13 @@ Data PrivateKey::sign(const Data& digest, TWCurve curve) const {
         success = ecdsa_sign_digest_checked(&nist256p1, key().data(), digest.data(), digest.size(), result.data(),
                                     result.data() + 64, nullptr) == 0;
     } break;
+    case TWCurveSR25519: {
+        result.resize(SR25519_SIGNATURE_SIZE);
+        const auto secretKey = TW::data(bytes.data(), 32);
+        const auto publicKey = TW::data(bytes.data() + 64, 32);
+        sr25519_sign(result.data(), publicKey.data(), secretKey.data(), digest.data(), digest.size());
+        success = true;
+    } break;
     case TWCurveSECP256k1Mina:
     case TWCurveNone:
     default: 
@@ -277,6 +297,7 @@ Data PrivateKey::sign(const Data& digest, TWCurve curve, int(*canonicalChecker)(
         success = ecdsa_sign_digest_checked(&nist256p1, key().data(), digest.data(), digest.size(), result.data() + 1,
                                     result.data(), canonicalChecker) == 0;
     } break;
+    case TWCurveSR25519:
     case TWCurveNone:
     default:
         break;
@@ -320,6 +341,7 @@ Data PrivateKey::signSchnorr(const Data& message, TWCurve curve) const {
     case TWCurveED25519Blake2bNano:
     case TWCurveED25519Extended:
     case TWCurveCurve25519:
+    case TWCurveSR25519:
     case TWCurveNone:
     default:
         // not support

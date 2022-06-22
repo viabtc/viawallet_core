@@ -21,6 +21,8 @@ class PrivateKey {
     static const size_t extendedSize = 3 * 32;
     /// The number of bytes in a double extended key (used by Cardano)
     static const size_t doubleExtendedSize = 2 * 3 * 32;
+    /// The number of bytes in an sr25519 private key.
+    static const size_t sr25519Size = 96;
 
     /// The private key bytes:
     /// - common case: 'size' bytes
@@ -81,7 +83,7 @@ class PrivateKey {
     /// Signs a digest using given ECDSA curve, returns schnorr signature
     Data signSchnorr(const Data& message, TWCurve curve) const;
 
-    /// Signs a digest using given ECDSA curve, returns schnorr signature
+    /// Signs a digest using given bch schnorr, returns schnorr signature
     Data signBCHSchnorr(const Data& message) const;
 
     /// Cleanup contents (fill with 0s), called before destruction

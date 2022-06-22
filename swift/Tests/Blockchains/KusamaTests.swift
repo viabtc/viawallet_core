@@ -32,6 +32,17 @@ class KusamaTests: XCTestCase {
         XCTAssertEqual(address.data.hexString, pubkey.data.hexString)
     }
 
+    func testSr25519Address() {
+        let key = PrivateKey.sr25519Seed(seed: Data(hexString: "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60")!)!
+        let pubkey = key.getPublicKeySr25519()
+        let address = AnyAddress(publicKey: pubkey, coin: .kusama)
+        let addressFromString = AnyAddress(string: "E8M9nn83EVMzs1o25FJSPJBhHFour3oFXtrdk6iJVvd7XKQ", coin: .kusama)!
+
+        XCTAssertEqual(pubkey.data.hexString, "44a996beb1eef7bdcab976ab6d2ca26104834164ecf28fb375600576fcc6eb0f")
+        XCTAssertEqual(address.description, addressFromString.description)
+        XCTAssertEqual(address.data, pubkey.data)
+    }
+
     func testSigningTransfer() {
         // https://kusama.subscan.io/extrinsic/0x9211b8f6500c78f4771d18289c6187ec59c2b1fb28e8324ee32a1f9a3303be7e
         // real key in 1p test

@@ -8,6 +8,7 @@
 #include "Polkadot/Address.h"
 #include "PublicKey.h"
 #include "PrivateKey.h"
+#include "HDWallet.h"
 #include <gtest/gtest.h>
 #include <vector>
 
@@ -48,4 +49,12 @@ TEST(PolkadotAddress, FromPublicKey) {
 TEST(PolkadotAddress, FromString) {
     auto address = Address("15KRsCq9LLNmCxNFhGk55s5bEyazKefunDxUH24GFZwsTxyu");
     ASSERT_EQ(address.string(), "15KRsCq9LLNmCxNFhGk55s5bEyazKefunDxUH24GFZwsTxyu");
+}
+
+TEST(PolkadotAddress, FromPhrase) {
+    const auto wallet = HDWallet("need dune cherry fantasy undo mail pole dolphin update shine ticket office", "");
+    const auto privateKey = wallet.getKey(TWCoinTypePolkadot, TWDerivationDefault);
+    const auto publicKey = privateKey.getPublicKey(TWPublicKeyTypeSR25519);
+    auto address = Address(publicKey);
+    ASSERT_EQ(address.string(), "1prdJetA3vjFhMV2ERU7DCNxP9Lj5qvNPtwAfbZ7y4FWQtS");
 }

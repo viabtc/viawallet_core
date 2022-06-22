@@ -58,6 +58,10 @@ struct TWPublicKey *_Nonnull TWPrivateKeyGetPublicKeyEd25519Extended(struct TWPr
 
 /// Returns the public key associated with this private key.
 TW_EXPORT_METHOD
+struct TWPublicKey *_Nonnull TWPrivateKeyGetPublicKeySr25519(struct TWPrivateKey *_Nonnull pk);
+
+/// Returns the public key associated with this private key.
+TW_EXPORT_METHOD
 struct TWPublicKey *_Nonnull TWPrivateKeyGetPublicKeyMina(struct TWPrivateKey *_Nonnull pk);
 
 /// Returns the public key associated with this private key.

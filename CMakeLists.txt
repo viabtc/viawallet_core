@@ -97,13 +97,19 @@ if(${ANDROID})
     add_library(secp256k1 STATIC IMPORTED)
     set_target_properties(secp256k1 PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/secp256k1-abc/build/android/${ANDROID_ABI}/lib/libsecp256k1.a)
 
-    target_link_libraries(TrustWalletCore PRIVATE TrezorCrypto protobuf ${log-lib} Boost::boost secp256k1)
+    add_library(sr25519crust STATIC IMPORTED)
+    set_target_properties(sr25519crust PROPERTIES
+            INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/sr25519/include
+            IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/sr25519/lib/android/${ANDROID_ABI}/libsr25519crust.a
+            )
+
+    target_link_libraries(TrustWalletCore PRIVATE TrezorCrypto protobuf ${log-lib} Boost::boost secp256k1 sr25519crust)
 else()
     message("Configuring standalone")
     file(GLOB_RECURSE sources src/*.c src/*.cc src/*.cpp src/*.h)
     add_library(TrustWalletCore ${sources} ${PROTO_SRCS} ${PROTO_HDRS})
 
-    target_link_libraries(TrustWalletCore PRIVATE TrezorCrypto protobuf Boost::boost secp256k1)
+    target_link_libraries(TrustWalletCore PRIVATE TrezorCrypto protobuf Boost::boost secp256k1 sr25519crust)
 endif()
 target_compile_options(TrustWalletCore PRIVATE "-Wall")
 

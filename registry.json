@@ -953,8 +953,8 @@
         "path": "m/44'/354'/0'/0'/0'"
       }
     ],
-    "curve": "ed25519",
-    "publicKeyType": "ed25519",
+    "curve": "sr25519",
+    "publicKeyType": "sr25519",
     "addressHasher": "keccak256",
     "explorer": {
       "url": "https://polkadot.subscan.io",
@@ -1032,8 +1032,8 @@
         "path": "m/44'/434'/0'/0'/0'"
       }
     ],
-    "curve": "ed25519",
-    "publicKeyType": "ed25519",
+    "curve": "sr25519",
+    "publicKeyType": "sr25519",
     "addressHasher": "keccak256",
     "explorer": {
       "url": "https://kusama.subscan.io",

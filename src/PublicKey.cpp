@@ -15,7 +15,7 @@
 #include <TrezorCrypto/ed25519-donna/ed25519-donna.h>
 #include <secp256k1.h>
 #include <secp256k1_schnorr.h>
-
+#include <sr25519.h>
 #include <iterator>
 
 namespace TW {
@@ -44,6 +44,8 @@ bool PublicKey::isValid(const Data& data, enum TWPublicKeyType type) {
     case TWPublicKeyTypeSECP256k1Extended:
     case TWPublicKeyTypeNIST256p1Extended:
         return size == secp256k1ExtendedSize && data[0] == 0x04;
+    case TWPublicKeyTypeSR25519:
+        return size == sr25519Size;
     default:
         return false;
     }
@@ -84,6 +86,11 @@ PublicKey::PublicKey(const Data& data, enum TWPublicKeyType type) : type(type) {
     case TWPublicKeyTypeED25519Extended:
         bytes.reserve(ed25519DoubleExtendedSize);
         std::copy(std::begin(data), std::end(data), std::back_inserter(bytes));
+        break;
+    case TWPublicKeyTypeSR25519:
+        bytes.reserve(sr25519Size);
+        std::copy(std::begin(data), std::end(data), std::back_inserter(bytes));
+        break;
     }
 }
 
@@ -128,6 +135,7 @@ PublicKey PublicKey::extended() const {
     case TWPublicKeyTypeED25519Extended:
     case TWPublicKeyTypeMina:
     case TWPublicKeyTypeKadena:
+    case TWPublicKeyTypeSR25519:
        return *this;
     }
 }
@@ -149,6 +157,8 @@ bool PublicKey::verify(const Data& signature, const Data& message) const {
     case TWPublicKeyTypeKadena:
         throw std::logic_error("Not yet implemented");
         //ed25519_sign_open(message.data(), message.size(), bytes.data(), signature.data()) == 0;
+    case TWPublicKeyTypeSR25519:
+        return sr25519_verify(signature.data(), message.data(), message.size(), bytes.data());
     case TWPublicKeyTypeCURVE25519:
         auto ed25519PublicKey = Data();
         ed25519PublicKey.resize(PublicKey::ed25519Size);

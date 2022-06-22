@@ -13,6 +13,7 @@ using namespace TW::Polkadot;
 
 static constexpr uint8_t signedBit = 0x80;
 static constexpr uint8_t sigTypeEd25519 = 0x00;
+static constexpr uint8_t sigTypeSr25519 = 0x01;
 static constexpr uint8_t extrinsicFormat = 4;
 static constexpr uint32_t multiAddrSpecVersion = 28;
 static constexpr uint32_t multiAddrSpecVersionKsm = 2028;
@@ -264,7 +265,7 @@ Data Extrinsic::encodeSignature(const PublicKey& signer, const Data& signature) 
     // signer public key
     append(data, encodeAccountId(signer.bytes, encodeRawAccount(network, specVersion)));
     // signature type
-    append(data, sigTypeEd25519);
+    append(data, signer.type == TWPublicKeyTypeSR25519 ? sigTypeSr25519 : sigTypeEd25519);
     // signature
     append(data, signature);
     // era / nonce / tip

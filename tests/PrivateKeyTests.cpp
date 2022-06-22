@@ -388,3 +388,16 @@ TEST(PrivateKey, SignShortDigest) {
         EXPECT_EQ(actual.size(), 0);
     }
 }
+
+TEST(PrivateKey, SR25519) {
+    const auto privateKey = PrivateKey(parse_hex("3b7d56eb353a6a727e658a8964e116056b25918d81bc52d85b74d52dad9eb50839384fd333c7ad39defff703666cdbbc4098cc547d90c86d5f533d2eceb90c7f247f96fd3b9aeba083b268390dc55c977deca6e07506536719a5814c8d366409"));
+    const auto publicKey = privateKey.getPublicKey(TWPublicKeyTypeSR25519);
+
+    EXPECT_EQ(
+        "247f96fd3b9aeba083b268390dc55c977deca6e07506536719a5814c8d366409",
+        hex(publicKey.bytes)
+    );
+
+    const auto signature = privateKey.sign(Data(), TWCurveSR25519);
+    EXPECT_TRUE(publicKey.verify(signature, Data()));
+}

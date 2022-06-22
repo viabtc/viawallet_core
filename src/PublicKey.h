@@ -32,6 +32,9 @@ class PublicKey {
     /// The number of bytes in a mina public key.
     static const size_t minaSize = 36;
 
+    /// The number of bytes in a sr25519 public key.
+    static const size_t sr25519Size = 32;
+
     /// The public key bytes.
     Data bytes;
 
