@@ -34,75 +34,56 @@ class PolkadotTests: XCTestCase {
         XCTAssertEqual(address.data, pubkey.data)
     }
 
-    func testSr25519Address() {
-        let key = PrivateKey.sr25519Seed(seed: Data(hexString: "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60")!)!
-        let pubkey = key.getPublicKeySr25519()
-        let address = AnyAddress(publicKey: pubkey, coin: .polkadot)
-        let addressFromString = AnyAddress(string: "12Z2dohKGejugkCsD1VFgamLQJyDoUnksenbQNp7NnjeZ8a6", coin: .polkadot)!
-
-        XCTAssertEqual(pubkey.data.hexString, "44a996beb1eef7bdcab976ab6d2ca26104834164ecf28fb375600576fcc6eb0f")
-        XCTAssertEqual(address.description, addressFromString.description)
-        XCTAssertEqual(address.data, pubkey.data)
-    }
-
     func testSignTransfer() {
-        // real key in 1p test
-        let wallet = HDWallet.test
-        let key = wallet.getKey(coin: .polkadot, derivationPath: "m/44'/354'/0'")
-
+        
         let input = PolkadotSigningInput.with {
             $0.genesisHash = genesisHash
-            $0.blockHash = Data(hexString: "0x7d5fa17b70251d0806f26156b1b698dfd09e040642fa092595ce0a78e9e84fcd")!
-            $0.nonce = 1
-            $0.specVersion = 28
-            $0.network = .polkadot
-            $0.transactionVersion = 6
-            $0.privateKey = key.data
-            $0.era = PolkadotEra.with {
-                $0.blockNumber = 3910736
-                $0.period = 64
-            }
-            $0.balanceCall.transfer = PolkadotBalance.Transfer.with {
-                $0.toAddress = "13ZLCqJNPsRZYEbwjtZZFpWt9GyFzg5WahXCVWKpWdUJqrQ5"
-                $0.value = Data(hexString: "0x02540be400")! // 1 DOT
-            }
-        }
-        let output: PolkadotSigningOutput = AnySigner.sign(input: input, coin: .polkadot)
-
-        // https://polkadot.subscan.io/extrinsic/3910744-1
-        XCTAssertEqual(output.encoded.hexString, "410284008d96660f14babe708b5e61853c9f5929bc90dd9874485bf4d6dc32d3e6f22eaa0038ec4973ab9773dfcbf170b8d27d36d89b85c3145e038d68914de83cf1f7aca24af64c55ec51ba9f45c5a4d74a9917dee380e9171108921c3e5546e05be15206050104000500007120f76076bcb0efdf94c7219e116899d0163ea61cb428183d71324eb33b2bce0700e40b5402")
-    }
-
-    func testSigningBond() {
-        // real key in 1p test
-        let wallet = HDWallet.test
-        let key = wallet.getKey(coin: .polkadot, derivationPath: "m/44'/354'/0'")
-        let address = CoinType.polkadot.deriveAddress(privateKey: key)
-
-        let input = PolkadotSigningInput.with {
-            $0.genesisHash = genesisHash
-            $0.blockHash = genesisHash
+            $0.blockHash = Data(hexString: "0x343a3f4258fd92f5ca6ca5abdf473d86a78b0bcd0dc09c568ca594245cc8c642")!
             $0.nonce = 0
             $0.specVersion = 17
             $0.network = .polkadot
             $0.transactionVersion = 3
-            $0.privateKey = key.data
+            $0.privateKey = Data(hexString: "0xabf8e5bdbe30c65656c0a3cbd181ff8a56294a69dfedd27982aace4a76909115")!
+            $0.era = PolkadotEra.with {
+                $0.blockNumber = 927699
+                $0.period = 8
+            }
+            $0.balanceCall.transfer = PolkadotBalance.Transfer.with {
+                $0.toAddress = "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3"
+                $0.value = Data(hexString: "0x3039")!
+            }
+        }
+        let output: PolkadotSigningOutput = AnySigner.sign(input: input, coin: .polkadot)
+
+        XCTAssertEqual(output.encoded.hexString, "29028488dc3417d5058ec4b4503e0c12ea1a0a89be200fe98922423d4334014fa6b0ee003d91a06263956d8ce3ce5c55455baefff299d9cb2bb3f76866b6828ee4083770b6c03b05d7b6eb510ac78d047002c1fe5c6ee4b37c9c5a8b09ea07677f12e50d3200000005008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48e5c0")
+    }
+
+    func testSigningBond() {
+        let input = PolkadotSigningInput.with {
+            $0.genesisHash = genesisHash
+            $0.blockHash = Data(hexString: "0xf1eee612825f29abd3299b486e401299df2faa55b7ce1e34bf2243bd591905fc")!
+            $0.nonce = 0
+            $0.specVersion = 26
+            $0.network = .polkadot
+            $0.transactionVersion = 5
+            $0.privateKey = Data(hexString: "70a794d4f1019c3ce002f33062f45029c4f930a56b3d20ec477f7668c6bbc37f")!
+            $0.era = PolkadotEra.with {
+                $0.blockNumber = 3540912
+                $0.period = 64
+            }
             $0.stakingCall.bond = PolkadotStaking.Bond.with {
-                $0.controller = address
-                $0.rewardDestination = .staked
-                $0.value = Data(hexString: "0x02540be400")! // 0.01 old DOT
+                $0.controller = "14Ztd3KJDaB9xyJtRkREtSZDdhLSbm7UUKt8Z7AwSv7q85G2"
+                $0.rewardDestination = .stash
+                $0.value = Data(hexString: "0x028fa6ae00")!
             }
         }
         let output: PolkadotSigningOutput = AnySigner.sign(input: input, coin: .polkadot)
 
         // https://polkadot.subscan.io/extrinsic/985084-3
-        XCTAssertEqual(output.encoded.hexString, "3902848d96660f14babe708b5e61853c9f5929bc90dd9874485bf4d6dc32d3e6f22eaa00a559867d1304cc95bac7cfe5d1b2fd49aed9f43c25c7d29b9b01c1238fa1f6ffef34b9650e42325de41e20fd502af7b074c67a9ec858bd9a1ba6d4212e3e0d0f00000007008d96660f14babe708b5e61853c9f5929bc90dd9874485bf4d6dc32d3e6f22eaa0700e40b540200")
+        XCTAssertEqual(output.encoded.hexString, "3d02849dca538b7a925b8ea979cc546464a3c5f81d2398a3a272f6f93bdf4803f2f783009025843bc49c1c4fbc99dbbd290c92f9879665d55b02f110abfb4800f0e7630877d2cffd853deae7466c22fbc8616a609e1b92615bb365ea8adccba5ef7624050503000007009dca538b7a925b8ea979cc546464a3c5f81d2398a3a272f6f93bdf4803f2f7830700aea68f0201")
     }
 
     func testSigningBondAndNominate() {
-        // real key in 1p test
-        let key = HDWallet.test.getKeyForCoin(coin: .polkadot)
-
         let input = PolkadotSigningInput.with {
             $0.genesisHash = genesisHash
             $0.blockHash = genesisHash
@@ -110,7 +91,7 @@ class PolkadotTests: XCTestCase {
             $0.specVersion = 30
             $0.network = .polkadot
             $0.transactionVersion = 7
-            $0.privateKey = key.data
+            $0.privateKey = Data(hexString: "0x7f44b19b391a8015ca4c7d94097b3695867a448d1391e7f3243f06987bdb6858")!
             $0.stakingCall.bondAndNominate = PolkadotStaking.BondAndNominate.with {
                 $0.controller = "13ZLCqJNPsRZYEbwjtZZFpWt9GyFzg5WahXCVWKpWdUJqrQ5"
                 $0.value = Data(hexString: "0x02540be400")! // 1 DOT
@@ -124,13 +105,10 @@ class PolkadotTests: XCTestCase {
         let output: PolkadotSigningOutput = AnySigner.sign(input: input, coin: .polkadot)
 
         // https://polkadot.subscan.io/extrinsic/4955314-2
-        XCTAssertEqual("0x" + output.encoded.hexString, "0x6103840036092fac541e0e5feda19e537c679b487566d7101141c203ac8322c27e5f076a00a8b1f859d788f11a958e98b731358f89cf3fdd41a667ea992522e8d4f46915f4c03a1896f2ac54bdc5f16e2ce8a2a3bf233d02aad8192332afd2113ed6688e0d0010001a02080700007120f76076bcb0efdf94c7219e116899d0163ea61cb428183d71324eb33b2bce0700e40b540201070508002c2a55b5ffdca266bd0207df97565b03255f70783ca1a349be5ed9f44589c36000d44533a4d21fd9d6f5d57c8cd05c61a6f23f9131cec8ae386b6b437db399ec3d")
+        XCTAssertEqual(output.encoded.hexString, "6103840036092fac541e0e5feda19e537c679b487566d7101141c203ac8322c27e5f076a00a8b1f859d788f11a958e98b731358f89cf3fdd41a667ea992522e8d4f46915f4c03a1896f2ac54bdc5f16e2ce8a2a3bf233d02aad8192332afd2113ed6688e0d0010001a02080700007120f76076bcb0efdf94c7219e116899d0163ea61cb428183d71324eb33b2bce0700e40b540201070508002c2a55b5ffdca266bd0207df97565b03255f70783ca1a349be5ed9f44589c36000d44533a4d21fd9d6f5d57c8cd05c61a6f23f9131cec8ae386b6b437db399ec3d")
     }
 
     func testSigningBondExtra() {
-        // real key in 1p test
-        let key = HDWallet.test.getKeyForCoin(coin: .polkadot)
-
         let input = PolkadotSigningInput.with {
             $0.genesisHash = genesisHash
             $0.blockHash = genesisHash
@@ -138,7 +116,7 @@ class PolkadotTests: XCTestCase {
             $0.specVersion = 30
             $0.network = .polkadot
             $0.transactionVersion = 7
-            $0.privateKey = key.data
+            $0.privateKey = Data(hexString: "0x7f44b19b391a8015ca4c7d94097b3695867a448d1391e7f3243f06987bdb6858")!
             $0.stakingCall.bondExtra = PolkadotStaking.BondExtra.with {
                 $0.value = Data(hexString: "0x77359400")! // 0.2 DOT
             }

@@ -32,42 +32,25 @@ class KusamaTests: XCTestCase {
         XCTAssertEqual(address.data.hexString, pubkey.data.hexString)
     }
 
-    func testSr25519Address() {
-        let key = PrivateKey.sr25519Seed(seed: Data(hexString: "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60")!)!
-        let pubkey = key.getPublicKeySr25519()
-        let address = AnyAddress(publicKey: pubkey, coin: .kusama)
-        let addressFromString = AnyAddress(string: "E8M9nn83EVMzs1o25FJSPJBhHFour3oFXtrdk6iJVvd7XKQ", coin: .kusama)!
-
-        XCTAssertEqual(pubkey.data.hexString, "44a996beb1eef7bdcab976ab6d2ca26104834164ecf28fb375600576fcc6eb0f")
-        XCTAssertEqual(address.description, addressFromString.description)
-        XCTAssertEqual(address.data, pubkey.data)
-    }
-
     func testSigningTransfer() {
-        // https://kusama.subscan.io/extrinsic/0x9211b8f6500c78f4771d18289c6187ec59c2b1fb28e8324ee32a1f9a3303be7e
-        // real key in 1p test
-        let wallet = HDWallet.test
-        let key = wallet.getKey(coin: .kusama, derivationPath: "m/44'/434'/0'")
-
-        let genesisHash = Data(hexString: "0xb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe")!
         let input = PolkadotSigningInput.with {
-            $0.genesisHash = genesisHash
-            $0.blockHash = genesisHash
-            $0.nonce = 1
+            $0.blockHash = Data(hexString: "0x4955dd4813f3e91ef3fd5a825b928af2fc50a71380085f753ccef00bb1582891")!
+            $0.genesisHash = Data(hexString: "0xb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe")!
+            $0.nonce = 0
             $0.specVersion = 2019
-            $0.balanceCall = PolkadotBalance.with {
-                $0.transfer = PolkadotBalance.Transfer.with {
-                    $0.toAddress = "CtwdfrhECFs3FpvCGoiE4hwRC4UsSiM8WL899HjRdQbfYZY"
-                    // 10000000000 ~ 0.01 KSM
-                    $0.value = Data(hexString: "0x02540be400")!
-                }
-            }
             $0.network = .kusama
             $0.transactionVersion = 2
-            $0.privateKey = key.data
+            $0.privateKey = Data(hexString: "0xabf8e5bdbe30c65656c0a3cbd181ff8a56294a69dfedd27982aace4a76909115")!
+            $0.balanceCall = PolkadotBalance.with {
+                $0.transfer = PolkadotBalance.Transfer.with {
+                    $0.toAddress = "FoQJpPyadYccjavVdTWxpxU7rUEaYhfLCPwXgkfD6Zat9QP"
+                    // 10000000000 ~ 0.01 KSM
+                    $0.value = Data(hexString: "0x3039")!
+                }
+            }
         }
         let output: PolkadotSigningOutput = AnySigner.sign(input: input, coin: .kusama)
 
-        XCTAssertEqual(output.encoded.hexString, "350284f41296779fd61a5bed6c2f506cc6c9ea93d6aeb357b9c69717193f434ba24ae700cd78b46eff36c433e642d7e9830805aab4f43eef70067ef32c8b2a294c510673a841c5f8a6e8900c03be40cfa475ae53e6f8aa61961563cb7cc0fa169ef9630d00040004000e33fdfb980e4499e5c3576e742a563b6a4fc0f6f598b1917fd7a6fe393ffc720700e40b5402")
+        XCTAssertEqual(output.encoded.hexString, "25028488dc3417d5058ec4b4503e0c12ea1a0a89be200fe98922423d4334014fa6b0ee000765cfa76cfe19499f4f19ef7dc4527652ec5b2e6b5ecfaf68725dafd48ae2694ad52e61f44152a544784e847de10ddb2c56bee4406574dcbcfdb5e5d35b6d0300000004008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48e5c0")
     }
 }
