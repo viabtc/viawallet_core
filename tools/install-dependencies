@@ -97,6 +97,6 @@ cd "$ROOT"
 
 #cp -afv secp256k1-abc/build/macos/include build/local
 #cp -afv secp256k1-abc/build/macos/lib build/local
-install_name_tool -id "$PWD/build/local/lib/libsecp256k1.0.dylib" build/local/lib/libsecp256k1.0.dylib
-cp -fv sr25519/include/sr25519.h build/local/include/sr25519.h
-cp -fv sr25519/lib/macos/aarch64-apple-darwin/libsr25519crust.a build/local/lib/libsr25519crust.a
+#install_name_tool -id "$PWD/build/local/lib/libsecp256k1.0.dylib" build/local/lib/libsecp256k1.0.dylib
+#cp -fv sr25519/include/sr25519.h build/local/include/sr25519.h
+#cp -fv sr25519/lib/macos/aarch64-apple-darwin/libsr25519crust.a build/local/lib/libsr25519crust.a
