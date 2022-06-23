@@ -125,8 +125,7 @@ Pod::Spec.new do |s|
       "#{protobuf_source_dir}/src/google/protobuf/wire_format_lite.cc",
       "#{protobuf_source_dir}/src/google/protobuf/wrappers.pb.cc"
       
-    ss.exclude_files = 
-      'trezor-crypto/include/TrezorCrypto/base58.h',
+    ss.exclude_files =
       'trezor-crypto/crypto/monero',
       'trezor-crypto/crypto/tests',
       'trezor-crypto/crypto/tools',
@@ -151,8 +150,8 @@ Pod::Spec.new do |s|
         '/usr/local/include ' \
         '${SRCROOT}/../../include ' \
         '${SRCROOT}/../../../build/local/include ' \
-        "${SRCROOT}/../../trezor-crypto/include " \
-        "${SRCROOT}/../../protobuf ",
+        "$(SRCROOT)/WalletCore/trezor-crypto/include " \
+        "$(SRCROOT)/WalletCore/build/local/src/protobuf/protobuf-3.19.2/src ",
       'GCC_WARN_UNUSED_FUNCTION' => 'NO',
       'GCC_WARN_64_TO_32_BIT_CONVERSION' => 'NO',
       'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
