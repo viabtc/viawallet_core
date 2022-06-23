@@ -30,20 +30,6 @@ Pod::Spec.new do |s|
       'trezor-crypto/crypto/tests',
       'trezor-crypto/crypto/tools',
       'trezor-crypto/crypto/rand.c'
-    
-    ss.xcconfig = {
-      'HEADER_SEARCH_PATHS' => '$(inherited) ' \
-        '$(SRCROOT)/WalletCore/trezor-crypto/crypto ',
-      'SYSTEM_HEADER_SEARCH_PATHS' => '$(inherited) ' \
-        '/usr/local/include ' \
-        '/opt/homebrew/include ' \
-        "$(SRCROOT)/WalletCore/trezor-crypto/include " \
-      'GCC_WARN_UNUSED_FUNCTION' => 'NO',
-      'GCC_WARN_64_TO_32_BIT_CONVERSION' => 'NO',
-      'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
-      'OTHER_CFLAGS' => '-DHAVE_PTHREAD=1',
-      'OTHER_LDFLAGS' => '$(inherited) -fprofile-instr-generate'
-    }
   end
 
   s.subspec 'Types' do |ss|
