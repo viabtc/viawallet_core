@@ -141,31 +141,25 @@ Pod::Spec.new do |s|
       'trezor-crypto/crypto/*.{table}',
       "#{protobuf_source_dir}/src/**/*.{h,inc}",
       "#{include_dir}/nlohmann/**/*.hpp",
-      'src/proto/*.proto',
-      'secp256k1-abc/build/ios',
-      'sr25519/lib/ios/apple-ios',
-      'sr25519/include'
+      'src/proto/*.proto'
 
     ss.xcconfig = {
       'HEADER_SEARCH_PATHS' => '$(inherited) ' \
         '$(SRCROOT)/../../wallet-core ' \
-        '${SRCROOT}/../../trezor-crypto/crypto ' \
-        '${SRCROOT}/../../secp256k1-abc/build/ios/include',
-        '${SRCROOT}/../../sr25519/include',
+        '${SRCROOT}/../../trezor-crypto/crypto ',
       'SYSTEM_HEADER_SEARCH_PATHS' => '$(inherited) ' \
         '/usr/local/include ' \
         '${SRCROOT}/../../include ' \
         '${SRCROOT}/../../../build/local/include ' \
         "${SRCROOT}/../../trezor-crypto/include " \
         "${SRCROOT}/../../protobuf ",
-      'LIBRARY_SEARCH_PATHS' => '${SRCROOT}/../../secp256k1-abc/build/ios/lib' \
-        '${SRCROOT}/../../sr25519/lib/ios/apple-ios',
       'GCC_WARN_UNUSED_FUNCTION' => 'NO',
       'GCC_WARN_64_TO_32_BIT_CONVERSION' => 'NO',
       'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
       'OTHER_CFLAGS' => '-DHAVE_PTHREAD=1',
-      'OTHER_LDFLAGS' => '$(inherited) -fprofile-instr-generate -lsecp256k1 -lsr25519crust'
+      'OTHER_LDFLAGS' => '$(inherited) -fprofile-instr-generate'
     }
     ss.dependency 'WalletCore/Types'
   end
+  s.prepare_command = 'tools/install-dependencies && tools/generate-files'
 end
