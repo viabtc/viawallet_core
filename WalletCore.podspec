@@ -22,8 +22,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'TrezorCrypto' do |ss|
     ss.source_files =
-      'trezor-crypto/crypto/**/*.{c,h}',
-      'trezor-crypto/include/**/*.{h}'
+      'trezor-crypto/crypto/**/*.{c}',
 
     ss.exclude_files =
       'trezor-crypto/crypto/monero',
