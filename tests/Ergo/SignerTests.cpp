@@ -8,7 +8,6 @@
 #include "Ergo/Address.h"
 #include "HexCoding.h"
 #include <gtest/gtest.h>
-#include <TrezorCrypto/bignum.h>
 #include "proto/Ergo.pb.h"
 
 using namespace TW;

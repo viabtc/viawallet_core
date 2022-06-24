@@ -10,7 +10,7 @@
 #include "Base64.h"
 #include <TrezorCrypto/secp256k1.h>
 #include <TrezorCrypto/rand.h>
-#include <uint1024.h>
+#include "uint1024.h"
 
 using namespace TW;
 using namespace TW::Ergo;
@@ -23,10 +23,9 @@ using namespace TW::Ergo;
  */
 inline uint1024_t load1024(const Data& data) {
     using boost::multiprecision::cpp_int;
-    if (data.empty()) {
-        return uint1024_t(0);
-    }
-    uint1024_t result;
+    uint1024_t result(0);
+    if (data.empty())
+        return result;
     import_bits(result, data.begin(), data.end());
     return result;
 }
@@ -134,11 +133,11 @@ Proto::SigningOutput Signer::sign(const Proto::SigningInput &input) noexcept {
     // construct signed inputs
     std::vector<Input> signedInputs;
 
-    for(int i = 0; i < inputs.size(); i++) {
-        auto in = inputs[i];
+    for(int j = 0; j < inputs.size(); j++) {
+        auto in = inputs[j];
 
         // privateKey
-        auto privateKey = Data(input.private_key()[i].begin(), input.private_key()[i].end());
+        auto privateKey = Data(input.private_key()[j].begin(), input.private_key()[j].end());
 
         // sign serialize Tx
         auto proofBytes = sign(serializeTx, privateKey);
@@ -178,8 +177,6 @@ Data Signer::sign(const Data &msg, const Data &key) noexcept {
     Data dataY;
     encode1024BE(dataY, _y, 32);
 
-    //auto strY = "0x16a2e52ae6e7b409156b0811ca986f226e385a9246330b3b4b871780b0e86c28";
-
     const uint1024_t zero = uint1024_t(0);
     if (_y == zero) {
         return sign(msg, key);
@@ -199,7 +196,7 @@ Data Signer::sign(const Data &msg, const Data &key) noexcept {
     append(s, commitment);
     append(s, msg);
 
-    auto hash = Hash::blake2b(reinterpret_cast<const byte*>(s.data()), s.size(), s.size());
+    auto hash = TW::Hash::hash(Hash::HasherBlake2b, s);
     auto c = TW::subData(hash, 0, 24);
 
     if (c.empty()) {
