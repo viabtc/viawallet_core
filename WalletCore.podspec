@@ -145,13 +145,14 @@ Pod::Spec.new do |s|
 
     ss.xcconfig = {
       'HEADER_SEARCH_PATHS' => '$(inherited) ' \
-        '$(SRCROOT)/../../wallet-core ' \
-        '${SRCROOT}/../../trezor-crypto/crypto ',
+        '$(SRCROOT)/WalletCore/include/TrustWalletCore ' \
+        '$(SRCROOT)/WalletCore/src ' \
+        '$(SRCROOT)/WalletCore/trezor-crypto/crypto ',
       'SYSTEM_HEADER_SEARCH_PATHS' => '$(inherited) ' \
         '/usr/local/include ' \
-        '${SRCROOT}/../../include ' \
+        '${SRCROOT}/WalletCore/include ' \
         '${SRCROOT}/../../../build/local/include ' \
-        "${SRCROOT}/../../trezor-crypto/include " \
+        "${SRCROOT}/WalletCore/trezor-crypto/include " \
         "${SRCROOT}/../../protobuf ",
       'GCC_WARN_UNUSED_FUNCTION' => 'NO',
       'GCC_WARN_64_TO_32_BIT_CONVERSION' => 'NO',
