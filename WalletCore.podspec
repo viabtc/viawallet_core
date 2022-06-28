@@ -161,4 +161,5 @@ Pod::Spec.new do |s|
     }
     ss.dependency 'WalletCore/Types'
   end
+  s.prepare_command = 'tools/install-dependencies && tools/generate-files'
 end
