@@ -18,18 +18,7 @@ Pod::Spec.new do |s|
     git: 'git@github.com:trustwallet/wallet-core.git'
   }
 
-  s.default_subspec = 'TrezorCrypto'
-
-  s.subspec 'TrezorCrypto' do |ss|
-    ss.source_files =
-      'trezor-crypto/crypto/**/*.{c}',
-
-    ss.exclude_files =
-      'trezor-crypto/crypto/monero',
-      'trezor-crypto/crypto/tests',
-      'trezor-crypto/crypto/tools',
-      'trezor-crypto/crypto/rand.c'
-  end
+  s.default_subspec = 'Core'
 
   s.subspec 'Types' do |ss|
     ss.source_files = 
@@ -48,6 +37,8 @@ Pod::Spec.new do |s|
       'swift/Sources/*.{swift,h,m,cpp}',
       'swift/Sources/Extensions/*.swift',
       'swift/Sources/Generated/*.{swift,h}',
+      'trezor-crypto/crypto/**/*.{c,h}',
+      'trezor-crypto/include/**/*.{h}',
       "#{protobuf_source_dir}/src/google/protobuf/any.cc",
       "#{protobuf_source_dir}/src/google/protobuf/any.pb.cc",
       "#{protobuf_source_dir}/src/google/protobuf/any_lite.cc",
@@ -134,7 +125,12 @@ Pod::Spec.new do |s|
       "#{protobuf_source_dir}/src/google/protobuf/wire_format_lite.cc",
       "#{protobuf_source_dir}/src/google/protobuf/wrappers.pb.cc"
       
-    ss.exclude_files =
+    ss.exclude_files = 
+      'trezor-crypto/include/TrezorCrypto/base58.h',
+      'trezor-crypto/crypto/monero',
+      'trezor-crypto/crypto/tests',
+      'trezor-crypto/crypto/tools',
+      'trezor-crypto/crypto/rand.c',
       'swift/Sources/Generated/WalletCore.h'
 
     ss.public_header_files =
@@ -149,16 +145,14 @@ Pod::Spec.new do |s|
 
     ss.xcconfig = {
       'HEADER_SEARCH_PATHS' => '$(inherited) ' \
-        '$(SRCROOT)/WalletCore/src ' \
-        '$(SRCROOT)/WalletCore/trezor-crypto/crypto ',
+        '$(SRCROOT)/../../wallet-core ' \
+        '${SRCROOT}/../../trezor-crypto/crypto ',
       'SYSTEM_HEADER_SEARCH_PATHS' => '$(inherited) ' \
         '/usr/local/include ' \
-        '/opt/homebrew/include ' \
-        '$(SRCROOT)/WalletCore/src ' \
-        '$(SRCROOT)/WalletCore/include ' \
-        "$(SRCROOT)/WalletCore/trezor-crypto/include " \
-        '$(SRCROOT)/WalletCore/build/local/include ' \
-        "$(SRCROOT)/WalletCore/build/local/src/protobuf/protobuf-3.19.2/src ",
+        '${SRCROOT}/../../include ' \
+        '${SRCROOT}/../../../build/local/include ' \
+        "${SRCROOT}/../../trezor-crypto/include " \
+        "${SRCROOT}/../../protobuf ",
       'GCC_WARN_UNUSED_FUNCTION' => 'NO',
       'GCC_WARN_64_TO_32_BIT_CONVERSION' => 'NO',
       'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
@@ -166,7 +160,5 @@ Pod::Spec.new do |s|
       'OTHER_LDFLAGS' => '$(inherited) -fprofile-instr-generate'
     }
     ss.dependency 'WalletCore/Types'
-    ss.dependency 'WalletCore/TrezorCrypto'
   end
-  # s.prepare_command = 'tools/install-dependencies && tools/generate-files'
 end
