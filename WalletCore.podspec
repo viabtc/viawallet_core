@@ -37,6 +37,7 @@ Pod::Spec.new do |s|
 
     ss.subspec 'protobuf' do |sss|
       protobuf_source_dir = 'build/local/src/protobuf/protobuf-3.19.2'
+      sss.source_files =
         "#{protobuf_source_dir}/src/google/protobuf/any.cc",
         "#{protobuf_source_dir}/src/google/protobuf/any.pb.cc",
         "#{protobuf_source_dir}/src/google/protobuf/any_lite.cc",
