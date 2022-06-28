@@ -29,6 +29,9 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Core' do |ss|
+    protobuf_source_dir = 'build/local/src/protobuf/protobuf-3.19.2'
+    include_dir = 'build/local/include'
+    
     ss.subspec 'trezor-crypto' do |sss|
       sss.source_files =
         'trezor-crypto/crypto/**/*.{c,h}',
@@ -36,7 +39,6 @@ Pod::Spec.new do |s|
     end
 
     ss.subspec 'protobuf' do |sss|
-      protobuf_source_dir = 'build/local/src/protobuf/protobuf-3.19.2'
       sss.source_files =
         "#{protobuf_source_dir}/src/google/protobuf/any.cc",
         "#{protobuf_source_dir}/src/google/protobuf/any.pb.cc",
@@ -125,8 +127,6 @@ Pod::Spec.new do |s|
         "#{protobuf_source_dir}/src/google/protobuf/wrappers.pb.cc"
     end
 
-    
-    include_dir = 'build/local/include'
     ss.source_files =
       'src/**/*.{c,cc,cpp,h}',
       'include/**/*.h',
