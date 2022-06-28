@@ -89,9 +89,9 @@ function build_swift_plugin() {
 
 download_dependencies
 
-# build_gtest
-# build_libcheck
-# build_protobuf
+build_gtest
+build_libcheck
+build_protobuf
 
 cd "$ROOT"
 
