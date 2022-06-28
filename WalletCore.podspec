@@ -32,13 +32,11 @@ Pod::Spec.new do |s|
     protobuf_source_dir = 'build/local/src/protobuf/protobuf-3.19.2'
     include_dir = 'build/local/include'
     ss.source_files =
-      'src/**/*.{c,cc,cpp,h}',
-      'include/**/*.h',
-      'swift/Sources/*.{swift,h,m,cpp}',
+      'src/**/*.{c,cc,cpp}',
+      'swift/Sources/*.{swift,m,cpp}',
       'swift/Sources/Extensions/*.swift',
-      'swift/Sources/Generated/*.{swift,h}',
-      'trezor-crypto/crypto/**/*.{c,h}',
-      'trezor-crypto/include/**/*.{h}',
+      'swift/Sources/Generated/*.{swift}',
+      'trezor-crypto/crypto/**/*.{c}',
       "#{protobuf_source_dir}/src/google/protobuf/any.cc",
       "#{protobuf_source_dir}/src/google/protobuf/any.pb.cc",
       "#{protobuf_source_dir}/src/google/protobuf/any_lite.cc",
@@ -137,10 +135,11 @@ Pod::Spec.new do |s|
       'swift/Sources/*.h'
 
     ss.preserve_paths =
-      'trezor-crypto/crypto/*.{table}',
-      "#{protobuf_source_dir}/src/**/*.{h,inc}",
-      "#{include_dir}/nlohmann/**/*.hpp",
-      'src/proto/*.proto'
+      'build',
+      'include',
+      'src',
+      'swift',
+      'trezor-crypto'
 
     ss.xcconfig = {
       'HEADER_SEARCH_PATHS' => '$(inherited) ' \
