@@ -178,9 +178,7 @@ PrivateKey HDWallet::getKey(TWCoinType coin, const DerivationPath& derivationPat
             }
         case PrivateKeyTypeSR25519:
             {
-                std::array<byte, seedSize> seedOfEntropy{};
-                seed_from_pass(entropy.data(), entropy.size(), passphrase.c_str(), seedOfEntropy.data(), nullptr);
-
+                auto seedOfEntropy= getSeedOfEntropy();
                 Data keypair(PrivateKey::sr25519Size);
                 sr25519_keypair_from_seed(keypair.data(), seedOfEntropy.data());
                 return PrivateKey(keypair);
@@ -283,6 +281,13 @@ std::optional<PrivateKey> HDWallet::getPrivateKeyFromExtended(const std::string&
     hdnode_private_ckd(&node, path.address());
 
     return PrivateKey(Data(node.private_key, node.private_key + 32));
+}
+
+TW::Data HDWallet::getSeedOfEntropy() const {
+    Data data;
+    data.resize(seedSize);
+    seed_from_pass(entropy.data(), entropy.size(), passphrase.c_str(), data.data(), nullptr);
+    return data;
 }
 
 HDWallet::PrivateKeyType HDWallet::getPrivateKeyType(TWCurve curve) {

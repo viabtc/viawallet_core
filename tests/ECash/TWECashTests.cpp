@@ -100,8 +100,8 @@ TEST(ECash, ExtendedKeys) {
     auto xprv = WRAPS(TWHDWalletGetExtendedPrivateKey(wallet.get(), TWPurposeBIP44, TWCoinTypeECash, TWHDVersionXPRV));
     auto xpub = WRAPS(TWHDWalletGetExtendedPublicKey(wallet.get(), TWPurposeBIP44, TWCoinTypeECash, TWHDVersionXPUB));
 
-    assertStringsEqual(xprv, "xprv9xjBcTizebJaV61xMkuMJ89vis7saMmwFgTYeF83KwinEksJ4frk7wB4mDiKiwXDCbJmgmh6Bp1FkF8SopNZhbF3B5wyX32cuDVFZtuUDvB");
-    assertStringsEqual(xpub, "xpub6BiY1yFtUxrsha6RTnSMfG6fGtxMypVncuP9SdXetHFm7ZCScDAzfjVYcW32bkNCGJ5DTqawAHSTbJdTBL8wVxqUDGpxnRtukrhhBoS7Wy7");
+    assertStringsEqual(xprv, "xprv9xqK3A5oHNJGdMaRvgGov478RCLgBqLJeZ4pYBmAnpcXXau1zPcGouaqQkeJbc1WmTZL2Trvsoyp1ALdPbLe5BjkeUMYa3HChiQcChJNCt7");
+    assertStringsEqual(xpub, "xpub6BpfSfch7jrZqqeu2hopHC3ryEBAbJ4A1mzRLaAnMA9WQPEAXvvXMhuKG24WzFrr6VjP1jK9NBouiiFYKycLGJRxSHkAzyQo2d3QqiokvSX");
 }
 
 TEST(ECash, DeriveFromXPub) {

@@ -57,6 +57,15 @@ bool TWPrivateKeyIsValid(TWData *_Nonnull data, enum TWCurve curve) {
     return PrivateKey::isValid(bytes, curve);
 }
 
+TWData *_Nullable TWPrivateKeyTransform(TWData *_Nonnull data, enum TWCurve curve) {
+    auto dataSize = TWDataSize(data);
+    std::vector<uint8_t> bytes(dataSize);
+    TWDataCopyBytes(data, 0, dataSize, bytes.data());
+
+    const Data& result = PrivateKey::transform(bytes, curve);
+    return TWDataCreateWithBytes(result.data(), result.size());
+}
+
 TWData *TWPrivateKeyData(struct TWPrivateKey *_Nonnull pk) {
     return TWDataCreateWithBytes(pk->impl.bytes.data(), pk->impl.bytes.size());
 }

@@ -43,6 +43,9 @@ class PrivateKey {
     /// Determines if a collection of bytes and curve make a valid private key.
     static bool isValid(const Data& data, TWCurve curve);
 
+    /// get the final key.
+    static Data transform(const Data& data, TWCurve curve);
+
     /// Initializes a private key with an array of bytes.  Size must be exact (normally 32, or 192 for extended)
     explicit PrivateKey(const Data& data);
 

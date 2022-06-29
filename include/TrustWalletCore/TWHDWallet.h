@@ -51,6 +51,10 @@ void TWHDWalletDelete(struct TWHDWallet *_Nonnull wallet);
 TW_EXPORT_PROPERTY
 TWData *_Nonnull TWHDWalletSeed(struct TWHDWallet *_Nonnull wallet);
 
+/// Wallet seed of entropy.
+TW_EXPORT_PROPERTY
+TWData *_Nonnull TWHDWalletSeedOfEntropy(struct TWHDWallet *_Nonnull wallet);
+
 // Wallet Mnemonic
 TW_EXPORT_PROPERTY
 TWString *_Nonnull TWHDWalletMnemonic(struct TWHDWallet *_Nonnull wallet);

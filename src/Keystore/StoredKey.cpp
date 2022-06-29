@@ -68,8 +68,9 @@ StoredKey StoredKey::createWithPrivateKeyAddDefaultAddress(const std::string& na
     StoredKey key = createWithPrivateKey(name, password, privateKeyData);
     const auto derivationPath = TW::derivationPath(coin);
     const auto pubKeyType = TW::publicKeyType(coin);
-    const auto pubKey = PrivateKey(privateKeyData).getPublicKey(pubKeyType);
-    const auto address = TW::deriveAddress(coin, PrivateKey(privateKeyData));
+    const auto finalPrivateKeyData = PrivateKey::transform(privateKeyData, curve);
+    const auto pubKey = PrivateKey(finalPrivateKeyData).getPublicKey(pubKeyType);
+    const auto address = TW::deriveAddress(coin, PrivateKey(finalPrivateKeyData));
     key.accounts.emplace_back(address, coin, TWDerivationDefault, derivationPath, hex(pubKey.bytes), "");
     return key;
 }
@@ -258,7 +259,8 @@ const PrivateKey StoredKey::privateKey(TWCoinType coin, TWDerivation derivation,
         return wallet.getKey(coin, account->derivationPath);
     }
     case StoredKeyType::privateKey:
-        return PrivateKey(payload.decrypt(password));
+        const auto curve = TW::curve(coin);
+        return PrivateKey(PrivateKey::transform(payload.decrypt(password), curve));
     }
 }
 
@@ -283,7 +285,6 @@ void StoredKey::fixAddresses(const Data& password) {
             break;
 
         case StoredKeyType::privateKey: {
-                auto key = PrivateKey(payload.decrypt(password));
                 for (auto& account : accounts) {
                     if (!account.address.empty() &&
                         !account.publicKey.empty() &&
@@ -291,6 +292,8 @@ void StoredKey::fixAddresses(const Data& password) {
                     ) {
                         continue;
                     }
+                    const auto curve = TW::curve(account.coin);
+                    auto key = PrivateKey(PrivateKey::transform(payload.decrypt(password), curve));
                     const auto pubKey = key.getPublicKey(TW::publicKeyType(account.coin));
                     account.address = TW::deriveAddress(account.coin, pubKey, account.derivation);
                     account.publicKey = hex(pubKey.bytes);

@@ -58,3 +58,11 @@ TEST(KusamaAddress, FromPhrase) {
     auto address = Address(publicKey);
     ASSERT_EQ(address.string(), "DQB9HjgvdgBZpAQqJBWs1jEFMRvqT6xkH1CQ2tA3gFE57gG");
 }
+
+TEST(KusamaAddress, FromSR25519Key) {
+    const auto privateKeyData = PrivateKey::transform(parse_hex("9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60"), TWCurveSR25519);
+    const auto privateKey = PrivateKey(privateKeyData);
+    const auto publicKey = privateKey.getPublicKey(TWPublicKeyTypeSR25519);
+    auto address = Address(publicKey);
+    ASSERT_EQ(address.string(), "E8M9nn83EVMzs1o25FJSPJBhHFour3oFXtrdk6iJVvd7XKQ");
+}

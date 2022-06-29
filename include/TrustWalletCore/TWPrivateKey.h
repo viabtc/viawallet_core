@@ -33,6 +33,9 @@ void TWPrivateKeyDelete(struct TWPrivateKey *_Nonnull pk);
 TW_EXPORT_STATIC_METHOD
 bool TWPrivateKeyIsValid(TWData *_Nonnull data, enum TWCurve curve);
 
+TW_EXPORT_STATIC_METHOD
+TWData *_Nullable TWPrivateKeyTransform(TWData *_Nonnull data, enum TWCurve curve);
+
 TW_EXPORT_PROPERTY
 TWData *_Nonnull TWPrivateKeyData(struct TWPrivateKey *_Nonnull pk);
 

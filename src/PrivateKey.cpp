@@ -90,6 +90,16 @@ bool PrivateKey::isValid(const Data& data, TWCurve curve)
     return true;
 }
 
+Data PrivateKey::transform(const Data& data, TWCurve curve) {
+    if (curve == TWCurveSR25519) {
+        Data keypair(sr25519Size);
+        sr25519_keypair_from_seed(keypair.data(), data.data());
+        return keypair;
+    } else {
+        return data;
+    }
+}
+
 PrivateKey::PrivateKey(const Data& data) {
     if (!isValid(data)) {
         throw std::invalid_argument("Invalid private key data");

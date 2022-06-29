@@ -102,6 +102,9 @@ class HDWallet {
     /// Returns the BIP32 Root Key (private)
     std::string getRootKey(TWCoinType coin, TWHDVersion version) const;
 
+    /// For SR25519, return seed of entropy
+    Data getSeedOfEntropy() const;
+
     /// Computes the public key from an extended public key representation.
     static std::optional<PublicKey> getPublicKeyFromExtended(const std::string& extended, TWCoinType coin, const DerivationPath& path);
 

@@ -58,3 +58,11 @@ TEST(PolkadotAddress, FromPhrase) {
     auto address = Address(publicKey);
     ASSERT_EQ(address.string(), "1prdJetA3vjFhMV2ERU7DCNxP9Lj5qvNPtwAfbZ7y4FWQtS");
 }
+
+TEST(PolkadotAddress, FromSR25519Key) {
+    const auto privateKeyData = PrivateKey::transform(parse_hex("9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60"), TWCurveSR25519);
+    const auto privateKey = PrivateKey(privateKeyData);
+    const auto publicKey = privateKey.getPublicKey(TWPublicKeyTypeSR25519);
+    auto address = Address(publicKey);
+    ASSERT_EQ(address.string(), "12Z2dohKGejugkCsD1VFgamLQJyDoUnksenbQNp7NnjeZ8a6");
+}
