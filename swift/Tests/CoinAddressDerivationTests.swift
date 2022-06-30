@@ -239,7 +239,7 @@ class CoinAddressDerivationTests: XCTestCase {
                     let expectedResult = "osmo142j9u5eaduzd7faumygud6ruhdwme98qclefqp"
                     assertCoinDerivation(coin, expectedResult, derivedAddress, address)
                 case .ecash:
-                    let expectedResult = "ecash:qpelrdn7a0hcucjlf9ascz3lkxv7r3rffgzn6x5377"
+                    let expectedResult = "ecash:qpzl3jxkzgvfd9flnd26leud5duv795fnv8pgkv8cc"
                     assertCoinDerivation(coin, expectedResult, derivedAddress, address)
                 case .nativeEvmos:
                     let expectedResult = "evmos13u6g7vqgw074mgmf2ze2cadzvkz9snlwstd20d"

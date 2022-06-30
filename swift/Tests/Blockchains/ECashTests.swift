@@ -15,8 +15,8 @@ class ECashTests: XCTestCase {
         let xprv = wallet.getExtendedPrivateKey(purpose: .bip44, coin: .ecash, version: .xprv)
         let xpub = wallet.getExtendedPublicKey(purpose: .bip44, coin: .ecash, version: .xpub)
 
-        XCTAssertEqual(xprv, "xprv9xjBcTizebJaV61xMkuMJ89vis7saMmwFgTYeF83KwinEksJ4frk7wB4mDiKiwXDCbJmgmh6Bp1FkF8SopNZhbF3B5wyX32cuDVFZtuUDvB")
-        XCTAssertEqual(xpub, "xpub6BiY1yFtUxrsha6RTnSMfG6fGtxMypVncuP9SdXetHFm7ZCScDAzfjVYcW32bkNCGJ5DTqawAHSTbJdTBL8wVxqUDGpxnRtukrhhBoS7Wy7")
+        XCTAssertEqual(xprv, "xprv9xqK3A5oHNJGdMaRvgGov478RCLgBqLJeZ4pYBmAnpcXXau1zPcGouaqQkeJbc1WmTZL2Trvsoyp1ALdPbLe5BjkeUMYa3HChiQcChJNCt7")
+        XCTAssertEqual(xpub, "xpub6BpfSfch7jrZqqeu2hopHC3ryEBAbJ4A1mzRLaAnMA9WQPEAXvvXMhuKG24WzFrr6VjP1jK9NBouiiFYKycLGJRxSHkAzyQo2d3QqiokvSX")
     }
 
     func testDeriveFromXPub() {
