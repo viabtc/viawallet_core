@@ -94,4 +94,12 @@ TEST(Derivation, alternativeDerivation) {
     EXPECT_EQ(std::string(TW::derivationName(TWCoinTypeSolana, TWDerivationSolanaSolana)), "solana");
 }
 
+TEST(Derivation, Slip44) {
+    const auto coinTypes = TW::getCoinTypes();
+    for(int i = 0; i < coinTypes.size(); i++) {
+        auto coinType = coinTypes[i];
+        ASSERT_EQ(TW::derivationPath(coinType).indices[1], slip44Id(coinType));
+    }
+}
+
 } // namespace

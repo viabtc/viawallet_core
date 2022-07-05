@@ -25,7 +25,7 @@ struct EncryptionParameters {
             case TWStoredKeyEncryptionLevelMinimal:
             case TWStoredKeyEncryptionLevelDefault:
             default:
-                return EncryptionParameters(AESParameters(), ScryptParameters::Minimal);
+                return EncryptionParameters(AESParameters(), ScryptParameters());
             case TWStoredKeyEncryptionLevelWeak:
                 return EncryptionParameters(AESParameters(), ScryptParameters::Weak);
             case TWStoredKeyEncryptionLevelStandard:

@@ -410,6 +410,7 @@
     "publicKeyType": "secp256k1",
     "hrp": "cosmos",
     "addressHasher": "sha256ripemd",
+    "chainId": "cosmoshub-4",
     "explorer": {
       "url": "https://mintscan.io/cosmos",
       "txPath": "/txs/",
@@ -900,6 +901,7 @@
     "publicKeyType": "secp256k1",
     "hrp": "terra",
     "addressHasher": "sha256ripemd",
+    "chainId": "phoenix-1",
     "explorer": {
       "url": "https://finder.terra.money/tx",
       "txPath": "/tx/",
@@ -929,6 +931,7 @@
     "publicKeyType": "secp256k1",
     "hrp": "terra",
     "addressHasher": "sha256ripemd",
+    "chainId": "columbus-5",
     "explorer": {
       "url": "https://finder.terra.money/tx",
       "txPath": "/tx/",
@@ -1091,6 +1094,7 @@
     "publicKeyType": "secp256k1",
     "hrp": "kava",
     "addressHasher": "sha256ripemd",
+    "chainId": "kava_2222-10",
     "explorer": {
       "url": "https://mintscan.io/kava",
       "txPath": "/txs/",
@@ -1149,6 +1153,7 @@
     "publicKeyType": "secp256k1",
     "hrp": "bluzelle",
     "addressHasher": "sha256ripemd",
+    "chainId": "bluzelle",
     "explorer": {
       "url": "https://bigdipper.net.bluzelle.com",
       "txPath": "/transactions/",
@@ -1373,7 +1378,9 @@
     "blockchain": "NEO",
     "derivation": [
       {
-        "path": "m/44'/888'/0'/0/0"
+        "path": "m/44'/888'/0'/0/0",
+        "xpub": "xpub",
+        "xprv": "xprv"
       }
     ],
     "curve": "nist256p1",
@@ -1852,7 +1859,7 @@
     "name": "Smart Chain",
     "displayName": "BNB Smart Chain",
     "coinId": 20000714,
-    "slip44": 714,
+    "slip44": 60,
     "symbol": "BNB",
     "decimals": 18,
     "blockchain": "Ethereum",
@@ -1883,6 +1890,7 @@
     "id": "polygon",
     "name": "Polygon",
     "coinId": 966,
+    "slip44": 60,
     "symbol": "MATIC",
     "decimals": 18,
     "blockchain": "Ethereum",
@@ -2032,6 +2040,7 @@
     "id": "avalanchec",
     "name": "Avalanche C-Chain",
     "coinId": 10009000,
+    "slip44": 60,
     "symbol": "AVAX",
     "decimals": 18,
     "blockchain": "Ethereum",
@@ -2063,6 +2072,7 @@
     "name": "xDai",
     "displayName": "Gnosis Chain",
     "coinId": 10000100,
+    "slip44": 60,
     "symbol": "xDAI",
     "decimals": 18,
     "blockchain": "Ethereum",
@@ -2093,6 +2103,7 @@
     "id": "fantom",
     "name": "Fantom",
     "coinId": 10000250,
+    "slip44": 60,
     "symbol": "FTM",
     "decimals": 18,
     "blockchain": "Ethereum",
@@ -2155,6 +2166,7 @@
     "id": "celo",
     "name": "Celo",
     "coinId": 52752,
+    "slip44": 60,
     "symbol": "CELO",
     "decimals": 18,
     "blockchain": "Ethereum",
@@ -2217,6 +2229,7 @@
     "name": "Osmosis",
     "displayName": "Osmosis",
     "coinId": 20000118,
+    "slip44": 118,
     "symbol": "OSMO",
     "decimals": 6,
     "blockchain": "Cosmos",
@@ -2248,6 +2261,7 @@
     "id": "ecash",
     "name": "eCash",
     "coinId": 20000145,
+    "slip44": 145,
     "symbol": "XEC",
     "decimals": 2,
     "blockchain": "Bitcoin",
@@ -2281,6 +2295,7 @@
     "id": "cronos",
     "name": "Cronos Chain",
     "coinId": 10000025,
+    "slip44": 60,
     "symbol": "CRO",
     "decimals": 18,
     "blockchain": "Ethereum",
@@ -2309,6 +2324,7 @@
     "id": "smartbch",
     "name": "Smart Bitcoin Cash",
     "coinId": 10000145,
+    "slip44": 60,
     "symbol": "BCH",
     "decimals": 18,
     "blockchain": "Ethereum",
@@ -2339,6 +2355,7 @@
     "id": "kcc",
     "name": "KuCoin Community Chain",
     "coinId": 10000321,
+    "slip44": 60,
     "symbol": "KCS",
     "decimals": 18,
     "blockchain": "Ethereum",
@@ -2369,6 +2386,7 @@
     "id": "boba",
     "name": "Boba",
     "coinId": 10000288,
+    "slip44": 60,
     "symbol": "BOBAETH",
     "decimals": 18,
     "blockchain": "Ethereum",
@@ -2399,6 +2417,7 @@
     "id": "metis",
     "name": "Metis",
     "coinId": 10001088,
+    "slip44": 60,
     "symbol": "METIS",
     "decimals": 18,
     "blockchain": "Ethereum",
@@ -2429,6 +2448,7 @@
     "id": "aurora",
     "name": "Aurora",
     "coinId": 1323161554,
+    "slip44": 60,
     "symbol": "ETH",
     "decimals": 18,
     "blockchain": "Ethereum",
@@ -2459,6 +2479,7 @@
     "id": "evmos",
     "name": "Evmos",
     "coinId": 10009001,
+    "slip44": 60,
     "symbol": "EVMOS",
     "decimals": 18,
     "blockchain": "Ethereum",
@@ -2490,6 +2511,7 @@
     "name": "NativeEvmos",
     "displayName": "Native Evmos",
     "coinId": 20009001,
+    "slip44": 60,
     "symbol": "EVMOS",
     "decimals": 18,
     "blockchain": "Cosmos",
@@ -2520,6 +2542,7 @@
     "id": "moonriver",
     "name": "Moonriver",
     "coinId": 10001285,
+    "slip44": 60,
     "symbol": "MOVR",
     "decimals": 18,
     "blockchain": "Ethereum",
@@ -2547,6 +2570,7 @@
     "id": "moonbeam",
     "name": "Moonbeam",
     "coinId": 10001284,
+    "slip44": 60,
     "symbol": "GLMR",
     "decimals": 18,
     "blockchain": "Ethereum",
@@ -2575,6 +2599,7 @@
     "id": "klaytn",
     "name": "Klaytn",
     "coinId": 10008217,
+    "slip44": 60,
     "symbol": "KLAY",
     "decimals": 18,
     "blockchain": "Ethereum",
@@ -2635,6 +2660,7 @@
     "id": "coinexsmartchain",
     "name": "CoinEx Smart Chain",
     "coinId": 1000052,
+    "slip44": 60,
     "symbol": "CET",
     "decimals": 18,
     "blockchain": "Ethereum",
@@ -2762,6 +2788,7 @@
     "id": "iris",
     "name": "IRISnet",
     "coinId": 10000118,
+    "slip44": 118,
     "symbol": "IRIS",
     "decimals": 6,
     "blockchain": "Cosmos",
@@ -2774,6 +2801,7 @@
     "publicKeyType": "secp256k1",
     "hrp": "iaa",
     "addressHasher": "sha256ripemd",
+    "chainId": "irishub-1",
     "explorer": {
       "url": "https://www.irisplorer.io",
       "txPath": "/#/tx?txHash=",
@@ -2821,7 +2849,9 @@
     "blockchain": "Nervos",
     "derivation": [
       {
-        "path": "m/44'/309'/0'/0/0"
+        "path": "m/44'/309'/0'/0/0",
+        "xpub": "xpub",
+        "xprv": "xprv"
       }
     ],
     "curve": "secp256k1",
@@ -2850,7 +2880,9 @@
     "blockchain": "Ergo",
     "derivation": [
       {
-        "path": "m/44'/429'/0'/0/0"
+        "path": "m/44'/429'/0'/0/0",
+        "xpub": "xpub",
+        "xprv": "xprv"
       }
     ],
     "curve": "secp256k1",
@@ -2878,7 +2910,9 @@
     "blockchain": "Horizen",
     "derivation": [
       {
-        "path": "m/44'/121'/0'/0/0"
+        "path": "m/44'/121'/0'/0/0",
+        "xpub": "xpub",
+        "xprv": "xprv"
       }
     ],
     "curve": "secp256k1",
@@ -2909,7 +2943,9 @@
     "blockchain": "Handshake",
     "derivation": [
       {
-        "path": "m/44'/5353'/0'/0/0"
+        "path": "m/44'/5353'/0'/0/0",
+        "xpub": "xpub",
+        "xprv": "xprv"
       }
     ],
     "curve": "secp256k1",
