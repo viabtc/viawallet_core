@@ -10,7 +10,9 @@
 #include "Bitcoin/TransactionPlan.h"
 #include "Bitcoin/TransactionBuilder.h"
 #include "Bitcoin/FeeCalculator.h"
+#include "Bitcoin/SigHashType.h"
 #include "HexCoding.h"
+#include "HDWallet.h"
 #include "proto/Bitcoin.pb.h"
 #include <TrustWalletCore/TWCoinType.h>
 
@@ -687,4 +689,95 @@ TEST(TransactionPlan, OpReturn) {
     auto& feeCalculator = getFeeCalculator(TWCoinTypeBitcoin);
     EXPECT_EQ(feeCalculator.calculate(1, 2, byteFee), 174 * byteFee);
     EXPECT_EQ(feeCalculator.calculate(1, 3, byteFee), 205 * byteFee);
+}
+
+
+TEST(TransactionPlan, AmountAdjustWhenNonMaxAmount) {
+    auto hash0 = parse_hex("09b5288f27141bb8f1e6f33dfe95c73381e7267cffef1bb1cb1d03beca7ec715");
+    // Setup input
+    SigningInput input;
+    input.hashType = hashTypeForCoin(TWCoinTypeBitcoin);
+    input.useMaxAmount = false;
+    input.amount = 273600;
+    input.byteFee = 101;
+    input.toAddress = "1FGRdbPWNzFuwEQ9o1gVXqU4b1Hp6adpZM";
+    input.changeAddress = "1FGRdbPWNzFuwEQ9o1gVXqU4b1Hp6adpZM";
+    input.coinType = TWCoinTypeBitcoin;
+
+    auto utxoKey0 = PrivateKey(parse_hex("ca3b7f93906bb6e68552f4d1f9598189187fc3c7688bf6f3d2ee3bd2b168f77e"));
+    auto pubKey0 = utxoKey0.getPublicKey(TWPublicKeyTypeSECP256k1);
+    auto utxoPubkeyHash0 = Hash::ripemd(Hash::sha256(pubKey0.bytes));
+
+
+    auto utxo0Script = Script::buildPayToPublicKeyHash(utxoPubkeyHash0);
+    Data scriptHash;
+    utxo0Script.matchPayToPublicKeyHash(scriptHash);
+
+    UTXO utxo0;
+    utxo0.script = utxo0Script;
+    utxo0.amount = 291592;
+    utxo0.outPoint = OutPoint(hash0, 0, UINT32_MAX);
+    input.utxos.push_back(utxo0);
+
+    // test plan (but do not reuse plan result)
+    auto plan = TransactionBuilder::plan(input);
+    EXPECT_TRUE(verifyPlan(plan, {291592}, 268766, 22826));
+}
+
+TEST(TransactionPlan, DustChangeMoveToFee) {
+    auto hash0 = parse_hex("09b5288f27141bb8f1e6f33dfe95c73381e7267cffef1bb1cb1d03beca7ec715");
+    // Setup input
+    SigningInput input;
+    input.hashType = hashTypeForCoin(TWCoinTypeDogecoin);
+    input.useMaxAmount = false;
+    input.amount = 42800000000;
+    input.byteFee = 1000000;
+    input.toAddress = "DMvMNk6coSmx9QKwYQrYasV2KL5f7ZvPQY";
+    input.changeAddress = "DQbo5GumMnUwSfTuoHAP2xBBkhaPMuXfSD";
+    input.coinType = TWCoinTypeDogecoin;
+
+
+    UTXO utxo0;
+    utxo0.script = Script(parse_hex("76a914d5770aa7a6182220d9722afaa19c5a70f8b7850788ac"));
+    utxo0.amount = 32935323399;
+    utxo0.outPoint = OutPoint(parse_hex("c56cb18dcabf2624ce3b7d8aac90d3c10dd52749271f20c73f2cfbcf5c1a77c5"), 0, UINT32_MAX);
+    input.utxos.push_back(utxo0);
+
+    UTXO utxo1;
+    utxo1.script = Script(parse_hex("76a914d5770aa7a6182220d9722afaa19c5a70f8b7850788ac"));
+    utxo1.amount = 10000000000;
+    utxo1.outPoint = OutPoint(parse_hex("832da4079afb354528ba3ee571370ce2033c26e297488496d0b27414ccc8e170"), 0, UINT32_MAX);
+    input.utxos.push_back(utxo1);
+
+    UTXO utxo2;
+    utxo2.script = Script(parse_hex("76a914d5770aa7a6182220d9722afaa19c5a70f8b7850788ac"));
+    utxo2.amount = 300000000;
+    utxo2.outPoint = OutPoint(parse_hex("4701f92fed3df7fb1e2f3e01877463fe1e98981ad5a38ed5deedb1465f82c597"), 0, UINT32_MAX);
+    input.utxos.push_back(utxo2);
+
+    UTXO utxo3;
+    utxo3.script = Script(parse_hex("76a914d5770aa7a6182220d9722afaa19c5a70f8b7850788ac"));
+    utxo3.amount = 300000000;
+    utxo3.outPoint = OutPoint(parse_hex("d9d4bfeefc61f85dbabb27ee1462af1eb197bb4055890e779328dfd99675ce18"), 0, UINT32_MAX);
+    input.utxos.push_back(utxo3);
+
+    UTXO utxo4;
+    utxo4.script = Script(parse_hex("76a914d5770aa7a6182220d9722afaa19c5a70f8b7850788ac"));
+    utxo4.amount = 100000000;
+    utxo4.outPoint = OutPoint(parse_hex("636cc5524fdfe1e2cf853a2c0d7837258cf04500e2891cd5b0a3d5108c7c5eb2"), 0, UINT32_MAX);
+    input.utxos.push_back(utxo4);
+
+    UTXO utxo5;
+    utxo5.script = Script(parse_hex("76a914d5770aa7a6182220d9722afaa19c5a70f8b7850788ac"));
+    utxo5.amount = 100000000;
+    utxo5.outPoint = OutPoint(parse_hex("4f52158061210728ab60afb777dd1674601bcf4fe0da41bdb88ca735ede640c6"), 0, UINT32_MAX);
+    input.utxos.push_back(utxo5);
+
+    auto plan = TransactionBuilder::plan(input);
+
+    ASSERT_EQ(plan.availableAmount, 43535323399);
+    ASSERT_EQ(plan.amount, 42800000000);
+    ASSERT_EQ(plan.fee, 735323399);
+    ASSERT_EQ(plan.change, 0);
+
 }

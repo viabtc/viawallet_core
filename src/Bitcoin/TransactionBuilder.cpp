@@ -167,6 +167,15 @@ TransactionPlan TransactionBuilder::plan(const SigningInput& input) {
 
             // compute change
             plan.change = plan.availableAmount - plan.amount - plan.fee;
+
+            if (input.coinType == TWCoinTypeDogecoin) {
+                // dust change move to fee
+                const int64_t dustThreshold = feeCalculator.calculateSingleInput(input.byteFee);
+                if (plan.change < dustThreshold) {
+                    plan.fee += plan.change;
+                    plan.change = 0;
+                }
+            }
         }
     }
     assert(plan.change >= 0 && plan.change <= plan.availableAmount);
