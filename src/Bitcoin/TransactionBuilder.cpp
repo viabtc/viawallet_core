@@ -171,7 +171,7 @@ TransactionPlan TransactionBuilder::plan(const SigningInput& input) {
             if (input.coinType == TWCoinTypeDogecoin) {
                 // dust change move to fee
                 const int64_t dustThreshold = feeCalculator.calculateSingleInput(input.byteFee);
-                if (plan.change < dustThreshold) {
+                if (plan.change > 0 && plan.change < dustThreshold) {
                     plan.fee += plan.change;
                     plan.change = 0;
                 }
