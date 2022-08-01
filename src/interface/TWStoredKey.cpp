@@ -57,6 +57,17 @@ struct TWStoredKey* _Nullable TWStoredKeyImportHDWallet(TWString* _Nonnull mnemo
     }
 }
 
+struct TWStoredKey* _Nullable TWStoredKeyImportHDWalletSingle(TWString* _Nonnull mnemonic, TWString* _Nonnull name, TWData* _Nonnull password, enum TWCoinType coin) {
+    try {
+        const auto& mnemonicString = *reinterpret_cast<const std::string*>(mnemonic);
+        const auto& nameString = *reinterpret_cast<const std::string*>(name);
+        const auto passwordData = TW::data(TWDataBytes(password), TWDataSize(password));
+        return new TWStoredKey{ StoredKey::createWithMnemonicSingleAddDefaultAddress(nameString, passwordData, mnemonicString, coin) };
+    } catch (...) {
+        return nullptr;
+    }
+}
+
 struct TWStoredKey* _Nullable TWStoredKeyImportJSON(TWData* _Nonnull json) {
     try {
         const auto& d = *reinterpret_cast<const TW::Data*>(json);
@@ -84,6 +95,14 @@ TWString* _Nonnull TWStoredKeyName(struct TWStoredKey* _Nonnull key) {
 
 bool TWStoredKeyIsMnemonic(struct TWStoredKey* _Nonnull key) {
     return key->impl.type == StoredKeyType::mnemonicPhrase;
+}
+
+bool TWStoredKeyIsPrivateKey(struct TWStoredKey* _Nonnull key) {
+    return key->impl.type == StoredKeyType::privateKey;
+}
+
+bool TWStoredKeyIsMnemonicSingle(struct TWStoredKey* _Nonnull key) {
+    return key->impl.type == StoredKeyType::mnemonicSingle;
 }
 
 size_t TWStoredKeyAccountCount(struct TWStoredKey* _Nonnull key) {

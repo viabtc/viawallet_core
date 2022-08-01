@@ -23,7 +23,7 @@ namespace TW::Keystore {
 
 /// An stored key can be either a private key or a mnemonic phrase for a HD
 /// wallet.
-enum class StoredKeyType { privateKey, mnemonicPhrase };
+enum class StoredKeyType { privateKey, mnemonicPhrase, mnemonicSingle };
 
 /// Represents a key stored as an encrypted file.
 class StoredKey {
@@ -47,6 +47,10 @@ public:
     /// @throws std::invalid_argument if mnemonic is invalid
     static StoredKey createWithMnemonic(const std::string& name, const Data& password, const std::string& mnemonic, TWStoredKeyEncryptionLevel encryptionLevel);
 
+    /// Create a new StoredKey with only one chain, with the given name, mnemonic and password.
+    /// @throws std::invalid_argument if mnemonic is invalid
+    static StoredKey createWithMnemonicSingle(const std::string& name, const Data& password, const std::string& mnemonic, TWStoredKeyEncryptionLevel encryptionLevel);
+
     /// Create a new StoredKey, with the given name, mnemonic and password.
     /// @throws std::invalid_argument if mnemonic is invalid
     static StoredKey createWithMnemonicRandom(const std::string& name, const Data& password, TWStoredKeyEncryptionLevel encryptionLevel);
@@ -54,6 +58,10 @@ public:
     /// Create a new StoredKey, with the given name, mnemonic and password, and also add the default address for the given coin..
     /// @throws std::invalid_argument if mnemonic is invalid
     static StoredKey createWithMnemonicAddDefaultAddress(const std::string& name, const Data& password, const std::string& mnemonic, TWCoinType coin);
+
+    /// Create a new StoredKey with only one chain, with the given name, mnemonic and password, and also add the default address for the given coin..
+    /// @throws std::invalid_argument if mnemonic is invalid
+    static StoredKey createWithMnemonicSingleAddDefaultAddress(const std::string& name, const Data& password, const std::string& mnemonic, TWCoinType coin);
 
     /// Create a new StoredKey, with the given name and private key.
     /// @throws std::invalid_argument if privateKeyData is not a valid private key

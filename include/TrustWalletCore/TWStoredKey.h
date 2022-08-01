@@ -33,6 +33,10 @@ struct TWStoredKey* _Nullable TWStoredKeyImportPrivateKey(TWData* _Nonnull priva
 TW_EXPORT_STATIC_METHOD
 struct TWStoredKey* _Nullable TWStoredKeyImportHDWallet(TWString* _Nonnull mnemonic, TWString* _Nonnull name, TWData* _Nonnull password, enum TWCoinType coin);
 
+/// Imports an HD wallet with only one chain.  Returned object needs to be deleted.
+TW_EXPORT_STATIC_METHOD
+struct TWStoredKey* _Nullable TWStoredKeyImportHDWalletSingle(TWString* _Nonnull mnemonic, TWString* _Nonnull name, TWData* _Nonnull password, enum TWCoinType coin);
+
 /// Imports a key from JSON.  Returned object needs to be deleted.
 TW_EXPORT_STATIC_METHOD
 struct TWStoredKey* _Nullable TWStoredKeyImportJSON(TWData* _Nonnull json);
@@ -59,6 +63,14 @@ TWString* _Nonnull TWStoredKeyName(struct TWStoredKey* _Nonnull key);
 /// Whether this key is a mnemonic phrase for a HD wallet.
 TW_EXPORT_PROPERTY
 bool TWStoredKeyIsMnemonic(struct TWStoredKey* _Nonnull key);
+
+/// Whether this key is a private key wallet.
+TW_EXPORT_PROPERTY
+bool TWStoredKeyIsPrivateKey(struct TWStoredKey* _Nonnull key);
+
+/// Whether this key is a mnemonic phrase for a HD wallet with only one chain.
+TW_EXPORT_PROPERTY
+bool TWStoredKeyIsMnemonicSingle(struct TWStoredKey* _Nonnull key);
 
 /// The number of accounts.
 TW_EXPORT_PROPERTY

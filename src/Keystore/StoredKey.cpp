@@ -38,6 +38,16 @@ StoredKey StoredKey::createWithMnemonic(const std::string& name, const Data& pas
     return key;
 }
 
+StoredKey StoredKey::createWithMnemonicSingle(const std::string& name, const Data& password, const std::string& mnemonic, TWStoredKeyEncryptionLevel encryptionLevel) {
+    if (!Mnemonic::isValid(mnemonic)) {
+        throw std::invalid_argument("Invalid mnemonic");
+    }
+
+    Data mnemonicData = TW::Data(mnemonic.begin(), mnemonic.end());
+    StoredKey key = StoredKey(StoredKeyType::mnemonicSingle, name, password, mnemonicData, encryptionLevel);
+    return key;
+}
+
 StoredKey StoredKey::createWithMnemonicRandom(const std::string& name, const Data& password, TWStoredKeyEncryptionLevel encryptionLevel) {
     const auto wallet = TW::HDWallet(128, "");
     const auto& mnemonic = wallet.getMnemonic();
@@ -49,6 +59,13 @@ StoredKey StoredKey::createWithMnemonicRandom(const std::string& name, const Dat
 
 StoredKey StoredKey::createWithMnemonicAddDefaultAddress(const std::string& name, const Data& password, const std::string& mnemonic, TWCoinType coin) {
     StoredKey key = createWithMnemonic(name, password, mnemonic, TWStoredKeyEncryptionLevelDefault);
+    const auto wallet = key.wallet(password);
+    key.account(coin, &wallet);
+    return key;
+}
+
+StoredKey StoredKey::createWithMnemonicSingleAddDefaultAddress(const std::string& name, const Data& password, const std::string& mnemonic, TWCoinType coin) {
+    StoredKey key = createWithMnemonicSingle(name, password, mnemonic, TWStoredKeyEncryptionLevelDefault);
     const auto wallet = key.wallet(password);
     key.account(coin, &wallet);
     return key;
@@ -84,7 +101,7 @@ StoredKey::StoredKey(StoredKeyType type, std::string name, const Data& password,
 }
 
 const HDWallet StoredKey::wallet(const Data& password) const {
-    if (type != StoredKeyType::mnemonicPhrase) {
+    if (type != StoredKeyType::mnemonicPhrase && type != StoredKeyType::mnemonicSingle) {
         throw std::invalid_argument("Invalid account requested.");
     }
     const auto data = payload.decrypt(password);
@@ -253,7 +270,8 @@ const PrivateKey StoredKey::privateKey(TWCoinType coin, const Data& password) {
 
 const PrivateKey StoredKey::privateKey(TWCoinType coin, TWDerivation derivation, const Data& password) {
     switch (type) {
-    case StoredKeyType::mnemonicPhrase: {
+    case StoredKeyType::mnemonicPhrase:
+    case StoredKeyType::mnemonicSingle:{
         const auto wallet = this->wallet(password);
         const auto account = this->account(coin, &wallet);
         return wallet.getKey(coin, account->derivationPath);
@@ -266,7 +284,8 @@ const PrivateKey StoredKey::privateKey(TWCoinType coin, TWDerivation derivation,
 
 void StoredKey::fixAddresses(const Data& password) {
     switch (type) {
-        case StoredKeyType::mnemonicPhrase: {
+        case StoredKeyType::mnemonicPhrase:
+        case StoredKeyType::mnemonicSingle:{
                 const auto wallet = this->wallet(password);
                 for (auto& account : accounts) {
                     if (!account.address.empty() && 
@@ -332,12 +351,16 @@ namespace UppercaseCodingKeys {
 namespace TypeString {
     static const auto privateKey = "private-key";
     static const auto mnemonic = "mnemonic";
+    static const auto mnemonicSingle = "mnemonic-single";
 } // namespace TypeString
 
 void StoredKey::loadJson(const nlohmann::json& json) {
     if (json.count(CodingKeys::type) != 0 &&
         json[CodingKeys::type].get<std::string>() == TypeString::mnemonic) {
         type = StoredKeyType::mnemonicPhrase;
+    } else if(json.count(CodingKeys::type) != 0 &&
+               json[CodingKeys::type].get<std::string>() == TypeString::mnemonicSingle) {
+        type = StoredKeyType::mnemonicSingle;
     } else {
         type = StoredKeyType::privateKey;
     }
@@ -386,6 +409,9 @@ nlohmann::json StoredKey::json() const {
         break;
     case StoredKeyType::mnemonicPhrase:
         j[CodingKeys::type] = TypeString::mnemonic;
+        break;
+    case StoredKeyType::mnemonicSingle:
+        j[CodingKeys::type] = TypeString::mnemonicSingle;
         break;
     }
 
