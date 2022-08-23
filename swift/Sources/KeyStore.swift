@@ -194,6 +194,28 @@ public final class KeyStore {
         return wallet
     }
 
+    /// Imports a wallet.
+    ///
+    /// - Parameters:
+    ///   - mnemonic: wallet's mnemonic phrase
+    ///   - encryptPassword: password to use for encrypting
+    ///   - coin: coin to add
+    /// - Returns: new account
+    public func importSingle(mnemonic: String, name: String, encryptPassword: String, coin: CoinType) throws -> Wallet {
+        guard let key = StoredKey.importHDWalletSingle(mnemonic: mnemonic, name: name, password: Data(encryptPassword.utf8), coin: coin) else {
+            throw Error.invalidMnemonic
+        }
+        let url = makeAccountURL()
+        let wallet = Wallet(keyURL: url, key: key)
+        _ = try wallet.getAccount(password: encryptPassword, coin: coin)
+
+        wallets.append(wallet)
+
+        try save(wallet: wallet)
+
+        return wallet
+    }
+    
     /// Exports a wallet as JSON data.
     ///
     /// - Parameters:
