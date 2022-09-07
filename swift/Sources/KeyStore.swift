@@ -87,8 +87,6 @@ public final class KeyStore {
         }
         wallets.append(wallet)
 
-        try save(wallet: wallet)
-
         return wallet
     }
 
