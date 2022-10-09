@@ -22,3 +22,9 @@ TWString* _Nonnull TWMnemonicSuggest(TWString *_Nonnull prefix) {
     auto result = Mnemonic::suggest(std::string(TWStringUTF8Bytes(prefix)));
     return TWStringCreateWithUTF8Bytes(result.c_str());
 }
+
+TWString* _Nonnull TWMnemonicWordList() {
+    auto result = Mnemonic::wordList();
+    return TWStringCreateWithUTF8Bytes(result.c_str());
+}
+

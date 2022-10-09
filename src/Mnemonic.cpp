@@ -76,4 +76,20 @@ std::string Mnemonic::suggest(const std::string& prefix) {
     return resultString;
 }
 
+std::string Mnemonic::wordList() {
+    std::vector<std::string> result;
+    for (const char* const* word = mnemonicWordlist(); *word != nullptr; ++word) {
+        result.emplace_back(*word);
+    }
+    // convert results to one string
+    std::string resultString;
+    for (auto& word: result) {
+        if (resultString.length() > 0) {
+            resultString += " ";
+        }
+        resultString += word;
+    }
+    return resultString;
+}
+
 } // namespace TW

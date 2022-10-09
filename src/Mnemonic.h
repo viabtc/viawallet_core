@@ -40,6 +40,9 @@ public:
     // - 'a'-> 'abandon ability able about above absent absorb abstract absurd abuse'
     static std::string suggest(const std::string& prefix);
 
+    /// Return all mnemonic word list
+    static std::string wordList();
+
     static const int SuggestMaxCount;
 };
 

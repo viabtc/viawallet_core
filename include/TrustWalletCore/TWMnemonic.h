@@ -26,4 +26,8 @@ bool TWMnemonicIsValidWord(TWString *_Nonnull word);
 TW_EXPORT_STATIC_METHOD
 TWString* _Nonnull TWMnemonicSuggest(TWString *_Nonnull prefix);
 
+/// Return all mnemonic word
+TW_EXPORT_STATIC_METHOD
+TWString* _Nonnull TWMnemonicWordList();
+
 TW_EXTERN_C_END
