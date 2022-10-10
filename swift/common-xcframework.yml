@@ -4,7 +4,7 @@ options:
   createIntermediateGroups: true
   platform: [iOS, macOS]
   deploymentTarget:
-    iOS: 12.0
+    iOS: 11.0
     macOS: 10.14
 settings:
   base:
@@ -19,7 +19,7 @@ targets:
     type: framework.static
     platform: [iOS, macOS]
     deploymentTarget: 
-      iOS: 12.0
+      iOS: 11.0
       macOS: 10.14
     groups:
       - ${platform}
@@ -53,7 +53,7 @@ targets:
     type: library.static
     platform: [iOS, macOS]
     deploymentTarget:
-      iOS: 12.0
+      iOS: 11.0
       macOS: 10.14
     sources:
       - trezor-crypto/crypto/bignum.c
@@ -120,7 +120,7 @@ targets:
     type: library.static
     platform: [iOS, macOS]
     deploymentTarget:
-      iOS: 12.0
+      iOS: 11.0
       macOS: 10.14
     sources:
       - protobuf/google/protobuf/any.cc

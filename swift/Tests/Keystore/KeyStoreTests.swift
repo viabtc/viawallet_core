@@ -365,7 +365,7 @@ class KeyStoreTests: XCTestCase {
             Watch(coin: .ethereum, name: "name", address: "0x008AeEda4D805471dF9b2A5B0f38A0C3bCBA786b", xpub: nil)
         ])
         let wallet = try keyStore.createWallet(name: "", password: "", coins: [.ethereum, .bitcoin])
-
+        _ = wallet.key.store(path: wallet.keyURL.path)
         XCTAssertTrue(fileManager.fileExists(atPath: dir.appendingPathComponent("watches.json").path))
         XCTAssertTrue(fileManager.fileExists(atPath: wallet.keyURL.path))
     }
