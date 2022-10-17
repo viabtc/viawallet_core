@@ -74,6 +74,7 @@ class CoinAddressDerivationTests: XCTestCase {
                      .smartChain,
                      .polygon,
                      .optimism,
+                     .zksync,
                      .arbitrum,
                      .ecochain,
                      .avalancheCChain,
@@ -89,7 +90,10 @@ class CoinAddressDerivationTests: XCTestCase {
                      .evmos,
                      .moonriver,
                      .moonbeam,
+                     .kavaEvm,
                      .klaytn,
+                     .meter,
+                     .okxchain,
                      .coinExSmartChain:
                     let expectedResult = "0x8f348F300873Fd5DA36950B2aC75a26584584feE"
                     assertCoinDerivation(coin, expectedResult, derivedAddress, address)
@@ -137,6 +141,9 @@ class CoinAddressDerivationTests: XCTestCase {
                     assertCoinDerivation(coin, expectedResult, derivedAddress, address)
                 case .neo:
                     let expectedResult = "AT6w7PJvwPcSqHvtbNBY2aHPDv12eW5Uuf"
+                    assertCoinDerivation(coin, expectedResult, derivedAddress, address)
+                case .nervos:
+                    let expectedResult = "ckb1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqdtyq04tvp02wectaumxn0664yw2jd53lqk4mxg3";
                     assertCoinDerivation(coin, expectedResult, derivedAddress, address)
                 case .nimiq:
                     let expectedResult = "NQ76 7AVR EHDA N05U X7SY XB14 XJU7 8ERV GM6H"
@@ -244,14 +251,17 @@ class CoinAddressDerivationTests: XCTestCase {
                 case .nativeEvmos:
                     let expectedResult = "evmos13u6g7vqgw074mgmf2ze2cadzvkz9snlwstd20d"
                     assertCoinDerivation(coin, expectedResult, derivedAddress, address)
+                case .everscale:
+                    let expectedResult = "0:0c39661089f86ec5926ea7d4ee4223d634ba4ed6dcc2e80c7b6a8e6d59f79b04";
+                    assertCoinDerivation(coin, expectedResult, derivedAddress, address)
+                case .aptos:
+                    let expectedResult = "0x07968dab936c1bad187c60ce4082f307d030d780e91e694ae03aef16aba73f30";
+                    assertCoinDerivation(coin, expectedResult, derivedAddress, address)
                 case .freecash:
                     let expectedResult = "FU5EChYVrn1zYpoYL6WXeyawCy5y9iZq6k"
                     assertCoinDerivation(coin, expectedResult, derivedAddress, address)
                 case .irisnet:
                     let expectedResult = "iaa142j9u5eaduzd7faumygud6ruhdwme98q9x2g5z"
-                    assertCoinDerivation(coin, expectedResult, derivedAddress, address)
-                case .nervosCKB:
-                    let expectedResult = "ckb1qyq2kgql2kcz75anshmekdxl442gu4ymfr7qg53gkl"
                     assertCoinDerivation(coin, expectedResult, derivedAddress, address)
                 case .ergo:
                     let expectedResult = "9gqy7gkUt6wati2AT5hXPiWeRSe5F74J2o34oWxJxgnkqiuUuAQ"

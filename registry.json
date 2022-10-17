@@ -18,6 +18,12 @@
         "path": "m/44'/0'/0'/0/0",
         "xpub": "xpub",
         "xprv": "xprv"
+      },
+      {
+        "name": "testnet",
+        "path": "m/84'/1'/0'/0/0",
+        "xpub": "zpub",
+        "xprv": "zprv"
       }
     ],
     "curve": "secp256k1",
@@ -394,12 +400,43 @@
     }
   },
   {
+    "id": "aptos",
+    "name": "Aptos",
+    "displayName": "Aptos",
+    "coinId": 637,
+    "symbol": "APT",
+    "decimals": 8,
+    "chainId": "1",
+    "blockchain": "Aptos",
+    "derivation": [
+      {
+        "path": "m/44'/637'/0'/0'/0'"
+      }
+    ],
+    "curve": "ed25519",
+    "publicKeyType": "ed25519",
+    "explorer": {
+      "url": "https://explorer.aptoslabs.com",
+      "txPath": "/txn/",
+      "accountPath": "/account/",
+      "sampleTx": "91424546",
+      "sampleAccount": "0x6af7d07b8a541913dfa87a9f99628faa255c70241ef9ebd9b82a7e715ee13108"
+    },
+    "info": {
+      "url": "https://aptoslabs.com/",
+      "source": "https://github.com/aptos-labs/aptos-core",
+      "rpc": "https://fullnode.devnet.aptoslabs.com",
+      "documentation": "https://fullnode.devnet.aptoslabs.com/v1/spec#/"
+    }
+  },
+  {
     "id": "cosmos",
     "name": "Cosmos",
     "displayName": "Cosmos Hub",
     "coinId": 118,
     "symbol": "ATOM",
     "decimals": 6,
+    "chainId": "cosmoshub-4",
     "blockchain": "Cosmos",
     "derivation": [
       {
@@ -410,7 +447,6 @@
     "publicKeyType": "secp256k1",
     "hrp": "cosmos",
     "addressHasher": "sha256ripemd",
-    "chainId": "cosmoshub-4",
     "explorer": {
       "url": "https://mintscan.io/cosmos",
       "txPath": "/txs/",
@@ -858,6 +894,33 @@
     }
   },
   {
+    "id": "nervos",
+    "name": "Nervos",
+    "coinId": 309,
+    "symbol": "CKB",
+    "decimals": 8,
+    "blockchain": "Nervos",
+    "derivation": [
+      {
+        "path": "m/44'/309'/0'/0/0"
+      }
+    ],
+    "curve": "secp256k1",
+    "publicKeyType": "secp256k1",
+    "hrp": "ckb",
+    "explorer": {
+      "url": "https://explorer.nervos.org",
+      "txPath": "/transaction/",
+      "accountPath": "/address/"
+    },
+    "info": {
+      "url": "https://nervos.org",
+      "source": "https://github.com/nervosnetwork/ckb",
+      "rpc": "https://mainnet.ckb.dev/rpc",
+      "documentation": "https://github.com/nervosnetwork/rfcs"
+    }
+  },
+  {
     "id": "zilliqa",
     "name": "Zilliqa",
     "coinId": 313,
@@ -969,6 +1032,34 @@
       "source": "https://github.com/paritytech/polkadot",
       "rpc": "",
       "documentation": "https://polkadot.js.org/api/substrate/rpc.html"
+    }
+  },
+  {
+    "id": "everscale",
+    "name": "Everscale",
+    "coinId": 396,
+    "symbol": "EVER",
+    "decimals": 9,
+    "blockchain": "Everscale",
+    "derivation": [
+      {
+        "path": "m/44'/396'/0'/0/0"
+      }
+    ],
+    "curve": "ed25519",
+    "publicKeyType": "ed25519",
+    "explorer": {
+      "url": "https://everscan.io",
+      "txPath": "/transactions/",
+      "accountPath": "/accounts/",
+      "sampleTx": "781238b2b0d15cd4cd2e2a0a142753750cd5e1b2c8b506fcede75a90e02f1268",
+      "sampleAccount": "0:d2bf59964a05dee84a0dd1ddc0ad83ba44d49719cf843d689dc8b726d0fb59d8"
+    },
+    "info": {
+      "url": "https://everscale.network/",
+      "source": "https://github.com/tonlabs/evernode-ds",
+      "rpc": "https://evercloud.dev",
+      "documentation": "https://docs.everos.dev/evernode-platform/products/evercloud/get-started"
     }
   },
   {
@@ -1085,6 +1176,7 @@
     "symbol": "KAVA",
     "decimals": 6,
     "blockchain": "Cosmos",
+    "chainId": "kava_2222-10",
     "derivation": [
       {
         "path": "m/44'/459'/0'/0/0"
@@ -1094,7 +1186,6 @@
     "publicKeyType": "secp256k1",
     "hrp": "kava",
     "addressHasher": "sha256ripemd",
-    "chainId": "kava_2222-10",
     "explorer": {
       "url": "https://mintscan.io/kava",
       "txPath": "/txs/",
@@ -1175,6 +1266,7 @@
     "coinId": 494,
     "decimals": 6,
     "blockchain": "Cosmos",
+    "chainId": "laozi-mainnet",
     "derivation": [
       {
         "path": "m/44'/494'/0'/0/0"
@@ -1575,8 +1667,8 @@
         "path": "m/1852'/1815'/0'/0/0"
       }
     ],
-    "curve": "ed25519Extended",
-    "publicKeyType": "ed25519Extended",
+    "curve": "ed25519ExtendedCardano",
+    "publicKeyType": "ed25519Cardano",
     "hrp": "addr",
     "explorer": {
       "url": "https://cardanoscan.io",
@@ -1852,7 +1944,8 @@
       "rpc": "https://data-seed-prebsc-1-s1.binance.org:8545",
       "documentation": "https://eth.wiki/json-rpc/API"
     },
-    "deprecated": true
+    "deprecated": true,
+    "testFolderName" : "Binance"
   },
   {
     "id": "smartchain",
@@ -1884,7 +1977,8 @@
       "source": "https://github.com/binance-chain/bsc",
       "rpc": "https://bsc-dataseed1.binance.org",
       "documentation": "https://eth.wiki/json-rpc/API"
-    }
+    },
+    "testFolderName" : "Binance"
   },
   {
     "id": "polygon",
@@ -1913,7 +2007,7 @@
     "info": {
       "url": "https://polygon.technology",
       "source": "https://github.com/maticnetwork/contracts",
-      "rpc": "https://rpc-mainnet.matic.network",
+      "rpc": "https://polygon-rpc.com",
       "documentation": "https://eth.wiki/json-rpc/API"
     }
   },
@@ -1978,6 +2072,36 @@
     }
   },
   {
+    "id": "zksync",
+    "name": "Zksync",
+    "displayName": "zkSync v2",
+    "coinId": 10000280,
+    "slip44": 60,
+    "symbol": "ETH",
+    "decimals": 18,
+    "blockchain": "Ethereum",
+    "derivation": [
+      {
+        "path": "m/44'/60'/0'/0/0"
+      }
+    ],
+    "curve": "secp256k1",
+    "publicKeyType": "secp256k1Extended",
+    "chainId": "280",
+    "addressHasher": "keccak256",
+    "explorer": {
+      "url": "https://zksync2-testnet.zkscan.io",
+      "txPath": "/tx/",
+      "accountPath": "/address/"
+    },
+    "info": {
+      "url": "https://portal.zksync.io/",
+      "source": "https://github.com/matter-labs/zksync",
+      "rpc": "https://zksync2-testnet.zksync.dev",
+      "documentation": "https://v2-docs.zksync.io"
+    }
+  },
+  {
     "id": "arbitrum",
     "name": "Arbitrum",
     "coinId": 10042221,
@@ -2034,7 +2158,8 @@
       "source": "https://github.com/HuobiGroup/huobi-eco-chain",
       "rpc": "https://http-mainnet-node.huobichain.com",
       "documentation": "https://eth.wiki/json-rpc/API"
-    }
+    },
+    "testFolderName" : "ECO"
   },
   {
     "id": "avalanchec",
@@ -2054,7 +2179,7 @@
     "chainId": "43114",
     "addressHasher": "keccak256",
     "explorer": {
-      "url": "https://cchain.explorer.avax.network",
+      "url": "https://snowtrace.io",
       "txPath": "/tx/",
       "accountPath": "/address/",
       "sampleTx": "0x9243890b844219accefd8798271052f5a056453ec18984a56e81c92921330d54",
@@ -2065,7 +2190,8 @@
       "client": "https://github.com/ava-labs/avalanchego",
       "clientPublic": "https://api.avax.network/ext/bc/C/rpc",
       "clientDocs": "https://docs.avax.network/"
-    }
+    },
+    "testFolderName" : "Avalanche"
   },
   {
     "id": "xdai",
@@ -2318,6 +2444,36 @@
       "client": "https://github.com/crypto-org-chain/cronos",
       "clientPublic": "https://evm-cronos.crypto.org",
       "clientDocs": "https://eth.wiki/json-rpc/API"
+    },
+    "testFolderName" : "Cronos"
+  },
+  {
+    "id": "kavaevm",
+    "name": "KavaEvm",
+    "coinId": 10002222,
+    "slip44": 60,
+    "symbol": "KAVA",
+    "decimals": 18,
+    "blockchain": "Ethereum",
+    "derivation": [
+      {
+        "path": "m/44'/60'/0'/0/0"
+      }
+    ],
+    "curve": "secp256k1",
+    "publicKeyType": "secp256k1Extended",
+    "chainId": "2222",
+    "addressHasher": "keccak256",
+    "explorer": {
+      "url": "https://explorer.kava.io",
+      "txPath": "/tx/",
+      "accountPath": "/address/"
+    },
+    "info": {
+      "url": "https://www.kava.io/",
+      "client": "https://github.com/Kava-Labs/kava",
+      "documentation": "https://docs.kava.io/docs/ethereum/overview/",
+      "rpc": "https://evm.kava.io"
     }
   },
   {
@@ -2349,7 +2505,8 @@
       "source": "https://github.com/smartbch/smartbch",
       "rpc": "https://smartbch.fountainhead.cash/mainnet",
       "documentation": "https://github.com/smartbch/docs/blob/main/developers-guide/jsonrpc.md"
-    }
+    },
+    "testFolderName" : "Bitcoin"
   },
   {
     "id": "kcc",
@@ -2380,7 +2537,8 @@
       "source": "https://github.com/kcc-community/kcc",
       "rpc": "https://rpc-mainnet.kcc.network",
       "documentation": "https://docs.kcc.io/#/en-us/"
-    }
+    },
+    "testFolderName" : "KuCoinCommunityChain"
   },
   {
     "id": "boba",
@@ -2515,6 +2673,7 @@
     "symbol": "EVMOS",
     "decimals": 18,
     "blockchain": "Cosmos",
+    "chainId": "evmos_9001-2",
     "derivation": [
       {
         "path": "m/44'/60'/0'/0/0"
@@ -2622,6 +2781,67 @@
       "url": "https://klaytn.foundation",
       "rpc": "https://public-node-api.klaytnapi.com/v1/cypress",
       "documentation": "https://docs.klaytn.foundation"
+    }
+  },
+  {
+    "id": "meter",
+    "name": "Meter",
+    "coinId": 18000,
+    "slip44": 60,
+    "chainId": "82",
+    "symbol": "MTR",
+    "decimals": 18,
+    "blockchain": "Ethereum",
+    "derivation": [
+      {
+        "path": "m/44'/60'/0'/0/0"
+      }
+    ],
+    "curve": "secp256k1",
+    "publicKeyType": "secp256k1Extended",
+    "explorer": {
+      "url": "https://scan.meter.io",
+      "txPath": "/tx/",
+      "accountPath": "/address/",
+      "sampleTx": "0x8ea268d5dbb40217c763b800a75fc063cf28b56f40f2bc69dc043f5c4bbdc144",
+      "sampleAccount": "0xe5a273954d24eddf9ae9ea4cef2347d584cfa3dd"
+    },
+    "info": {
+      "url": "https://meter.io/",
+      "source": "https://github.com/meterio/meter-pov",
+      "rpc": "https://rpc.meter.io",
+      "documentation": "https://docs.meter.io/"
+    }
+  },
+  {
+    "id": "okc",
+    "name": "OKX Chain",
+    "coinId": 996,
+    "slip44": 60,
+    "chainId": "66",
+    "symbol": "OKT",
+    "decimals": 18,
+    "blockchain": "Ethereum",
+    "derivation": [
+      {
+        "path": "m/44'/60'/0'/0/0"
+      }
+    ],
+    "curve": "secp256k1",
+    "publicKeyType": "secp256k1Extended",
+    "addressHasher": "keccak256",
+    "explorer": {
+      "url": "https://www.oklink.com/en/okc",
+      "txPath": "/tx/",
+      "accountPath": "/address/",
+      "sampleTx": "0x46C3A947E8248570FBD28E4FE456CC8F80DFD90716533878FB67857B95FA3D37",
+      "sampleAccount": "0x074faafd0b20fad2efa115b8ed7e75993e580b85"
+    },
+    "info": {
+      "url": "https://www.okx.com/okc",
+      "source": "https://github.com/okex/exchain",
+      "rpc": "https://exchainrpc.okex.org",
+      "documentation": "https://okc-docs.readthedocs.io/en/latest"
     }
   },
   {
@@ -2838,37 +3058,6 @@
       "source": "https://github.com/conflux-chain",
       "rpc": "",
       "documentation": "https://github.com/Conflux-Chain/conflux-doc"
-    }
-  },
-  {
-    "id": "nervosckb",
-    "name": "Nervos CKB",
-    "coinId": 309,
-    "symbol": "CKB",
-    "decimals": 8,
-    "blockchain": "Nervos",
-    "derivation": [
-      {
-        "path": "m/44'/309'/0'/0/0",
-        "xpub": "xpub",
-        "xprv": "xprv"
-      }
-    ],
-    "curve": "secp256k1",
-    "publicKeyType": "secp256k1",
-    "hrp": "ckb",
-    "publicKeyHasher": "sha256ripemd",
-    "base58Hasher": "sha256d",
-    "explorer": {
-      "url": "https://explorer.nervos.org",
-      "txPath": "/transaction/",
-      "accountPath": "/address/"
-    },
-    "info": {
-      "url": "https://www.nervos.org",
-      "source": "https://github.com/nervosnetwork/neuron",
-      "rpc": "",
-      "documentation": "https://docs.nervos.org"
     }
   },
   {

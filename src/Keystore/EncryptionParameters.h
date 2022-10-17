@@ -9,10 +9,10 @@
 #include "AESParameters.h"
 #include "PBKDF2Parameters.h"
 #include "ScryptParameters.h"
-#include "../Data.h"
+#include "Data.h"
 #include <TrustWalletCore/TWStoredKeyEncryptionLevel.h>
 
-#include <boost/variant.hpp>
+#include <variant>
 #include <nlohmann/json.hpp>
 #include <string>
 
@@ -40,12 +40,12 @@ struct EncryptionParameters {
     AESParameters cipherParams = AESParameters();
 
     /// Key derivation function parameters.
-    boost::variant<ScryptParameters, PBKDF2Parameters> kdfParams = ScryptParameters();
+    std::variant<ScryptParameters, PBKDF2Parameters> kdfParams = ScryptParameters();
 
     EncryptionParameters() = default;
 
     /// Initializes with standard values.
-    EncryptionParameters(AESParameters cipherParams, boost::variant<ScryptParameters, PBKDF2Parameters> kdfParams)
+    EncryptionParameters(AESParameters cipherParams, std::variant<ScryptParameters, PBKDF2Parameters> kdfParams)
         : cipherParams(std::move(cipherParams))
         , kdfParams(std::move(kdfParams)) {}
 
@@ -82,7 +82,7 @@ public:
     Data encrypted;
 
     /// Message authentication code.
-    Data mac;
+    Data _mac;
 
     EncryptedPayload() = default;
 
@@ -90,7 +90,7 @@ public:
     EncryptedPayload(const EncryptionParameters& params, const Data& encrypted, const Data& mac)
         : params(std::move(params))
         , encrypted(std::move(encrypted))
-        , mac(std::move(mac)) {}
+        , _mac(std::move(mac)) {}
 
     /// Initializes by encrypting data with a password
     /// using standard values.

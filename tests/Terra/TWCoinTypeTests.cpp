@@ -1,19 +1,16 @@
-// Copyright © 2017-2020 Trust Wallet.
+// Copyright © 2017-2022 Trust Wallet.
 //
 // This file is part of Trust. The full Trust copyright notice, including
 // terms governing use, modification, and redistribution, is contained in the
 // file LICENSE at the root of the source code distribution tree.
-//
-// This is a GENERATED FILE, changes made here MAY BE LOST.
-// Generated one-time (codegen/bin/cointests)
-//
 
 #include "../interface/TWTestUtilities.h"
 #include <TrustWalletCore/TWCoinTypeConfiguration.h>
 #include <gtest/gtest.h>
 
+namespace TW::Cosmos::tests {
 
-TEST(TWTerraCoinType, TWCoinType) {
+TEST(TWTerraCoinType, TWCoinTypeClassic) {
     auto symbol = WRAPS(TWCoinTypeConfigurationGetSymbol(TWCoinTypeTerra));
     auto txId = WRAPS(TWStringCreateWithUTF8Bytes("D28D8AFC7CE89F2A22FA2DBF78D2C0A36E549BB830C4D9FA7459E3F723CA7182"));
     auto txUrl = WRAPS(TWCoinTypeConfigurationGetTransactionURL(TWCoinTypeTerra, txId.get()));
@@ -32,3 +29,5 @@ TEST(TWTerraCoinType, TWCoinType) {
     assertStringsEqual(id, "terra");
     assertStringsEqual(name, "Terra");
 }
+
+} // namespace TW::Cosmos::tests

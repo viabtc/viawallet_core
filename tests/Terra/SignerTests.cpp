@@ -4,7 +4,6 @@
 // terms governing use, modification, and redistribution, is contained in the
 // file LICENSE at the root of the source code distribution tree.
 
-#include "Coin.h"
 #include "HexCoding.h"
 #include "Base64.h"
 #include "proto/Cosmos.pb.h"
@@ -17,11 +16,9 @@
 #include <gtest/gtest.h>
 #include <google/protobuf/util/json_util.h>
 
-using namespace TW;
-using namespace TW::Cosmos;
+namespace TW::Cosmos::tests {
 
-
-TEST(TerraSigner, SignSendTx) {
+TEST(TerraClassicSigner, SignSendTx) {
     auto input = Proto::SigningInput();
     input.set_signing_mode(Proto::JSON);
     input.set_account_number(1037);
@@ -103,7 +100,7 @@ TEST(TerraSigner, SignSendTx) {
     EXPECT_EQ(output.error(), "");
 }
 
-TEST(TerraSigner, SignWasmTransferTxProtobuf_9FF3F0) {
+TEST(TerraClassicSigner, SignWasmTransferTxProtobuf_9FF3F0) {
     auto input = Proto::SigningInput();
     input.set_signing_mode(Proto::Protobuf);
     input.set_account_number(3407705);
@@ -179,7 +176,7 @@ TEST(TerraSigner, SignWasmTransferTxProtobuf_9FF3F0) {
     EXPECT_EQ(output.error(), "");
 }
 
-TEST(TerraSigner, SignWasmTransferTxJson_078E90) {
+TEST(TerraClassicSigner, SignWasmTransferTxJson_078E90) {
     auto input = Proto::SigningInput();
     input.set_signing_mode(Proto::JSON);
     input.set_account_number(3407705);
@@ -259,7 +256,7 @@ TEST(TerraSigner, SignWasmTransferTxJson_078E90) {
     EXPECT_EQ(output.error(), "");
 }
 
-TEST(TerraSigner, SignWasmGeneric_EC4F85) {
+TEST(TerraClassicSigner, SignWasmGeneric_EC4F85) {
     auto input = Proto::SigningInput();
     input.set_signing_mode(Proto::Protobuf);
     input.set_account_number(3407705);
@@ -305,8 +302,7 @@ TEST(TerraSigner, SignWasmGeneric_EC4F85) {
     EXPECT_EQ(output.error(), "");
 }
 
-
-TEST(TerraSigner, SignWasmGenericWithCoins_6651FC) {
+TEST(TerraClassicSigner, SignWasmGenericWithCoins_6651FC) {
     auto input = Proto::SigningInput();
     input.set_signing_mode(Proto::Protobuf);
     input.set_account_number(3407705);
@@ -356,7 +352,7 @@ TEST(TerraSigner, SignWasmGenericWithCoins_6651FC) {
     EXPECT_EQ(output.error(), "");
 }
 
-TEST(TerraSigner, SignWasmSendTxProtobuf) {
+TEST(TerraClassicSigner, SignWasmSendTxProtobuf) {
     auto input = Proto::SigningInput();
     input.set_signing_mode(Proto::Protobuf);
     input.set_account_number(3407705);
@@ -436,13 +432,13 @@ TEST(TerraSigner, SignWasmSendTxProtobuf) {
     EXPECT_EQ(output.error(), "");
 }
 
-TEST(TerraSigner, SignWasmTerraTransferPayload) {
+TEST(TerraClassicSigner, SignWasmTerraTransferPayload) {
     auto proto = Proto::Message_WasmTerraExecuteContractTransfer();
     proto.set_recipient_address("recipient=address");
     const auto amount = store(uint256_t(250000), 0);
     proto.set_amount(amount.data(), amount.size());
 
-    const auto payload = wasmTerraExecuteTransferPayload(proto);
+    const auto payload = Protobuf::wasmTerraExecuteTransferPayload(proto);
 
     assertJSONEqual(payload.dump(), R"(
         {
@@ -454,3 +450,5 @@ TEST(TerraSigner, SignWasmTerraTransferPayload) {
         }
     )");
 }
+
+} // namespace TW::Cosmos::tests

@@ -26,7 +26,7 @@ set(TW_WARNING_FLAGS
 )
 
 add_library(TrezorCrypto
-    crypto/bignum.c crypto/ecdsa.c crypto/curves.c crypto/secp256k1.c crypto/rand.c crypto/hmac.c crypto/bip32.c crypto/bip39.c crypto/pbkdf2.c crypto/base58.c crypto/base32.c
+    crypto/bignum.c crypto/ecdsa.c crypto/curves.c crypto/secp256k1.c crypto/rand.c crypto/hmac.c crypto/bip32.c crypto/bip39.c crypto/slip39.c crypto/pbkdf2.c crypto/base58.c crypto/base32.c
     crypto/address.c
     crypto/script.c
     crypto/ripemd160.c
@@ -56,8 +56,9 @@ add_library(TrezorCrypto
     crypto/groestl.c
     crypto/hmac_drbg.c
     crypto/rfc6979.c
-    crypto/schnorr.c
     crypto/shamir.c
+    crypto/zilliqa.c
+    crypto/cardano.c
     crypto/kadena/kadena_encrypted_sign.c
     crypto/mina/base10.c crypto/mina/libbase58.c crypto/mina/blake2b-ref.c crypto/mina/sha256.c crypto/mina/crypto.c crypto/mina/pasta_fp.c crypto/mina/pasta_fq.c crypto/mina/poseidon.c crypto/mina/utils.c crypto/mina/curve_checks.c crypto/mina/mina.c
 )
@@ -71,7 +72,7 @@ else ()
     endif()
 endif()
 
-target_compile_options(TrezorCrypto PRIVATE ${TW_WARNING_FLAGS} -Werror)
+target_compile_options(TrezorCrypto PRIVATE ${TW_WARNING_FLAGS} -Werror PUBLIC -Wno-deprecated-volatile)
 
 target_include_directories(TrezorCrypto
     PUBLIC

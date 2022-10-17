@@ -1,4 +1,4 @@
-// Copyright © 2017-2021 Trust Wallet.
+// Copyright © 2017-2022 Trust Wallet.
 //
 // This file is part of Trust. The full Trust copyright notice, including
 // terms governing use, modification, and redistribution, is contained in the
@@ -10,6 +10,7 @@
 
 TW_EXTERN_C_BEGIN
 
+/// Blockchain enum type
 TW_EXPORT_ENUM(uint32_t)
 enum TWBlockchain {
     TWBlockchainBitcoin = 0,
@@ -58,6 +59,8 @@ enum TWBlockchain {
     TWBlockchainKadena = 45,
     TWBlockchainHorizen = 46,
     TWBlockchainHandshake = 47,
+    TWBlockchainEverscale = 48,
+    TWBlockchainAptos = 49, // Aptos
 };
 
 TW_EXTERN_C_END

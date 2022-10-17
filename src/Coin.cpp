@@ -16,6 +16,7 @@
 #include "Aeternity/Entry.h"
 #include "Aion/Entry.h"
 #include "Algorand/Entry.h"
+#include "Aptos/Entry.h"
 #include "Binance/Entry.h"
 #include "Bitcoin/Entry.h"
 #include "Cardano/Entry.h"
@@ -36,11 +37,12 @@
 #include "NULS/Entry.h"
 #include "Nano/Entry.h"
 #include "Nebulas/Entry.h"
+#include "Nervos/Entry.h"
 #include "Nimiq/Entry.h"
 #include "Oasis/Entry.h"
 #include "Ontology/Entry.h"
 #include "Polkadot/Entry.h"
-#include "Ripple/Entry.h"
+#include "XRP/Entry.h"
 #include "Ronin/Entry.h"
 #include "Solana/Entry.h"
 #include "Stellar/Entry.h"
@@ -52,8 +54,8 @@
 #include "Waves/Entry.h"
 #include "Zcash/Entry.h"
 #include "Zilliqa/Entry.h"
+#include "Everscale/Entry.h"
 #include "ConfluxNetwork/Entry.h"
-#include "NervosCKB/Entry.h"
 #include "Ergo/Entry.h"
 #include "Horizen/Entry.h"
 #include "Handshake/Entry.h"
@@ -68,6 +70,7 @@ using namespace std;
 Aeternity::Entry aeternityDP;
 Aion::Entry aionDP;
 Algorand::Entry algorandDP;
+Aptos::Entry AptosDP;
 Binance::Entry binanceDP;
 Bitcoin::Entry bitcoinDP;
 Cardano::Entry cardanoDP;
@@ -104,8 +107,9 @@ VeChain::Entry vechainDP;
 Waves::Entry wavesDP;
 Zcash::Entry zcashDP;
 Zilliqa::Entry zilliqaDP;
+Nervos::Entry NervosDP;
+Everscale::Entry EverscaleDP;
 ConfluxNetwork::Entry confluxNetworkDP;
-NervosCKB::Entry nervosCKBDP;
 Ergo::Entry ergoDP;
 Horizen::Entry horizenDP;
 Handshake::Entry handshakeDP;
@@ -158,8 +162,10 @@ CoinEntry* coinDispatcher(TWCoinType coinType) {
         case TWBlockchainThorchain: entry = &thorchainDP; break;
         case TWBlockchainRonin: entry = &roninDP; break;
         case TWBlockchainKusama: entry = &kusamaDP; break;
+        case TWBlockchainNervos: entry = &NervosDP; break;
+        case TWBlockchainEverscale: entry = &EverscaleDP; break;
+        case TWBlockchainAptos: entry = &AptosDP; break;
         case TWBlockchainConflux: entry = &confluxNetworkDP; break;
-        case TWBlockchainNervos: entry = &nervosCKBDP; break;
         case TWBlockchainErgo: entry = &ergoDP; break;
         case TWBlockchainHorizen: entry = &horizenDP; break;
         case TWBlockchainHandshake: entry = &handshakeDP; break;
@@ -173,12 +179,12 @@ CoinEntry* coinDispatcher(TWCoinType coinType) {
     return entry;
 }
 
-const Derivation CoinInfo::derivationByName(TWDerivation name) const {
-    if (name == TWDerivationDefault && derivation.size() > 0) {
+const Derivation CoinInfo::derivationByName(TWDerivation nameIn) const {
+    if (nameIn == TWDerivationDefault && derivation.size() > 0) {
         return derivation[0];
     }
     for (auto deriv: derivation) {
-        if (deriv.name == name) {
+        if (deriv.name == nameIn) {
             return deriv;
         }
     }

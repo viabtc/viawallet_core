@@ -1,4 +1,4 @@
-// Copyright © 2017-2021 Trust Wallet.
+// Copyright © 2017-2022 Trust Wallet.
 //
 // This file is part of Trust. The full Trust copyright notice, including
 // terms governing use, modification, and redistribution, is contained in the
@@ -6,16 +6,14 @@
 
 #include "Cosmos/Address.h"
 #include "Cosmos/Signer.h"
-#include "proto/Cosmos.pb.h"
 #include "HexCoding.h"
-#include "PrivateKey.h"
 #include "PublicKey.h"
+#include "proto/Cosmos.pb.h"
 #include "../interface/TWTestUtilities.h"
 
 #include <gtest/gtest.h>
 
-using namespace TW;
-using namespace TW::Cosmos;
+namespace TW::Cosmos::tests {
 
 TEST(OsmosisSigner, SignTransfer_81B4) {
     auto input = Proto::SigningInput();
@@ -57,3 +55,5 @@ TEST(OsmosisSigner, SignTransfer_81B4) {
     EXPECT_EQ(output.error(), "");
     EXPECT_EQ(output.json(), "");
 }
+
+} // namespace TW::Cosmos::tests

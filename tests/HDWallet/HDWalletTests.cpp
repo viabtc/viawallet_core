@@ -21,37 +21,37 @@
 
 extern std::string TESTS_ROOT;
 
-namespace TW {
+namespace TW::HDWalletTests {
 
 const auto mnemonic1 = "ripple scissors kick mammal hire column oak again sun offer wealth tomorrow wagon turn fatal";
-const auto passphrase = "passphrase";
+const auto gPassphrase = "passphrase";
 
 TEST(HDWallet, generate) {
     {
-        HDWallet wallet = HDWallet(128, passphrase);
+        HDWallet wallet = HDWallet(128, gPassphrase);
         EXPECT_TRUE(Mnemonic::isValid(wallet.getMnemonic()));
-        EXPECT_EQ(wallet.getPassphrase(), passphrase);
-        EXPECT_EQ(wallet.getEntropy().size(), 16);
+        EXPECT_EQ(wallet.getPassphrase(), gPassphrase);
+        EXPECT_EQ(wallet.getEntropy().size(), 16ul);
     }
     {
-        HDWallet wallet = HDWallet(256, passphrase);
+        HDWallet wallet = HDWallet(256, gPassphrase);
         EXPECT_TRUE(Mnemonic::isValid(wallet.getMnemonic()));
-        EXPECT_EQ(wallet.getPassphrase(), passphrase);
-        EXPECT_EQ(wallet.getEntropy().size(), 32);
+        EXPECT_EQ(wallet.getPassphrase(), gPassphrase);
+        EXPECT_EQ(wallet.getEntropy().size(), 32ul);
     }
 }
 
 TEST(HDWallet, generateInvalid) {
-    EXPECT_EXCEPTION(HDWallet(64, passphrase), "Invalid strength");
-    EXPECT_EXCEPTION(HDWallet(129, passphrase), "Invalid strength");
-    EXPECT_EXCEPTION(HDWallet(512, passphrase), "Invalid strength");
+    EXPECT_EXCEPTION(HDWallet(64, gPassphrase), "Invalid strength");
+    EXPECT_EXCEPTION(HDWallet(129, gPassphrase), "Invalid strength");
+    EXPECT_EXCEPTION(HDWallet(512, gPassphrase), "Invalid strength");
 }
 
 TEST(HDWallet, createFromMnemonic) {
     {
-        HDWallet wallet = HDWallet(mnemonic1, passphrase);
+        HDWallet wallet = HDWallet(mnemonic1, gPassphrase);
         EXPECT_EQ(wallet.getMnemonic(), mnemonic1);
-        EXPECT_EQ(wallet.getPassphrase(), passphrase);
+        EXPECT_EQ(wallet.getPassphrase(), gPassphrase);
         EXPECT_EQ(hex(wallet.getEntropy()), "ba5821e8c356c05ba5f025d9532fe0f21f65d594");
         EXPECT_EQ(hex(wallet.getSeed()), "143cd5fc27ae46eb423efebc41610473f5e24a80f2ca2e2fa7bf167e537f58f4c68310ae487fce82e25bad29bab2530cf77fd724a5ebfc05a45872773d7ee2d6");
     }
@@ -67,37 +67,37 @@ TEST(HDWallet, createFromMnemonic) {
 TEST(HDWallet, entropyLength_createFromMnemonic) {
     {   // 12 words
         HDWallet wallet = HDWallet("oil oil oil oil oil oil oil oil oil oil oil oil", "");
-        EXPECT_EQ(wallet.getEntropy().size(), 16);
+        EXPECT_EQ(wallet.getEntropy().size(), 16ul);
         EXPECT_EQ(hex(wallet.getEntropy()), "99d33a674ce99d33a674ce99d33a674c");
     }
     {   // 12 words, from https://github.com/trezor/python-mnemonic/blob/master/vectors.json
         HDWallet wallet = HDWallet("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about", "");
-        EXPECT_EQ(wallet.getEntropy().size(), 16);
+        EXPECT_EQ(wallet.getEntropy().size(), 16ul);
         EXPECT_EQ(hex(wallet.getEntropy()), "00000000000000000000000000000000");
     }
     {   // 15 words
         HDWallet wallet = HDWallet("history step cheap card humble screen raise seek robot slot coral roof spoil wreck caution", "");
-        EXPECT_EQ(wallet.getEntropy().size(), 20);
+        EXPECT_EQ(wallet.getEntropy().size(), 20ul);
         EXPECT_EQ(hex(wallet.getEntropy()), "6c3aac9b9146ef832c4e18bb3980c0dddd25fc49");
     }
     {   // 18 words
         HDWallet wallet = HDWallet("caught hockey split gun symbol code payment copy broccoli silly shed secret stove tell citizen staff photo high", "");
-        EXPECT_EQ(wallet.getEntropy().size(), 24);
+        EXPECT_EQ(wallet.getEntropy().size(), 24ul);
         EXPECT_EQ(hex(wallet.getEntropy()), "246d8f48b3fdc65a2869801c791715614d6bbd8a56a0a3ad");
     }
     {   // 21 words
         HDWallet wallet = HDWallet("diary shine country alpha bridge coast loan hungry hip media sell crucial swarm share gospel lake visa coin dizzy physical basket", "");
-        EXPECT_EQ(wallet.getEntropy().size(), 28);
+        EXPECT_EQ(wallet.getEntropy().size(), 28ul);
         EXPECT_EQ(hex(wallet.getEntropy()), "3d58bcc40381bc59a0c37a6bf14f0d9a3db78a5933e5f4a5ad00d1f1");
     }
     {   // 24 words
         HDWallet wallet = HDWallet("poet spider smile swift roof pilot subject save hand diet ice universe over brown inspire ugly wide economy symbol shove episode patient plug swamp", "");
-        EXPECT_EQ(wallet.getEntropy().size(), 32);
+        EXPECT_EQ(wallet.getEntropy().size(), 32ul);
         EXPECT_EQ(hex(wallet.getEntropy()), "a73a3732edebbb49f5fdfe68c7b5c0f6e9de3a1d5760faa8c771e384bf4229b6");
     }
     {   // 24 words, from https://github.com/trezor/python-mnemonic/blob/master/vectors.json
         HDWallet wallet = HDWallet("letter advice cage absurd amount doctor acoustic avoid letter advice cage absurd amount doctor acoustic avoid letter advice cage absurd amount doctor acoustic bless", "");
-        EXPECT_EQ(wallet.getEntropy().size(), 32);
+        EXPECT_EQ(wallet.getEntropy().size(), 32ul);
         EXPECT_EQ(hex(wallet.getEntropy()), "8080808080808080808080808080808080808080808080808080808080808080");
     }
 }
@@ -116,31 +116,31 @@ TEST(HDWallet, createFromSpanishMnemonic) {
 }
 
 TEST(HDWallet, createFromMnemonicInvalid) {
-    EXPECT_EXCEPTION(HDWallet("THIS IS AN INVALID MNEMONIC", passphrase), "Invalid mnemonic");
-    EXPECT_EXCEPTION(HDWallet("", passphrase), "Invalid mnemonic");
+    EXPECT_EXCEPTION(HDWallet("THIS IS AN INVALID MNEMONIC", gPassphrase), "Invalid mnemonic");
+    EXPECT_EXCEPTION(HDWallet("", gPassphrase), "Invalid mnemonic");
 
-    EXPECT_EXCEPTION(HDWallet("", passphrase, false), "Invalid mnemonic");
-    HDWallet walletUnchecked = HDWallet("THIS IS AN INVALID MNEMONIC", passphrase, false);
+    EXPECT_EXCEPTION(HDWallet("", gPassphrase, false), "Invalid mnemonic");
+    HDWallet walletUnchecked = HDWallet("THIS IS AN INVALID MNEMONIC", gPassphrase, false);
 }
 
 TEST(HDWallet, createFromEntropy) {
     {
-        HDWallet wallet = HDWallet(parse_hex("ba5821e8c356c05ba5f025d9532fe0f21f65d594"), passphrase);
+        HDWallet wallet = HDWallet(parse_hex("ba5821e8c356c05ba5f025d9532fe0f21f65d594"), gPassphrase);
         EXPECT_EQ(wallet.getMnemonic(), mnemonic1);
     }
 }
 
 TEST(HDWallet, createFromEntropyInvalid) {
-    EXPECT_EXCEPTION(HDWallet(parse_hex(""), passphrase), "Invalid mnemonic data");
-    EXPECT_EXCEPTION(HDWallet(parse_hex("123456"), passphrase), "Invalid mnemonic data");
+    EXPECT_EXCEPTION(HDWallet(parse_hex(""), gPassphrase), "Invalid mnemonic data");
+    EXPECT_EXCEPTION(HDWallet(parse_hex("123456"), gPassphrase), "Invalid mnemonic data");
 }
 
 TEST(HDWallet, recreateFromEntropy) {
     {
-        HDWallet wallet1 = HDWallet(mnemonic1, passphrase);
+        HDWallet wallet1 = HDWallet(mnemonic1, gPassphrase);
         EXPECT_EQ(wallet1.getMnemonic(), mnemonic1);
         EXPECT_EQ(hex(wallet1.getEntropy()), "ba5821e8c356c05ba5f025d9532fe0f21f65d594");
-        HDWallet wallet2 = HDWallet(wallet1.getEntropy(), passphrase);
+        HDWallet wallet2 = HDWallet(wallet1.getEntropy(), gPassphrase);
         EXPECT_EQ(wallet2.getMnemonic(), wallet1.getMnemonic());
         EXPECT_EQ(wallet2.getEntropy(), wallet1.getEntropy());
         EXPECT_EQ(wallet2.getSeed(), wallet1.getSeed());
@@ -297,11 +297,11 @@ TEST(HDWallet, getExtendedPrivateKey) {
     EXPECT_EQ(extPubKey1, "zprvAcwsTZNaY1f7rfwsy5GseSDStYBrxwtsBZDkb3iyuQUs4NF6n58BuH7Xj54RuaSCWtU5CiQzuYQgFgqr1HokgKcVAeGeXokhJUAJeP3VmvY");
 
     // explicitly specify default account=0
-    const auto extPubKey2 = wallet.getExtendedPrivateKeyAccount(purpose, coin, hdVersion, 0);
+    const auto extPubKey2 = wallet.getExtendedPrivateKeyAccount(purpose, coin, TWDerivationDefault, hdVersion, 0);
     EXPECT_EQ(extPubKey2, "zprvAcwsTZNaY1f7rfwsy5GseSDStYBrxwtsBZDkb3iyuQUs4NF6n58BuH7Xj54RuaSCWtU5CiQzuYQgFgqr1HokgKcVAeGeXokhJUAJeP3VmvY");
 
     // custom account=1
-    const auto extPubKey3 = wallet.getExtendedPrivateKeyAccount(purpose, coin, hdVersion, 1);
+    const auto extPubKey3 = wallet.getExtendedPrivateKeyAccount(purpose, coin, TWDerivationDefault, hdVersion, 1);
     EXPECT_EQ(extPubKey3, "zprvAcwsTZNaY1f7sifgNNgdNa4P9mPtyg3zRVgwkx2qF9Sn7F255MzP6Zyumn6bgV5xuoS8ZrDvjzE7APcFSacXdzFYpGvyybb1bnAoh5nHxpn");
 }
 
@@ -310,17 +310,18 @@ TEST(HDWallet, getExtendedPublicKey) {
     const auto purpose = TWPurposeBIP44;
     const auto coin = TWCoinTypeBitcoin;
     const auto hdVersion = TWHDVersionZPUB;
+    const auto derivation = TWDerivationDefault;
     
     // default
     const auto extPubKey1 = wallet.getExtendedPublicKey(purpose, coin, hdVersion);
     EXPECT_EQ(extPubKey1, "zpub6qwDs4uUNPDR5A2M56ot1aABSa2MNQciYn9MPS8bTk1qwAaFKcSST5S1aLidvPp9twqpaumG7vikR2vHhBXjp5oGgHyMvWK3AtUkfeEgyns");
 
     // explicitly specify default account=0
-    const auto extPubKey2 = wallet.getExtendedPublicKeyAccount(purpose, coin, hdVersion, 0);
+    const auto extPubKey2 = wallet.getExtendedPublicKeyAccount(purpose, coin, derivation, hdVersion, 0);
     EXPECT_EQ(extPubKey2, "zpub6qwDs4uUNPDR5A2M56ot1aABSa2MNQciYn9MPS8bTk1qwAaFKcSST5S1aLidvPp9twqpaumG7vikR2vHhBXjp5oGgHyMvWK3AtUkfeEgyns");
 
     // custom account=1
-    const auto extPubKey3 = wallet.getExtendedPublicKeyAccount(purpose, coin, hdVersion, 1);
+    const auto extPubKey3 = wallet.getExtendedPublicKeyAccount(purpose, coin, derivation, hdVersion, 1);
     EXPECT_EQ(extPubKey3, "zpub6qwDs4uUNPDR6Ck9UQDdji17hoEPP8mqnicYZLSSoUykz3MDcuJdeNJPd3BozqEafeLZkegWqzAvkgA4JZZ5tTN2rDpGKfk54essyfx1eZP");
 }
 
@@ -395,5 +396,42 @@ TEST(HDWallet, Derive_XpubPub_vs_PrivPub) {
         EXPECT_EQ(address2.string(), expectedAddress2);
     }
 }
+
+TEST(HDWallet, getKeyByCurve) {
+    const auto derivPath = "m/44'/539'/0'/0/0";
+    HDWallet wallet = HDWallet(mnemonic1, "");
+    {
+        const auto privateKey = wallet.getKeyByCurve(TWCurveSECP256k1, DerivationPath(derivPath));
+        EXPECT_EQ(hex(privateKey.bytes), "4fb8657d6464adcaa086d6758d7f0b6b6fc026c98dc1671fcc6460b5a74abc62");
+    }
+    {
+        const auto privateKey = wallet.getKeyByCurve(TWCurveNIST256p1, DerivationPath(derivPath));
+        EXPECT_EQ(hex(privateKey.bytes), "a13df52d5a5b438bbf921bbf86276e4347fe8e2f2ed74feaaee12b77d6d26f86");
+    }
+}
+
+TEST(HDWallet, getKey) {
+    const auto derivPath = "m/44'/539'/0'/0/0";
+    HDWallet wallet = HDWallet(mnemonic1, "");
+    {
+        const auto privateKey = wallet.getKey(TWCoinTypeBitcoin, DerivationPath(derivPath));
+        EXPECT_EQ(hex(privateKey.bytes), "4fb8657d6464adcaa086d6758d7f0b6b6fc026c98dc1671fcc6460b5a74abc62");
+    }
+    {
+        const auto privateKey = wallet.getKey(TWCoinTypeNEO, DerivationPath(derivPath));
+        EXPECT_EQ(hex(privateKey.bytes), "a13df52d5a5b438bbf921bbf86276e4347fe8e2f2ed74feaaee12b77d6d26f86");
+    }
+}
+
+TEST(HDWallet, AptosKey) {
+    const auto derivPath = "m/44'/637'/0'/0'/0'";
+    HDWallet wallet = HDWallet(mnemonic1, "");
+    {
+        const auto privateKey = wallet.getKey(TWCoinTypeAptos, DerivationPath(derivPath));
+        EXPECT_EQ(hex(privateKey.bytes), "7f2634c0e2414a621e96e39c41d09021700cee12ee43328ed094c5580cd0bd6f");
+        EXPECT_EQ(hex(privateKey.getPublicKey(TWPublicKeyTypeED25519).bytes), "633e5c7e355bdd484706436ce1f06fdf280bd7c2229a7f9b6489684412c6967c");
+    }
+}
+
 
 } // namespace

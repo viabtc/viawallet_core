@@ -44,6 +44,11 @@ CONFIDENTIAL struct {
   uint8_t seed[512 / 8];
 } bip39_cache[BIP39_CACHE_SIZE];
 
+void bip39_cache_clear(void) {
+  memzero(bip39_cache, sizeof(bip39_cache));
+  bip39_cache_index = 0;
+}
+
 #endif
 
 // [wallet-core] Added output buffer
@@ -275,7 +280,7 @@ void seed_from_pass(const uint8_t *entropy, size_t len, const char *passphrase,
 
 // binary search for finding the word in the wordlist
 int mnemonic_find_word(const char *word) {
-  int lo = 0, hi = BIP39_WORDS - 1;
+  int lo = 0, hi = BIP39_WORD_COUNT - 1;
   while (lo <= hi) {
     int mid = lo + (hi - lo) / 2;
     int cmp = strcmp(word, wordlist[mid]);
@@ -303,7 +308,7 @@ const char *mnemonic_complete_word(const char *prefix, int len) {
 }
 
 const char *mnemonic_get_word(int index) {
-  if (index >= 0 && index < BIP39_WORDS) {
+  if (index >= 0 && index < BIP39_WORD_COUNT) {
     return wordlist[index];
   } else {
     return NULL;

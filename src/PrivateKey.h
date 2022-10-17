@@ -1,4 +1,4 @@
-// Copyright © 2017-2020 Trust Wallet.
+// Copyright © 2017-2022 Trust Wallet.
 //
 // This file is part of Trust. The full Trust copyright notice, including
 // terms governing use, modification, and redistribution, is contained in the
@@ -9,6 +9,7 @@
 #include "Data.h"
 #include "PublicKey.h"
 
+#include <TrustWalletCore/TWPrivateKeyType.h>
 #include <TrustWalletCore/TWCurve.h>
 
 namespace TW {
@@ -16,17 +17,17 @@ namespace TW {
 class PrivateKey {
   public:
     /// The number of bytes in a private key.
-    static const size_t size = 32;
+    static const size_t _size = 32;
     /// The number of bytes in an extended private key.
     static const size_t extendedSize = 3 * 32;
-    /// The number of bytes in a double extended key (used by Cardano)
-    static const size_t doubleExtendedSize = 2 * 3 * 32;
+    /// The number of bytes in a Cardano key (two extended ed25519 keys + chain code)
+    static const size_t cardanoKeySize = 2 * 3 * 32;
     /// The number of bytes in an sr25519 private key.
     static const size_t sr25519Size = 96;
 
     /// The private key bytes:
     /// - common case: 'size' bytes
-    /// - double extended case: 'doubleExtendedSize' bytes, key+extension+chainCode+second+secondExtension+secondChainCode
+    /// - double extended case: 'cardanoKeySize' bytes, key+extension+chainCode+second+secondExtension+secondChainCode
     Data bytes;
 
     /// Optional members for extended keys and second extended keys
@@ -43,6 +44,9 @@ class PrivateKey {
     /// Determines if a collection of bytes and curve make a valid private key.
     static bool isValid(const Data& data, TWCurve curve);
 
+    // obtain private key type used by the curve/coin
+    static TWPrivateKeyType getType(TWCurve curve) noexcept;
+
     /// get the final key.
     static Data transform(const Data& data, TWCurve curve);
 
@@ -52,7 +56,7 @@ class PrivateKey {
     /// Initializes a private key from a string of bytes.
     explicit PrivateKey(const std::string& data) : PrivateKey(TW::data(data)) {}
 
-    /// Initializes a double extended private key with two extended keys
+    /// Initializes a Cardano style key
     explicit PrivateKey(
         const Data& bytes1, const Data& extension1, const Data& chainCode1,
         const Data& bytes2, const Data& extension2, const Data& chainCode2);
@@ -81,10 +85,10 @@ class PrivateKey {
 
     /// Signs a digest using the given ECDSA curve. The result is encoded with
     /// DER.
-    Data signAsDER(const Data& digest, TWCurve curve) const;
+    Data signAsDER(const Data& digest) const;
 
-    /// Signs a digest using given ECDSA curve, returns schnorr signature
-    Data signSchnorr(const Data& message, TWCurve curve) const;
+    /// Signs a digest using given ECDSA curve, returns Zilliqa schnorr signature
+    Data signZilliqa(const Data& message) const;
 
     /// Signs a digest using given bch schnorr, returns schnorr signature
     Data signBCHSchnorr(const Data& message) const;

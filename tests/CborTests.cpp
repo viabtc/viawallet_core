@@ -10,21 +10,23 @@
 
 #include <gtest/gtest.h>
 
-using namespace TW;
-using namespace TW::Cbor;
+namespace TW::Cbor::tests {
+
 using namespace std;
 
+// clang-format off
 
 TEST(Cbor, EncSample1) {
     EXPECT_EQ(
-        "8205a26178186461793831", 
+        "8205a26178186461793831",
         hex(Encode::array({
-            Encode::uint(5),
-            Encode::map({
-                make_pair(Encode::string("x"), Encode::uint(100)),
-                make_pair(Encode::string("y"), Encode::negInt(50)),
-            }),
-        }).encoded())
+                Encode::uint(5),
+                Encode::map({
+                    make_pair(Encode::string("x"), Encode::uint(100)),
+                    make_pair(Encode::string("y"), Encode::negInt(50)),
+                }),
+            })
+        .encoded())
     );
 }
 
@@ -84,16 +86,14 @@ TEST(Cbor, EncNegInt) {
     EXPECT_EQ("-9", Decode(Encode::negInt(9).encoded()).dumpToString());
 }
 
-
 TEST(Cbor, EncString) {
     EXPECT_EQ("60", hex(Encode::string("").encoded()));
     EXPECT_EQ("6141", hex(Encode::string("A").encoded()));
     EXPECT_EQ("656162636465", hex(Encode::string("abcde").encoded()));
     Data long258(258);
     EXPECT_EQ(
-        "590102000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", 
-        hex(Encode::bytes(long258).encoded())
-    );
+        "590102000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        hex(Encode::bytes(long258).encoded()));
 
     EXPECT_EQ("\"abcde\"", Decode(Encode::string("abcde").encoded()).dumpToString());
     EXPECT_EQ("h\"6162636465\"", Decode(Encode::bytes(parse_hex("6162636465")).encoded()).dumpToString());
@@ -131,36 +131,36 @@ TEST(Cbor, EncInvalid) {
 }
 
 TEST(Cbor, DecInt) {
-    EXPECT_EQ(0, Decode(parse_hex("00")).getValue());
-    EXPECT_EQ(1, Decode(parse_hex("01")).getValue());
-    EXPECT_EQ(10, Decode(parse_hex("0a")).getValue());
-    EXPECT_EQ(23, Decode(parse_hex("17")).getValue());
-    EXPECT_EQ(24, Decode(parse_hex("1818")).getValue());
-    EXPECT_EQ(25, Decode(parse_hex("1819")).getValue());
-    EXPECT_EQ(26, Decode(parse_hex("181a")).getValue());
-    EXPECT_EQ(27, Decode(parse_hex("181b")).getValue());
-    EXPECT_EQ(28, Decode(parse_hex("181c")).getValue());
-    EXPECT_EQ(29, Decode(parse_hex("181d")).getValue());
-    EXPECT_EQ(30, Decode(parse_hex("181e")).getValue());
-    EXPECT_EQ(31, Decode(parse_hex("181f")).getValue());
-    EXPECT_EQ(32, Decode(parse_hex("1820")).getValue());
-    EXPECT_EQ(0x3f, Decode(parse_hex("183f")).getValue());
-    EXPECT_EQ(0x40, Decode(parse_hex("1840")).getValue());
-    EXPECT_EQ(100, Decode(parse_hex("1864")).getValue());
-    EXPECT_EQ(0x7f, Decode(parse_hex("187f")).getValue());
-    EXPECT_EQ(0x80, Decode(parse_hex("1880")).getValue());
-    EXPECT_EQ(0xff, Decode(parse_hex("18ff")).getValue());
-    EXPECT_EQ(0x100, Decode(parse_hex("190100")).getValue());
-    EXPECT_EQ(1000, Decode(parse_hex("1903e8")).getValue());
-    EXPECT_EQ(0x8765, Decode(parse_hex("198765")).getValue());
-    EXPECT_EQ(0xffff, Decode(parse_hex("19ffff")).getValue());
-    EXPECT_EQ(0x00010000, Decode(parse_hex("1a00010000")).getValue());
-    EXPECT_EQ(1000000, Decode(parse_hex("1a000f4240")).getValue());
-    EXPECT_EQ(0x00800000, Decode(parse_hex("1a00800000")).getValue());
+    EXPECT_EQ(0ul, Decode(parse_hex("00")).getValue());
+    EXPECT_EQ(1ul, Decode(parse_hex("01")).getValue());
+    EXPECT_EQ(10ul, Decode(parse_hex("0a")).getValue());
+    EXPECT_EQ(23ul, Decode(parse_hex("17")).getValue());
+    EXPECT_EQ(24ul, Decode(parse_hex("1818")).getValue());
+    EXPECT_EQ(25ul, Decode(parse_hex("1819")).getValue());
+    EXPECT_EQ(26ul, Decode(parse_hex("181a")).getValue());
+    EXPECT_EQ(27ul, Decode(parse_hex("181b")).getValue());
+    EXPECT_EQ(28ul, Decode(parse_hex("181c")).getValue());
+    EXPECT_EQ(29ul, Decode(parse_hex("181d")).getValue());
+    EXPECT_EQ(30ul, Decode(parse_hex("181e")).getValue());
+    EXPECT_EQ(31ul, Decode(parse_hex("181f")).getValue());
+    EXPECT_EQ(32ul, Decode(parse_hex("1820")).getValue());
+    EXPECT_EQ(0x3ful, Decode(parse_hex("183f")).getValue());
+    EXPECT_EQ(0x40ul, Decode(parse_hex("1840")).getValue());
+    EXPECT_EQ(100ul, Decode(parse_hex("1864")).getValue());
+    EXPECT_EQ(0x7ful, Decode(parse_hex("187f")).getValue());
+    EXPECT_EQ(0x80ul, Decode(parse_hex("1880")).getValue());
+    EXPECT_EQ(0xfful, Decode(parse_hex("18ff")).getValue());
+    EXPECT_EQ(0x100ul, Decode(parse_hex("190100")).getValue());
+    EXPECT_EQ(1000ul, Decode(parse_hex("1903e8")).getValue());
+    EXPECT_EQ(0x8765ul, Decode(parse_hex("198765")).getValue());
+    EXPECT_EQ(0xfffful, Decode(parse_hex("19ffff")).getValue());
+    EXPECT_EQ(0x00010000ul, Decode(parse_hex("1a00010000")).getValue());
+    EXPECT_EQ(1000000ul, Decode(parse_hex("1a000f4240")).getValue());
+    EXPECT_EQ(0x00800000ul, Decode(parse_hex("1a00800000")).getValue());
     EXPECT_EQ(0x87654321, Decode(parse_hex("1a87654321")).getValue());
     EXPECT_EQ(0xffffffff, Decode(parse_hex("1affffffff")).getValue());
-    EXPECT_EQ(0x0000000100000000, Decode(parse_hex("1b0000000100000000")).getValue());
-    EXPECT_EQ(1000000000000, Decode(parse_hex("1b000000e8d4a51000")).getValue());
+    EXPECT_EQ(0x0000000100000000ul, Decode(parse_hex("1b0000000100000000")).getValue());
+    EXPECT_EQ(1000000000000ul, Decode(parse_hex("1b000000e8d4a51000")).getValue());
     EXPECT_EQ(0x876543210fedcba9, Decode(parse_hex("1b876543210fedcba9")).getValue());
     EXPECT_EQ(0xffffffffffffffff, Decode(parse_hex("1bffffffffffffffff")).getValue());
 }
@@ -174,27 +174,27 @@ TEST(Cbor, DecMinortypeInvalid) {
 
 TEST(Cbor, DecArray3) {
     Decode cbor = Decode(parse_hex("83010203"));
-    EXPECT_EQ(3, cbor.getArrayElements().size());
+    EXPECT_EQ(3ul, cbor.getArrayElements().size());
 }
 
 TEST(Cbor, DecArrayNested) {
     Data d1 = parse_hex("8301820203820405");
     Decode cbor = Decode(d1);
-    EXPECT_EQ(3, cbor.getArrayElements().size());
+    EXPECT_EQ(3ul, cbor.getArrayElements().size());
 
-    EXPECT_EQ(1, cbor.getArrayElements()[0].getValue());
-    EXPECT_EQ(2, cbor.getArrayElements()[1].getArrayElements().size());
-    EXPECT_EQ(2, cbor.getArrayElements()[1].getArrayElements()[0].getValue());
-    EXPECT_EQ(3, cbor.getArrayElements()[1].getArrayElements()[1].getValue());
-    EXPECT_EQ(2, cbor.getArrayElements()[2].getArrayElements().size());
-    EXPECT_EQ(4, cbor.getArrayElements()[2].getArrayElements()[0].getValue());
-    EXPECT_EQ(5, cbor.getArrayElements()[2].getArrayElements()[1].getValue());
+    EXPECT_EQ(1ul, cbor.getArrayElements()[0].getValue());
+    EXPECT_EQ(2ul, cbor.getArrayElements()[1].getArrayElements().size());
+    EXPECT_EQ(2ul, cbor.getArrayElements()[1].getArrayElements()[0].getValue());
+    EXPECT_EQ(3ul, cbor.getArrayElements()[1].getArrayElements()[1].getValue());
+    EXPECT_EQ(2ul, cbor.getArrayElements()[2].getArrayElements().size());
+    EXPECT_EQ(4ul, cbor.getArrayElements()[2].getArrayElements()[0].getValue());
+    EXPECT_EQ(5ul, cbor.getArrayElements()[2].getArrayElements()[1].getValue());
 }
 
 TEST(Cbor, DecEncoded) {
     // sometimes getting the encoded version is useful during decoding too
     Decode cbor = Decode(parse_hex("8301820203820405"));
-    EXPECT_EQ(3, cbor.getArrayElements().size());
+    EXPECT_EQ(3ul, cbor.getArrayElements().size());
     EXPECT_EQ("820203", hex(cbor.getArrayElements()[1].encoded()));
     EXPECT_EQ("820405", hex(cbor.getArrayElements()[2].encoded()));
 }
@@ -208,14 +208,14 @@ TEST(Cbor, DecMemoryref) {
     // also do some new allocation
     Decode* dummy = new Decode(parse_hex("5555555555555555"));
     // work with the child references
-    EXPECT_EQ(2, elems.size());
-    EXPECT_EQ(3, elems[0].getArrayElements().size());
-    EXPECT_EQ(3, elems[1].getArrayElements().size());
+    EXPECT_EQ(2ul, elems.size());
+    EXPECT_EQ(3ul, elems[0].getArrayElements().size());
+    EXPECT_EQ(3ul, elems[1].getArrayElements().size());
     delete dummy;
 }
 
 TEST(Cbor, GetValue) {
-   EXPECT_EQ(5, Decode(parse_hex("05")).getValue());
+    EXPECT_EQ(5ul, Decode(parse_hex("05")).getValue());
 }
 
 TEST(Cbor, GetValueInvalid) {
@@ -257,13 +257,13 @@ TEST(Cbor, GetStringInvalidTooShort) {
 
 TEST(Cbor, ArrayEmpty) {
     Data cbor = Encode::array({}).encoded();
-    
+
     EXPECT_EQ("80", hex(cbor));
     EXPECT_TRUE(Decode(cbor).isValid());
     EXPECT_EQ("[]", Decode(cbor).dumpToString());
 
     Decode decode(cbor);
-    EXPECT_EQ(0, decode.getArrayElements().size());
+    EXPECT_EQ(0ul, decode.getArrayElements().size());
 }
 
 TEST(Cbor, Array3) {
@@ -272,16 +272,16 @@ TEST(Cbor, Array3) {
         Encode::uint(2),
         Encode::uint(3),
     }).encoded();
-    
+
     EXPECT_EQ("83010203", hex(cbor));
     EXPECT_TRUE(Decode(cbor).isValid());
     EXPECT_EQ("[1, 2, 3]", Decode(cbor).dumpToString());
 
     Decode decode(cbor);
-    EXPECT_EQ(3, decode.getArrayElements().size());
-    EXPECT_EQ(1, decode.getArrayElements()[0].getValue());
-    EXPECT_EQ(2, decode.getArrayElements()[1].getValue());
-    EXPECT_EQ(3, decode.getArrayElements()[2].getValue());
+    EXPECT_EQ(3ul, decode.getArrayElements().size());
+    EXPECT_EQ(1ul, decode.getArrayElements()[0].getValue());
+    EXPECT_EQ(2ul, decode.getArrayElements()[1].getValue());
+    EXPECT_EQ(3ul, decode.getArrayElements()[2].getValue());
 }
 
 TEST(Cbor, ArrayNested) {
@@ -296,21 +296,20 @@ TEST(Cbor, ArrayNested) {
             Encode::uint(5),
         }),
     }).encoded();
-    
+
     EXPECT_EQ("8301820203820405", hex(cbor));
     EXPECT_TRUE(Decode(cbor).isValid());
-    EXPECT_EQ("[1, [2, 3], [4, 5]]", 
-        Decode(cbor).dumpToString());
+    EXPECT_EQ("[1, [2, 3], [4, 5]]", Decode(cbor).dumpToString());
 
     Decode decode(cbor);
-    EXPECT_EQ(3, decode.getArrayElements().size());
-    EXPECT_EQ(1, decode.getArrayElements()[0].getValue());
-    EXPECT_EQ(2, decode.getArrayElements()[1].getArrayElements().size());
-    EXPECT_EQ(2, decode.getArrayElements()[1].getArrayElements()[0].getValue());
-    EXPECT_EQ(3, decode.getArrayElements()[1].getArrayElements()[1].getValue());
-    EXPECT_EQ(2, decode.getArrayElements()[2].getArrayElements().size());
-    EXPECT_EQ(4, decode.getArrayElements()[2].getArrayElements()[0].getValue());
-    EXPECT_EQ(5, decode.getArrayElements()[2].getArrayElements()[1].getValue());
+    EXPECT_EQ(3ul, decode.getArrayElements().size());
+    EXPECT_EQ(1ul, decode.getArrayElements()[0].getValue());
+    EXPECT_EQ(2ul, decode.getArrayElements()[1].getArrayElements().size());
+    EXPECT_EQ(2ul, decode.getArrayElements()[1].getArrayElements()[0].getValue());
+    EXPECT_EQ(3ul, decode.getArrayElements()[1].getArrayElements()[1].getValue());
+    EXPECT_EQ(2ul, decode.getArrayElements()[2].getArrayElements().size());
+    EXPECT_EQ(4ul, decode.getArrayElements()[2].getArrayElements()[0].getValue());
+    EXPECT_EQ(5ul, decode.getArrayElements()[2].getArrayElements()[1].getValue());
 }
 
 TEST(Cbor, Array25) {
@@ -319,28 +318,28 @@ TEST(Cbor, Array25) {
         elem.push_back(Encode::uint(i));
     }
     Data cbor = Encode::array(elem).encoded();
-    
+
     EXPECT_EQ("98190102030405060708090a0b0c0d0e0f101112131415161718181819", hex(cbor));
     EXPECT_TRUE(Decode(cbor).isValid());
     EXPECT_EQ("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]",
-        Decode(cbor).dumpToString());
+              Decode(cbor).dumpToString());
 
     Decode decode(cbor);
-    EXPECT_EQ(25, decode.getArrayElements().size());
-    for (int i = 1; i <= 25; ++i) {
+    EXPECT_EQ(25ul, decode.getArrayElements().size());
+    for (auto i = 1ul; i <= 25; ++i) {
         EXPECT_EQ(i, decode.getArrayElements()[i - 1].getValue());
     }
 }
 
 TEST(Cbor, MapEmpty) {
     Data cbor = Encode::map({}).encoded();
-    
+
     EXPECT_EQ("a0", hex(cbor));
     EXPECT_TRUE(Decode(cbor).isValid());
     EXPECT_EQ("{}", Decode(cbor).dumpToString());
 
     Decode decode(cbor);
-    EXPECT_EQ(0, decode.getMapElements().size());
+    EXPECT_EQ(0ul, decode.getMapElements().size());
 }
 
 TEST(Cbor, Map2Num) {
@@ -348,39 +347,39 @@ TEST(Cbor, Map2Num) {
         make_pair(Encode::uint(1), Encode::uint(2)),
         make_pair(Encode::uint(3), Encode::uint(4)),
     }).encoded();
-    
+
     EXPECT_EQ("a201020304", hex(cbor));
     EXPECT_TRUE(Decode(cbor).isValid());
     EXPECT_EQ("{1: 2, 3: 4}", Decode(cbor).dumpToString());
 
     Decode decode(cbor);
-    EXPECT_EQ(2, decode.getMapElements().size());
-    EXPECT_EQ(1, decode.getMapElements()[0].first.getValue());
-    EXPECT_EQ(2, decode.getMapElements()[0].second.getValue());
+    EXPECT_EQ(2ul, decode.getMapElements().size());
+    EXPECT_EQ(1ul, decode.getMapElements()[0].first.getValue());
+    EXPECT_EQ(2ul, decode.getMapElements()[0].second.getValue());
 }
 
 TEST(Cbor, Map2WithArr) {
     Data cbor = Encode::map({
         make_pair(Encode::string("a"), Encode::uint(1)),
         make_pair(Encode::string("b"), Encode::array({
-            Encode::uint(2),
+            Encode::uint(2), 
             Encode::uint(3),
         })),
     }).encoded();
-    
+
     EXPECT_EQ("a26161016162820203", hex(cbor));
     EXPECT_TRUE(Decode(cbor).isValid());
-    EXPECT_EQ("{\"a\": 1, \"b\": [2, 3]}", 
-        Decode(cbor).dumpToString());
+    EXPECT_EQ("{\"a\": 1, \"b\": [2, 3]}",
+              Decode(cbor).dumpToString());
 
     Decode decode(cbor);
-    EXPECT_EQ(2, decode.getMapElements().size());
+    EXPECT_EQ(2ul, decode.getMapElements().size());
     EXPECT_EQ("a", decode.getMapElements()[0].first.getString());
-    EXPECT_EQ(1, decode.getMapElements()[0].second.getValue());
+    EXPECT_EQ(1ul, decode.getMapElements()[0].second.getValue());
     EXPECT_EQ("b", decode.getMapElements()[1].first.getString());
-    EXPECT_EQ(2, decode.getMapElements()[1].second.getArrayElements().size());
-    EXPECT_EQ(2, decode.getMapElements()[1].second.getArrayElements()[0].getValue());
-    EXPECT_EQ(3, decode.getMapElements()[1].second.getArrayElements()[1].getValue());
+    EXPECT_EQ(2ul, decode.getMapElements()[1].second.getArrayElements().size());
+    EXPECT_EQ(2ul, decode.getMapElements()[1].second.getArrayElements()[0].getValue());
+    EXPECT_EQ(3ul, decode.getMapElements()[1].second.getArrayElements()[1].getValue());
 }
 
 TEST(Cbor, MapNested) {
@@ -389,16 +388,16 @@ TEST(Cbor, MapNested) {
             make_pair(Encode::string("b"), Encode::string("c")),
         })),
     }).encoded();
-    
+
     EXPECT_EQ("a16161a161626163", hex(cbor));
     EXPECT_TRUE(Decode(cbor).isValid());
-    EXPECT_EQ("{\"a\": {\"b\": \"c\"}}", 
-        Decode(cbor).dumpToString());
+    EXPECT_EQ("{\"a\": {\"b\": \"c\"}}",
+              Decode(cbor).dumpToString());
 
     Decode decode(cbor);
-    EXPECT_EQ(1, decode.getMapElements().size());
+    EXPECT_EQ(1ul, decode.getMapElements().size());
     EXPECT_EQ("a", decode.getMapElements()[0].first.getString());
-    EXPECT_EQ(1, decode.getMapElements()[0].second.getMapElements().size());
+    EXPECT_EQ(1ul, decode.getMapElements()[0].second.getMapElements().size());
     EXPECT_EQ("b", decode.getMapElements()[0].second.getMapElements()[0].first.getString());
     EXPECT_EQ("c", decode.getMapElements()[0].second.getMapElements()[0].second.getString());
 }
@@ -406,9 +405,9 @@ TEST(Cbor, MapNested) {
 TEST(Cbor, MapIndef) {
     Decode cbor = Decode(parse_hex("bf01020304ff"));
     EXPECT_EQ("{_ 1: 2, 3: 4}", cbor.dumpToString());
-    EXPECT_EQ(2, cbor.getMapElements().size());
-    EXPECT_EQ(1, cbor.getMapElements()[0].first.getValue());
-    EXPECT_EQ(2, cbor.getMapElements()[0].second.getValue());
+    EXPECT_EQ(2ul, cbor.getMapElements().size());
+    EXPECT_EQ(1ul, cbor.getMapElements()[0].first.getValue());
+    EXPECT_EQ(2ul, cbor.getMapElements()[0].second.getValue());
 }
 
 TEST(Cbor, MapIsValidInvalidTooShort) {
@@ -444,20 +443,20 @@ TEST(Cbor, MapGetInvalidTooShort2) {
 
 TEST(Cbor, ArrayIndef) {
     Data cbor = Encode::indefArray()
-        .addIndefArrayElem(Encode::uint(1))
-        .addIndefArrayElem(Encode::uint(2))
-        .closeIndefArray()
-    .encoded();
-    
+                    .addIndefArrayElem(Encode::uint(1))
+                    .addIndefArrayElem(Encode::uint(2))
+                    .closeIndefArray()
+                    .encoded();
+
     EXPECT_EQ("9f0102ff", hex(cbor));
     EXPECT_TRUE(Decode(cbor).isValid());
     EXPECT_EQ("[_ 1, 2]",
-        Decode(cbor).dumpToString());
+              Decode(cbor).dumpToString());
 
     Decode decode(cbor);
-    EXPECT_EQ(2, decode.getArrayElements().size());
-    EXPECT_EQ(1, decode.getArrayElements()[0].getValue());
-    EXPECT_EQ(2, decode.getArrayElements()[1].getValue());
+    EXPECT_EQ(2ul, decode.getArrayElements().size());
+    EXPECT_EQ(1ul, decode.getArrayElements()[0].getValue());
+    EXPECT_EQ(2ul, decode.getArrayElements()[1].getValue());
 
     EXPECT_EQ("[_ 1, 2]", Decode(parse_hex("9f0102ff")).dumpToString());
     EXPECT_EQ("", Decode(parse_hex("ff")).dumpToString());
@@ -485,10 +484,10 @@ TEST(Cbor, ArrayInfefErrorCloseNostart) {
 TEST(Cbor, ArrayInfefErrorResultNoclose) {
     try {
         Data cbor = Encode::indefArray()
-            .addIndefArrayElem(Encode::uint(1))
-            .addIndefArrayElem(Encode::uint(2))
-            // close is missing, break command not written
-        .encoded();
+                        .addIndefArrayElem(Encode::uint(1))
+                        .addIndefArrayElem(Encode::uint(2))
+                        // close is missing, break command not written
+                        .encoded();
     } catch (exception& ex) {
         return;
     }
@@ -520,3 +519,5 @@ TEST(Cbor, GetTagElementNotTag) {
     }
     FAIL() << "Expected exception";
 }
+// clang-format on
+} // namespace TW::Cbor::tests

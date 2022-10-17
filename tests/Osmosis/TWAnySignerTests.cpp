@@ -4,16 +4,15 @@
 // terms governing use, modification, and redistribution, is contained in the
 // file LICENSE at the root of the source code distribution tree.
 
-#include <TrustWalletCore/TWAnySigner.h>
-#include "HexCoding.h"
 #include "Cosmos/Address.h"
+#include "HexCoding.h"
 #include "proto/Cosmos.pb.h"
+#include <TrustWalletCore/TWAnySigner.h>
 
 #include "../interface/TWTestUtilities.h"
 #include <gtest/gtest.h>
 
-using namespace TW;
-using namespace TW::Cosmos;
+namespace TW::Cosmos::tests {
 
 TEST(TWAnySignerOsmosis, Sign) {
     auto privateKey = parse_hex("8bbec3772ddb4df68f3186440380c301af116d1422001c1877d6f5e4dba8c8af");
@@ -54,3 +53,5 @@ TEST(TWAnySignerOsmosis, Sign) {
     EXPECT_EQ(output.json(), "");
     EXPECT_EQ(output.error(), "");
 }
+
+} // namespace TW::Cosmos::tests

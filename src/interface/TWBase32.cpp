@@ -1,4 +1,4 @@
-// Copyright © 2017-2020 Trust Wallet.
+// Copyright © 2017-2022 Trust Wallet.
 //
 // This file is part of Trust. The full Trust copyright notice, including
 // terms governing use, modification, and redistribution, is contained in the
@@ -12,19 +12,31 @@
 
 using namespace TW;
 
-TWString *_Nonnull TWBase32Encode(TWData *_Nonnull data) {
-    const auto& d = *reinterpret_cast<const Data*>(data);
-    const auto str = Base32::encode(d);
-    return TWStringCreateWithUTF8Bytes(str.c_str());
+TWData* TWBase32DecodeWithAlphabet(TWString* _Nonnull string, TWString* _Nullable alphabet) {
+    Data decodedOut;
+    auto cppString = *reinterpret_cast<const std::string*>(string);
+    const char* alphabetRaw = nullptr;
+    if (alphabet != nullptr) {
+        alphabetRaw = TWStringUTF8Bytes(alphabet);
+    }
+    auto result = Base32::decode(cppString, decodedOut, alphabetRaw);
+    return result ? TWDataCreateWithData(&decodedOut) : nullptr;
 }
 
-TWData *_Nullable TWBase32Decode(TWString *_Nonnull string) {
-    auto& s = *reinterpret_cast<const std::string*>(string);
-    Data decoded;
-    Base32::decode(s, decoded);
-    if (decoded.empty()) {
-        return nullptr;
-    }
+TWData* _Nullable TWBase32Decode(TWString* _Nonnull string) {
+    return TWBase32DecodeWithAlphabet(string, nullptr);
+}
 
-    return TWDataCreateWithBytes(decoded.data(), decoded.size());
+TWString* _Nonnull TWBase32EncodeWithAlphabet(TWData* _Nonnull data, TWString* _Nullable alphabet) {
+    auto cppData = *reinterpret_cast<const Data*>(data);
+    const char* alphabetRaw = nullptr;
+    if (alphabet != nullptr) {
+        alphabetRaw = TWStringUTF8Bytes(alphabet);
+    }
+    auto result = Base32::encode(cppData, alphabetRaw);
+    return TWStringCreateWithUTF8Bytes(result.c_str());
+}
+
+TWString* _Nonnull TWBase32Encode(TWData* _Nonnull data) {
+    return TWBase32EncodeWithAlphabet(data, nullptr);
 }

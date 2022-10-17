@@ -1,4 +1,4 @@
-// Copyright © 2017-2020 Trust Wallet.
+// Copyright © 2017-2022 Trust Wallet.
 //
 // This file is part of Trust. The full Trust copyright notice, including
 // terms governing use, modification, and redistribution, is contained in the
@@ -9,14 +9,12 @@
 
 #include <gtest/gtest.h>
 
-using namespace TW;
-using namespace TW::Ethereum;
-
-Data data;
+namespace TW::Ethereum::tests {
 
 void checkLast32BytesEqual(const Data& data, const char* expected) {
     EXPECT_EQ(hex(subData(data, data.size() - 32, 32)), expected);
 }
+
 TEST(EthereumAbiValueEncoder, encodeBool) {
     Data data;
     ABI::ValueEncoder::encodeBool(false, data);
@@ -121,16 +119,18 @@ TEST(EthereumAbiValueEncoder, uint256FromInt256) {
 }
 
 TEST(EthereumAbiValueEncoder, pad32) {
-    EXPECT_EQ(64, ABI::ValueEncoder::paddedTo32(40));
-    EXPECT_EQ(32, ABI::ValueEncoder::paddedTo32(32));
-    EXPECT_EQ(64, ABI::ValueEncoder::paddedTo32(33));
-    EXPECT_EQ(64, ABI::ValueEncoder::paddedTo32(63));
-    EXPECT_EQ(64, ABI::ValueEncoder::paddedTo32(64));
-    EXPECT_EQ(96, ABI::ValueEncoder::paddedTo32(65));
-    EXPECT_EQ(24, ABI::ValueEncoder::padNeeded32(40));
-    EXPECT_EQ(0, ABI::ValueEncoder::padNeeded32(32));
-    EXPECT_EQ(31, ABI::ValueEncoder::padNeeded32(33));
-    EXPECT_EQ(1, ABI::ValueEncoder::padNeeded32(63));
-    EXPECT_EQ(0, ABI::ValueEncoder::padNeeded32(64));
-    EXPECT_EQ(31, ABI::ValueEncoder::padNeeded32(65));
+    EXPECT_EQ(64ul, ABI::ValueEncoder::paddedTo32(40));
+    EXPECT_EQ(32ul, ABI::ValueEncoder::paddedTo32(32));
+    EXPECT_EQ(64ul, ABI::ValueEncoder::paddedTo32(33));
+    EXPECT_EQ(64ul, ABI::ValueEncoder::paddedTo32(63));
+    EXPECT_EQ(64ul, ABI::ValueEncoder::paddedTo32(64));
+    EXPECT_EQ(96ul, ABI::ValueEncoder::paddedTo32(65));
+    EXPECT_EQ(24ul, ABI::ValueEncoder::padNeeded32(40));
+    EXPECT_EQ(0ul, ABI::ValueEncoder::padNeeded32(32));
+    EXPECT_EQ(31ul, ABI::ValueEncoder::padNeeded32(33));
+    EXPECT_EQ(1ul, ABI::ValueEncoder::padNeeded32(63));
+    EXPECT_EQ(0ul, ABI::ValueEncoder::padNeeded32(64));
+    EXPECT_EQ(31ul, ABI::ValueEncoder::padNeeded32(65));
 }
+
+} // namespace TW::Ethereum::tests

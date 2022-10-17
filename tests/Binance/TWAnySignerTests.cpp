@@ -1,4 +1,4 @@
-// Copyright © 2017-2020 Trust Wallet.
+// Copyright © 2017-2022 Trust Wallet.
 //
 // This file is part of Trust. The full Trust copyright notice, including
 // terms governing use, modification, and redistribution, is contained in the
@@ -14,8 +14,7 @@
 #include <gtest/gtest.h>
 #include <thread>
 
-using namespace TW;
-using namespace TW::Binance;
+namespace TW::Binance {
 
 Proto::SigningOutput SignTest() {
     auto input = Proto::SigningInput();
@@ -39,9 +38,9 @@ Proto::SigningOutput SignTest() {
     auto toKeyhash = toAddress.getKeyHash();
 
     {
-        auto input = order.add_inputs();
-        input->set_address(fromKeyhash.data(), fromKeyhash.size());
-        auto inputCoin = input->add_coins();
+        auto inputOrder = order.add_inputs();
+        inputOrder->set_address(fromKeyhash.data(), fromKeyhash.size());
+        auto inputCoin = inputOrder->add_coins();
         inputCoin->set_denom("BNB");
         inputCoin->set_amount(1);
     }
@@ -90,3 +89,5 @@ TEST(TWAnySignerBinance, MultithreadedSigning) {
     th2.join();
     th3.join();
 }
+
+} // namespace TW::Binance

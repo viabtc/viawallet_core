@@ -12,8 +12,7 @@
 #include <gtest/gtest.h>
 #include <vector>
 
-using namespace TW;
-using namespace TW::Polkadot;
+namespace TW::Polkadot::tests {
 
 TEST(PolkadotAddress, Validation) {
     // Substrate ed25519
@@ -66,3 +65,13 @@ TEST(PolkadotAddress, FromSR25519Key) {
     auto address = Address(publicKey);
     ASSERT_EQ(address.string(), "12Z2dohKGejugkCsD1VFgamLQJyDoUnksenbQNp7NnjeZ8a6");
 }
+
+TEST(PolkadotAddress, FromSR25519Key1) {
+    const auto privateKeyData = PrivateKey::transform(parse_hex("0x4646464646464646464646464646464646464646464646464646464646464646"), TWCurveSR25519);
+    const auto privateKey = PrivateKey(privateKeyData);
+    const auto publicKey = privateKey.getPublicKey(TWPublicKeyTypeSR25519);
+    auto address = Address(publicKey);
+    ASSERT_EQ(address.string(), "1k3eSQ9W6uJbgamWJE73FSrGhQKLehn2szCHs6jDg6Gd9tD");
+}
+
+} // namespace TW::Polkadot::tests

@@ -1,21 +1,88 @@
-// Copyright © 2017-2020 Trust Wallet.
+// Copyright © 2017-2022 Trust Wallet.
 //
 // This file is part of Trust. The full Trust copyright notice, including
 // terms governing use, modification, and redistribution, is contained in the
 // file LICENSE at the root of the source code distribution tree.
 
-#include "Coin.h"
-#include "HexCoding.h"
 #include "Base64.h"
-#include "proto/Cosmos.pb.h"
+#include "Coin.h"
 #include "Cosmos/Address.h"
 #include "Cosmos/Signer.h"
+#include "HexCoding.h"
+#include "proto/Cosmos.pb.h"
 #include "../interface/TWTestUtilities.h"
-
 #include <gtest/gtest.h>
 
-using namespace TW;
-using namespace TW::Cosmos;
+namespace TW::Cosmos::tests {
+
+TEST(CosmosStaking, CompoundingAuthz) {
+    // Successfully broadcasted https://www.mintscan.io/cosmos/txs/C4629BC7C88690518D8F448E7A8D239C9D63975B11F8E1CE2F95CC2ADA3CCF67
+    auto input = Proto::SigningInput();
+    input.set_signing_mode(Proto::Protobuf);
+    input.set_account_number(1290826);
+    input.set_chain_id("cosmoshub-4");
+    input.set_memo("");
+    input.set_sequence(5);
+
+    auto msg = input.add_messages();
+    auto& message = *msg->mutable_auth_grant();
+    message.set_granter("cosmos13k0q0l7lg2kr32kvt7ly236ppldy8v9dzwh3gd");
+    message.set_grantee("cosmos1fs7lu28hx5m9akm7rp0c2422cn8r2f7gurujhf");
+    auto& grant_stake = *message.mutable_grant_stake();
+    grant_stake.mutable_allow_list()->add_address("cosmosvaloper1gjtvly9lel6zskvwtvlg5vhwpu9c9waw7sxzwx");
+    grant_stake.set_authorization_type(TW::Cosmos::Proto::Message_AuthorizationType_DELEGATE);
+    message.set_expiration(1692309600);
+
+    auto& fee = *input.mutable_fee();
+    fee.set_gas(96681);
+    auto amountOfFee = fee.add_amounts();
+    amountOfFee->set_denom("uatom");
+    amountOfFee->set_amount("2418");
+
+    auto privateKey = parse_hex("c7764249cdf77f8f1d840fa8af431579e5e41cf1af937e1e23afa22f3f4f0ccc");
+    input.set_private_key(privateKey.data(), privateKey.size());
+
+    auto output = Signer::sign(input, TWCoinTypeCosmos);
+    auto expected = R"(
+                {
+                    "mode":"BROADCAST_MODE_BLOCK",
+                    "tx_bytes":"CvgBCvUBCh4vY29zbW9zLmF1dGh6LnYxYmV0YTEuTXNnR3JhbnQS0gEKLWNvc21vczEzazBxMGw3bGcya3IzMmt2dDdseTIzNnBwbGR5OHY5ZHp3aDNnZBItY29zbW9zMWZzN2x1MjhoeDVtOWFrbTdycDBjMjQyMmNuOHIyZjdndXJ1amhmGnIKaAoqL2Nvc21vcy5zdGFraW5nLnYxYmV0YTEuU3Rha2VBdXRob3JpemF0aW9uEjoSNgo0Y29zbW9zdmFsb3BlcjFnanR2bHk5bGVsNnpza3Z3dHZsZzV2aHdwdTljOXdhdzdzeHp3eCABEgYI4LD6pgYSZwpQCkYKHy9jb3Ntb3MuY3J5cHRvLnNlY3AyNTZrMS5QdWJLZXkSIwohA/fcQw1hCVUx904t+kCXTiiziaLIY8lyssu1ENfzaN1KEgQKAggBGAUSEwoNCgV1YXRvbRIEMjQxOBCp8wUaQIFyfuijGKf87Hz61ZqxasfLI1PZnNge4RDq/tRyB/tZI6p80iGRqHecoV6+84EQkc9GTlNRQOSlApRCsivT9XI="
+                })";
+    assertJSONEqual(output.serialized(), expected);
+}
+
+TEST(CosmosStaking, RevokeCompoundingAuthz) {
+    // Successfully broadcasted:  https://www.mintscan.io/cosmos/txs/E3218F634BB6A1BE256545EBE38275D5B02D41E88F504A43F97CD9CD2B624D44
+    auto input = Proto::SigningInput();
+    input.set_signing_mode(Proto::Protobuf);
+    input.set_account_number(1290826);
+    input.set_chain_id("cosmoshub-4");
+    input.set_memo("");
+    input.set_sequence(4);
+
+    auto msg = input.add_messages();
+    auto& message = *msg->mutable_auth_revoke();
+    message.set_grantee("cosmos1fs7lu28hx5m9akm7rp0c2422cn8r2f7gurujhf");
+    message.set_granter("cosmos13k0q0l7lg2kr32kvt7ly236ppldy8v9dzwh3gd");
+    message.set_msg_type_url("/cosmos.staking.v1beta1.MsgDelegate");
+
+    auto& fee = *input.mutable_fee();
+    fee.set_gas(87735);
+    auto amountOfFee = fee.add_amounts();
+    amountOfFee->set_denom("uatom");
+    amountOfFee->set_amount("2194");
+
+    auto privateKey = parse_hex("c7764249cdf77f8f1d840fa8af431579e5e41cf1af937e1e23afa22f3f4f0ccc");
+    input.set_private_key(privateKey.data(), privateKey.size());
+
+    auto output = Signer::sign(input, TWCoinTypeCosmos);
+    auto expected = R"(
+                {
+                    "mode":"BROADCAST_MODE_BLOCK",
+                    "tx_bytes":"CqoBCqcBCh8vY29zbW9zLmF1dGh6LnYxYmV0YTEuTXNnUmV2b2tlEoMBCi1jb3Ntb3MxM2swcTBsN2xnMmtyMzJrdnQ3bHkyMzZwcGxkeTh2OWR6d2gzZ2QSLWNvc21vczFmczdsdTI4aHg1bTlha203cnAwYzI0MjJjbjhyMmY3Z3VydWpoZhojL2Nvc21vcy5zdGFraW5nLnYxYmV0YTEuTXNnRGVsZWdhdGUSZwpQCkYKHy9jb3Ntb3MuY3J5cHRvLnNlY3AyNTZrMS5QdWJLZXkSIwohA/fcQw1hCVUx904t+kCXTiiziaLIY8lyssu1ENfzaN1KEgQKAggBGAQSEwoNCgV1YXRvbRIEMjE5NBC3rQUaQI7K+W7MMBoD6FbFZxRBqs9VTjErztjWTy57+fvrLaTCIZ+eBs7CuaKqfUZdSN8otjubSHVTQID3k9DpPAX0yDo="
+                })";
+    assertJSONEqual(output.serialized(), expected);
+}
 
 TEST(CosmosStaking, Staking) {
     auto input = Proto::SigningInput();
@@ -50,10 +117,10 @@ TEST(CosmosStaking, Staking) {
 
     { // Json-serialization, for coverage (to be removed later)
         input.set_signing_mode(Proto::JSON);
-        auto output = Signer::sign(input, TWCoinTypeCosmos);
-        ASSERT_EQ(hex(output.signature()), "c08bdf6c2b0b4428f37975e85d329f1cb19745b000994a743b5df81d57d573aa5f755349befcc848c1d1507818723b1288594bc91df685e89aff22e0303b4861");
-        EXPECT_EQ(output.error(), "");
-        EXPECT_EQ(hex(output.serialized()), "");
+        auto signingOutput = Signer::sign(input, TWCoinTypeCosmos);
+        ASSERT_EQ(hex(signingOutput.signature()), "c08bdf6c2b0b4428f37975e85d329f1cb19745b000994a743b5df81d57d573aa5f755349befcc848c1d1507818723b1288594bc91df685e89aff22e0303b4861");
+        EXPECT_EQ(signingOutput.error(), "");
+        EXPECT_EQ(hex(signingOutput.serialized()), "");
     }
 }
 
@@ -90,10 +157,10 @@ TEST(CosmosStaking, Unstaking) {
 
     { // Json-serialization, for coverage (to be removed later)
         input.set_signing_mode(Proto::JSON);
-        auto output = Signer::sign(input, TWCoinTypeCosmos);
-        ASSERT_EQ(hex(output.signature()), "8f85a9515a211881daebfb346c2beeca3ab5c2d406a9b3ad402cfddaa3d08e2b13378e13cfef8ecf1d6500fe85d0ce3e793034dd77aba90f216427807cbff79f");
-        EXPECT_EQ(output.error(), "");
-        EXPECT_EQ(hex(output.serialized()), "");
+        auto signingOutput = Signer::sign(input, TWCoinTypeCosmos);
+        ASSERT_EQ(hex(signingOutput.signature()), "8f85a9515a211881daebfb346c2beeca3ab5c2d406a9b3ad402cfddaa3d08e2b13378e13cfef8ecf1d6500fe85d0ce3e793034dd77aba90f216427807cbff79f");
+        EXPECT_EQ(signingOutput.error(), "");
+        EXPECT_EQ(hex(signingOutput.serialized()), "");
     }
 }
 
@@ -132,10 +199,10 @@ TEST(CosmosStaking, Restaking) {
 
     { // Json-serialization, for coverage (to be removed later)
         input.set_signing_mode(Proto::JSON);
-        auto output = Signer::sign(input, TWCoinTypeCosmos);
-        ASSERT_EQ(hex(output.signature()), "e64d3761bd25a28befcda80c0a0e208d024fdb0a2b89955170e65a5c5d454aba2ce81d57e01f0c126de5a59c2b58124c109560c9803d65a17a14b548dd6c50db");
-        EXPECT_EQ(output.error(), "");
-        EXPECT_EQ(hex(output.serialized()), "");
+        auto signingOutput = Signer::sign(input, TWCoinTypeCosmos);
+        ASSERT_EQ(hex(signingOutput.signature()), "e64d3761bd25a28befcda80c0a0e208d024fdb0a2b89955170e65a5c5d454aba2ce81d57e01f0c126de5a59c2b58124c109560c9803d65a17a14b548dd6c50db");
+        EXPECT_EQ(signingOutput.error(), "");
+        EXPECT_EQ(hex(signingOutput.serialized()), "");
     }
 }
 
@@ -169,9 +236,11 @@ TEST(CosmosStaking, Withdraw) {
 
     { // Json-serialization, for coverage (to be removed later)
         input.set_signing_mode(Proto::JSON);
-        auto output = Signer::sign(input, TWCoinTypeCosmos);
-        ASSERT_EQ(hex(output.signature()), "546f0d67356f6af94cfb5ab22b974e499c33123f2c2c292f4f0e64878e0e728f4643105fd771550beb3f2371f08880aaa38fa8f2334c103a779f1d82d2db98d6");
-        EXPECT_EQ(output.error(), "");
-        EXPECT_EQ(hex(output.serialized()), "");
+        auto signingOutput = Signer::sign(input, TWCoinTypeCosmos);
+        ASSERT_EQ(hex(signingOutput.signature()), "546f0d67356f6af94cfb5ab22b974e499c33123f2c2c292f4f0e64878e0e728f4643105fd771550beb3f2371f08880aaa38fa8f2334c103a779f1d82d2db98d6");
+        EXPECT_EQ(signingOutput.error(), "");
+        EXPECT_EQ(hex(signingOutput.serialized()), "");
     }
 }
+
+} // namespace TW::Cosmos::tests

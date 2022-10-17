@@ -1,4 +1,4 @@
-// Copyright © 2017-2020 Trust Wallet.
+// Copyright © 2017-2022 Trust Wallet.
 //
 // This file is part of Trust. The full Trust copyright notice, including
 // terms governing use, modification, and redistribution, is contained in the
@@ -10,23 +10,21 @@
 #include "NEO/TransactionType.h"
 #include "NEO/TransactionAttributeUsage.h"
 #include "NEO/TransactionAttribute.h"
-
-#include <iostream>
 #include <gtest/gtest.h>
 
+namespace TW::NEO::tests {
+
 using namespace std;
-using namespace TW;
-using namespace TW::NEO;
 
 TEST(NEOTransaction, SerializeDeserializeEmpty) {
     auto transaction = Transaction();
     EXPECT_EQ(transaction, transaction);
 
-    EXPECT_EQ(0, transaction.attributes.size());
-    EXPECT_EQ(0, transaction.inInputs.size());
-    EXPECT_EQ(0, transaction.outputs.size());
+    EXPECT_EQ(0ul, transaction.attributes.size());
+    EXPECT_EQ(0ul, transaction.inInputs.size());
+    EXPECT_EQ(0ul, transaction.outputs.size());
     auto serialized = transaction.serialize();
-    
+
     auto deserializedTransaction = Transaction();
     deserializedTransaction.deserialize(serialized);
     EXPECT_EQ(transaction, deserializedTransaction);
@@ -54,7 +52,7 @@ TEST(NEOTransaction, SerializeDeserializeAttribute) {
     const string oneVarLong = "01";
     transaction.attributes.push_back(TransactionAttribute());
     transaction.attributes[0].usage = TransactionAttributeUsage::TAU_ContractHash;
-    transaction.attributes[0].data = parse_hex("bdecbb623eee6f9ade28d5a8ff5fb3ea9c9d73af039e0286201b3b0291fb4d4a");
+    transaction.attributes[0]._data = parse_hex("bdecbb623eee6f9ade28d5a8ff5fb3ea9c9d73af039e0286201b3b0291fb4d4a");
     auto serialized = transaction.serialize();
     EXPECT_EQ("8007" + oneVarLong + hex(transaction.attributes[0].serialize()) + zeroVarLong + zeroVarLong, hex(serialized));
 
@@ -64,7 +62,7 @@ TEST(NEOTransaction, SerializeDeserializeAttribute) {
 
     transaction.attributes.push_back(TransactionAttribute());
     transaction.attributes[1].usage = TransactionAttributeUsage::TAU_ECDH02;
-    transaction.attributes[1].data = parse_hex("b7ecbb623eee6f9ade28d5a8ff5fb3ea9c9d73af039e0286201b3b0291fb4d4a");
+    transaction.attributes[1]._data = parse_hex("02b7ecbb623eee6f9ade28d5a8ff5fb3ea9c9d73af039e0286201b3b0291fb4d4a");
     serialized = transaction.serialize();
     const string twoVarLong = "02";
     string expectedSerialized = "8007" + twoVarLong;
@@ -150,7 +148,7 @@ TEST(NEOTransaction, SerializeDeserialize) {
 
     transaction.attributes.push_back(TransactionAttribute());
     transaction.attributes[0].usage = TransactionAttributeUsage::TAU_ContractHash;
-    transaction.attributes[0].data = parse_hex("bdecbb623eee6f9ade28d5a8ff5fbdea9c9d73af039e0286201b3b0291fb4d4a");
+    transaction.attributes[0]._data = parse_hex("bdecbb623eee6f9ade28d5a8ff5fbdea9c9d73af039e0286201b3b0291fb4d4a");
 
     transaction.inInputs.push_back(CoinReference());
     transaction.inInputs[0].prevHash = load(parse_hex("bdecbb623eee679ade28d5a8ff5fb3ea9c9d73af039e0286201b3b0291fb4d4a"));
@@ -220,9 +218,8 @@ TEST(NEOTransaction, SerializeDeserializeMiner) {
 
     string notMiner = "1000d11f7a2800000000";
     EXPECT_THROW(
-        std::unique_ptr<Transaction> deserializedTransaction(Transaction::deserializeFrom(parse_hex(notMiner))),
-        std::invalid_argument
-    );
+        std::unique_ptr<Transaction> _deserializedTransaction(Transaction::deserializeFrom(parse_hex(notMiner))),
+        std::invalid_argument);
 }
 
 TEST(NEOTransaction, GetHash) {
@@ -246,5 +243,7 @@ TEST(NEOTransaction, SerializeSize) {
     EXPECT_EQ(hex(verSerialized), hex(serialized));
     EXPECT_EQ(verSerialized, serialized);
 
-    EXPECT_EQ(serialized.size(), transaction.size());
+    EXPECT_EQ(serialized.size(), static_cast<uint64_t>(transaction.size()));
 }
+
+} // namespace TW::NEO::tests

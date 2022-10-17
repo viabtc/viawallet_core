@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "../Data.h"
+#include "Data.h"
 #include "../proto/Cosmos.pb.h"
 
 #include <TrustWalletCore/TWCoinType.h>
@@ -20,7 +20,7 @@ class Signer {
     static Proto::SigningOutput sign(const Proto::SigningInput& input, TWCoinType coin) noexcept;
 
     /// Signs a Proto::SigningInput transaction, using Json serialization
-    static Proto::SigningOutput signJsonSerialized(const Proto::SigningInput& input) noexcept;
+    static Proto::SigningOutput signJsonSerialized(const Proto::SigningInput& input, TWCoinType coin) noexcept;
 
     /// Signs a Proto::SigningInput transaction, using binary Protobuf serialization
     static Proto::SigningOutput signProtobuf(const Proto::SigningInput& input, TWCoinType coin) noexcept;

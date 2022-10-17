@@ -6,6 +6,7 @@
 
 #include "Bech32.h"
 #include "Bitcoin/SegwitAddress.h"
+#include "HDWallet.h"
 #include "HexCoding.h"
 
 #include <string>
@@ -14,7 +15,7 @@
 #include <gtest/gtest.h>
 
 using namespace TW;
-using namespace TW::Bitcoin;
+namespace TW::Bitcoin::tests {
 
 static const std::string valid_checksum[] = {
     "A12UEL5L",
@@ -128,7 +129,7 @@ bool case_insensitive_equal(const std::string& s1, const std::string& s2) {
 }
 
 TEST(SegwitAddress, ValidChecksum) {
-    for (auto i = 0; i < sizeof(valid_checksum) / sizeof(valid_checksum[0]); ++i) {
+    for (auto i = 0ul; i < sizeof(valid_checksum) / sizeof(valid_checksum[0]); ++i) {
         auto dec = Bech32::decode(valid_checksum[i]);
         ASSERT_FALSE(std::get<0>(dec).empty());
 
@@ -140,7 +141,7 @@ TEST(SegwitAddress, ValidChecksum) {
 }
 
 TEST(SegwitAddress, InvalidChecksum) {
-    for (auto i = 0; i < sizeof(invalid_checksum) / sizeof(invalid_checksum[0]); ++i) {
+    for (auto i = 0ul; i < sizeof(invalid_checksum) / sizeof(invalid_checksum[0]); ++i) {
         auto dec = Bech32::decode(invalid_checksum[i]);
         EXPECT_TRUE(std::get<0>(dec).empty() && std::get<1>(dec).empty());
     }
@@ -151,7 +152,7 @@ TEST(SegwitAddress, ValidAddress) {
         auto dec = SegwitAddress::decode(td.address);
         EXPECT_TRUE(std::get<2>(dec)) << "Valid address could not be decoded " << td.address;
         EXPECT_TRUE(std::get<0>(dec).witnessProgram.size() > 0)  << "Empty decoded address data for " << td.address;
-        EXPECT_EQ(std::get<1>(dec).length(), 2); // hrp
+        EXPECT_EQ(std::get<1>(dec).length(), 2ul); // hrp
 
         // recode
         std::string recode = std::get<0>(dec).string();
@@ -164,14 +165,14 @@ TEST(SegwitAddress, ValidAddress) {
 }
 
 TEST(SegwitAddress, InvalidAddress) {
-    for (auto i = 0; i < invalid_address.size(); ++i) {
+    for (auto i = 0ul; i < invalid_address.size(); ++i) {
         auto dec = SegwitAddress::decode(invalid_address[i]);
         EXPECT_FALSE(std::get<2>(dec)) <<  "Invalid address reported as valid: " << invalid_address[i];
     }
 }
 
 TEST(SegwitAddress, InvalidAddressEncoding) {
-    for (auto i = 0; i < sizeof(invalid_address_enc) / sizeof(invalid_address_enc[0]); ++i) {
+    for (auto i = 0ul; i < sizeof(invalid_address_enc) / sizeof(invalid_address_enc[0]); ++i) {
         auto address = SegwitAddress(invalid_address_enc[i].hrp, invalid_address_enc[i].version, Data(invalid_address_enc[i].program_length, 0));
         std::string code = address.string();
         EXPECT_TRUE(code.empty());
@@ -207,3 +208,45 @@ TEST(SegwitAddress, Equals) {
     ASSERT_TRUE(addr1 == addr1);
     ASSERT_FALSE(addr1 == addr2);
 }
+
+TEST(SegwitAddress, TestnetAddress) {
+    const auto mnemonic1 = "ripple scissors kick mammal hire column oak again sun offer wealth tomorrow wagon turn fatal";
+    const auto passphrase = "";
+    const auto coin = TWCoinTypeBitcoin;
+    HDWallet wallet = HDWallet(mnemonic1, passphrase);
+
+    // default
+    {
+        const auto privKey = wallet.getKey(coin, TWDerivationDefault);
+        const auto pubKey = privKey.getPublicKey(TWPublicKeyTypeSECP256k1);
+        EXPECT_EQ(hex(pubKey.bytes), "02df9ef2a7a5552765178b181e1e1afdefc7849985c7dfe9647706dd4fa40df6ac");
+        EXPECT_EQ(SegwitAddress(pubKey, "bc").string(), "bc1qpsp72plnsqe6e2dvtsetxtww2cz36ztmfxghpd");
+    }
+
+    // testnet: different derivation path and hrp
+    {
+        const auto privKey = wallet.getKey(coin, TW::DerivationPath("m/84'/1'/0'/0/0"));
+        const auto pubKey = privKey.getPublicKey(TWPublicKeyTypeSECP256k1);
+        EXPECT_EQ(hex(pubKey.bytes), "03eb1a535b59f03894b99319f850c784cf4164f4de07620695c5cf0dc5c1ab2a54");
+        EXPECT_EQ(SegwitAddress::createTestnetFromPublicKey(pubKey).string(), "tb1qq8p994ak933c39d2jaj8n4sg598tnkhnyk5sg5");
+        // alternative with custom hrp
+        EXPECT_EQ(SegwitAddress(pubKey, "bc").string(), "bc1qq8p994ak933c39d2jaj8n4sg598tnkhnws0rn8");
+    }
+
+    EXPECT_TRUE(SegwitAddress::isValid("tb1qq8p994ak933c39d2jaj8n4sg598tnkhnyk5sg5"));
+}
+
+TEST(SegwitAddress, SegwitDerivationHDWallet) {
+    const auto mnemonic1 = "ripple scissors kick mammal hire column oak again sun offer wealth tomorrow wagon turn fatal";
+    const auto passphrase = "";
+    const auto coin = TWCoinTypeBitcoin;
+    HDWallet wallet = HDWallet(mnemonic1, passphrase);
+
+    // addresses with different derivations
+    EXPECT_EQ(wallet.deriveAddress(coin), "bc1qpsp72plnsqe6e2dvtsetxtww2cz36ztmfxghpd");
+    EXPECT_EQ(wallet.deriveAddress(coin, TWDerivationDefault), "bc1qpsp72plnsqe6e2dvtsetxtww2cz36ztmfxghpd");
+    EXPECT_EQ(wallet.deriveAddress(coin, TWDerivationBitcoinSegwit), "bc1qpsp72plnsqe6e2dvtsetxtww2cz36ztmfxghpd");
+    EXPECT_EQ(wallet.deriveAddress(coin, TWDerivationBitcoinLegacy), "1GVb4mfQrvymPLz7zeZ3LnQ8sFv3NedZXe");
+}
+
+} // namespace TW::Bitcoin::tests

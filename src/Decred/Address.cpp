@@ -1,4 +1,4 @@
-// Copyright © 2017-2020 Trust Wallet.
+// Copyright © 2017-2022 Trust Wallet.
 //
 // This file is part of Trust. The full Trust copyright notice, including
 // terms governing use, modification, and redistribution, is contained in the
@@ -7,13 +7,11 @@
 #include "Address.h"
 
 #include "../Base58.h"
-#include "../Hash.h"
 #include "../Coin.h"
 
 #include <stdexcept>
 
-using namespace TW;
-using namespace TW::Decred;
+namespace TW::Decred {
 
 static const auto keyhashSize = Hash::ripemdSize;
 static const auto addressDataSize = keyhashSize + 2;
@@ -27,7 +25,7 @@ bool Address::isValid(const std::string& string) noexcept {
         return false;
     }
 
-    return (data[1] == TW::p2pkhPrefix(TWCoinTypeDecred) || 
+    return (data[1] == TW::p2pkhPrefix(TWCoinTypeDecred) ||
             data[1] == TW::p2shPrefix(TWCoinTypeDecred));
 }
 
@@ -53,3 +51,5 @@ Address::Address(const PublicKey& publicKey) {
 std::string Address::string() const {
     return Base58::bitcoin.encodeCheck(bytes, Hash::HasherBlake256d);
 }
+
+} // namespace TW::Decred

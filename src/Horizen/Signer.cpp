@@ -84,7 +84,7 @@ Result<Horizen::Script, Common::Proto::SigningError> Signer::sign(Script& script
 
     auto pk = PrivateKey(pkBytes);
 
-    auto sig = pk.signAsDER(sighash, TWCurveSECP256k1);
+    auto sig = pk.signAsDER(sighash);
 
     if (!sig.empty()) {
         sig.push_back(static_cast<uint8_t>(TWBitcoinSigHashTypeAll));

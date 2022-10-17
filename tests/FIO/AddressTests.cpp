@@ -1,4 +1,4 @@
-// Copyright © 2017-2020 Trust Wallet.
+// Copyright © 2017-2022 Trust Wallet.
 //
 // This file is part of Trust. The full Trust copyright notice, including
 // terms governing use, modification, and redistribution, is contained in the
@@ -11,8 +11,7 @@
 
 #include <gtest/gtest.h>
 
-using namespace TW;
-using namespace TW::FIO;
+namespace TW::FIO::tests {
 
 TEST(FIOAddress, ValidateString) {
     ASSERT_FALSE(Address::isValid("abc"));
@@ -24,7 +23,7 @@ TEST(FIOAddress, ValidateString) {
 
 TEST(FIOAddress, ValidateData) {
     Address address("FIO5kJKNHwctcfUM5XZyiWSqSTM5HTzznJP9F3ZdbhaQAHEVq575o");
-    EXPECT_EQ(address.bytes.size(), 37);
+    EXPECT_EQ(address.bytes.size(), 37ul);
     Data addrData = TW::data(address.bytes.data(), address.bytes.size());
 
     EXPECT_EQ(Address::isValid(addrData), true);
@@ -64,3 +63,5 @@ TEST(FIOAddress, GetPublicKey) {
     auto address = Address(publicKey);
     EXPECT_EQ(hex(address.publicKey().bytes), publicKeyHex);
 }
+
+} // namespace TW::FIO::tests

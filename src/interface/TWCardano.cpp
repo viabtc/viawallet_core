@@ -7,16 +7,25 @@
 #include <TrustWalletCore/TWCardano.h>
 
 #include "Cardano/Transaction.h"
+#include "Cardano/AddressV3.h"
 #include "proto/Cardano.pb.h"
 
-using namespace TW::Cardano;
 using namespace TW;
 
 uint64_t TWCardanoMinAdaAmount(TWData *_Nonnull tokenBundle) {
     const Data* bundleData = static_cast<const Data*>(tokenBundle);
-    Proto::TokenBundle bundleProto;
+    TW::Cardano::Proto::TokenBundle bundleProto;
     if (bundleData && bundleProto.ParseFromArray(bundleData->data(), (int)bundleData->size())) {
-        return TokenBundle::fromProto(bundleProto).minAdaAmount();
+        return TW::Cardano::TokenBundle::fromProto(bundleProto).minAdaAmount();
     }
     return 0;
+}
+
+TWString *_Nonnull TWCardanoGetStakingAddress(TWString *_Nonnull baseAddress) {
+    const auto& address = *reinterpret_cast<const std::string*>(baseAddress);
+    try {
+        return TWStringCreateWithUTF8Bytes(TW::Cardano::AddressV3(address).getStakingAddress().c_str());
+    } catch (...) {
+        return TWStringCreateWithUTF8Bytes("");
+    }
 }

@@ -8,7 +8,7 @@
 
 #include <TrezorCrypto/hasher.h>
 #include "../PublicKey.h"
-#include "../Data.h"
+#include "Data.h"
 
 #include <cstdint>
 #include <string>
@@ -32,6 +32,9 @@ class SegwitAddress {
     /// Witness program.
     Data witnessProgram;
 
+    // Prefix for Bitcoin Testnet Segwit addresses
+    static constexpr auto TestnetPrefix = "tb";
+
     /// Determines whether a string makes a valid Bech32 address.
     static bool isValid(const std::string& string);
 
@@ -50,6 +53,9 @@ class SegwitAddress {
 
     /// Initializes a Bech32 address with a public key and a HRP prefix by hasher.
     SegwitAddress(const PublicKey& publicKey, byte witver, std::string hrp, HasherType hasher);
+
+    /// Create a testnet address
+    static SegwitAddress createTestnetFromPublicKey(const PublicKey& publicKey) { return SegwitAddress(publicKey, TestnetPrefix); }
 
     /// Decodes a SegWit address.
     ///

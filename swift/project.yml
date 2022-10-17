@@ -8,9 +8,9 @@ settings:
     SYSTEM_HEADER_SEARCH_PATHS: ${SRCROOT}/include ${SRCROOT}/../build/local/include ${SRCROOT}/trezor-crypto/include $(SRCROOT)/protobuf /usr/local/include /opt/homebrew/include
     LIBRARY_SEARCH_PATHS: ${SRCROOT}/../sr25519/lib/ios/apple-ios
     OTHER_LDFLAGS: -lsr25519crust
-    CLANG_CXX_LANGUAGE_STANDARD: c++17
+    CLANG_CXX_LANGUAGE_STANDARD: c++20
     SWIFT_VERSION: 5.1
-    IPHONEOS_DEPLOYMENT_TARGET: 11.0
+    IPHONEOS_DEPLOYMENT_TARGET: 13.0
   configs:
     release:
       SWIFT_OPTIMIZATION_LEVEL: -Owholemodule
@@ -129,7 +129,8 @@ targets:
       - trezor-crypto/crypto/groestl.c
       - trezor-crypto/crypto/hmac_drbg.c
       - trezor-crypto/crypto/rfc6979.c
-      - trezor-crypto/crypto/schnorr.c
+      - trezor-crypto/crypto/zilliqa.c
+      - trezor-crypto/crypto/cardano.c
       - trezor-crypto/crypto/shamir.c
       - trezor-crypto/crypto/sodium/private/fe_25_5/fe.c
       - trezor-crypto/crypto/sodium/private/ed25519_ref10.c

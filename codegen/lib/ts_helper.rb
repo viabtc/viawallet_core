@@ -47,8 +47,9 @@ module TsHelper
     def self.combine_declaration_files
         wasm_src = File.expand_path(File.join(File.dirname(__FILE__), '../../wasm'))
         header = File.expand_path('copyright_header.erb', File.join(File.dirname(__FILE__), 'templates'))
+        combined_path = "#{wasm_src}/src/wallet-core.d.ts"
 
-        combined = File.open("#{wasm_src}/lib/wallet-core.d.ts", 'w')
+        combined = File.open(combined_path, 'w')
         # append header
         combined.write(File.read(header))
 
@@ -63,5 +64,30 @@ module TsHelper
         end
         combined.close
         FileUtils.remove_dir("#{wasm_src}/lib/generated", true)
+
+        # generate WalletCore interface
+        interface = "export interface WalletCore {\n"
+
+        combined = File.open(combined_path, 'r')
+        all_lines = combined.read
+        combined.close
+
+        export_regex = /^export (class|namespace) (.*)\b/
+        declare_regex = /^declare function (.+?(?=\())/
+
+        all_lines.scan(export_regex).each do |match|
+          matched = match[1]
+          interface += "    #{matched}: typeof #{matched};\n"
+        end
+
+        all_lines.scan(declare_regex).each do |match|
+          matched = match[0]
+          interface += "    #{matched}: typeof #{matched};\n"
+        end
+        interface += "}\n"
+
+        File.open(combined_path, 'a') do |file|
+          file << interface
+        end
       end
 end

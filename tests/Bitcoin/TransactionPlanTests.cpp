@@ -1,26 +1,23 @@
-// Copyright © 2017-2021 Trust Wallet.
+// Copyright © 2017-2022 Trust Wallet.
 //
 // This file is part of Trust. The full Trust copyright notice, including
 // terms governing use, modification, and redistribution, is contained in the
 // file LICENSE at the root of the source code distribution tree.
 
-#include "TxComparisonHelper.h"
+#include "Bitcoin/FeeCalculator.h"
 #include "Bitcoin/OutPoint.h"
 #include "Bitcoin/Script.h"
-#include "Bitcoin/TransactionPlan.h"
-#include "Bitcoin/TransactionBuilder.h"
-#include "Bitcoin/FeeCalculator.h"
 #include "Bitcoin/SigHashType.h"
+#include "Bitcoin/TransactionBuilder.h"
+#include "Bitcoin/TransactionPlan.h"
 #include "HexCoding.h"
-#include "HDWallet.h"
+#include "TxComparisonHelper.h"
 #include "proto/Bitcoin.pb.h"
 #include <TrustWalletCore/TWCoinType.h>
 
 #include <gtest/gtest.h>
 
-using namespace TW;
-using namespace TW::Bitcoin;
-
+namespace TW::Bitcoin {
 
 TEST(TransactionPlan, OneTypical) {
     auto utxos = buildTestUTXOs({100'000});
@@ -198,7 +195,7 @@ TEST(TransactionPlan, ThreeNoDust) {
 }
 
 TEST(TransactionPlan, TenThree) {
-    auto utxos = buildTestUTXOs({1'000, 2'000, 100'000, 3'000, 4'000, 5,000, 125'000, 6'000, 150'000, 7'000});
+    auto utxos = buildTestUTXOs({1'000, 2'000, 100'000, 3'000, 4'000, 5, 000, 125'000, 6'000, 150'000, 7'000});
     auto sigingInput = buildSigningInput(300'000, 1, utxos);
 
     auto txPlan = TransactionBuilder::plan(sigingInput);
@@ -265,7 +262,7 @@ TEST(TransactionPlan, Inputs5_33Req19NoDustFee2) {
     // UTXOs smaller than singleInputFee are not included
     auto txPlan = TransactionBuilder::plan(sigingInput);
 
-    auto expectedFee = 283*byteFee;
+    auto expectedFee = 283 * byteFee;
     EXPECT_TRUE(verifyPlan(txPlan, {6'000, 8'000, 10'000}, 19'000, expectedFee));
 
     auto& feeCalculator = getFeeCalculator(TWCoinTypeBitcoin);
@@ -280,7 +277,7 @@ TEST(TransactionPlan, Inputs5_33Req19Dust1Fee5) {
     // UTXOs smaller than singleInputFee are not included
     auto txPlan = TransactionBuilder::plan(sigingInput);
 
-    auto expectedFee = 283*byteFee;
+    auto expectedFee = 283 * byteFee;
     EXPECT_TRUE(verifyPlan(txPlan, {6'000, 8'000, 10'000}, 19'000, expectedFee));
 
     auto& feeCalculator = getFeeCalculator(TWCoinTypeBitcoin);
@@ -295,7 +292,7 @@ TEST(TransactionPlan, Inputs5_33Req19Dust1Fee9) {
     // UTXOs smaller than singleInputFee are not included
     auto txPlan = TransactionBuilder::plan(sigingInput);
 
-    auto expectedFee = 283*byteFee;
+    auto expectedFee = 283 * byteFee;
     EXPECT_TRUE(verifyPlan(txPlan, {6'000, 8'000, 10'000}, 19'000, expectedFee));
 
     auto& feeCalculator = getFeeCalculator(TWCoinTypeBitcoin);
@@ -321,7 +318,7 @@ TEST(TransactionPlan, Inputs5_33Req13Fee20) {
     // UTXOs smaller than singleInputFee are not included
     auto txPlan = TransactionBuilder::plan(sigingInput);
 
-    auto expectedFee = 283*byteFee;
+    auto expectedFee = 283 * byteFee;
     EXPECT_TRUE(verifyPlan(txPlan, {6'000, 8'000, 10'000}, 13'000, expectedFee));
 
     auto& feeCalculator = getFeeCalculator(TWCoinTypeBitcoin);
@@ -534,7 +531,7 @@ TEST(TransactionPlan, ManyUtxosNonmax_400) {
         valueSum += val;
     }
     const uint64_t requestedAmount = valueSum / 8;
-    EXPECT_EQ(requestedAmount, 1'002'500);
+    EXPECT_EQ(requestedAmount, 1'002'500ul);
 
     auto utxos = buildTestUTXOs(values);
     auto sigingInput = buildSigningInput(requestedAmount, byteFee, utxos, false, TWCoinTypeBitcoin);
@@ -549,8 +546,8 @@ TEST(TransactionPlan, ManyUtxosNonmax_400) {
         subset.push_back(val);
         subsetSum += val;
     }
-    EXPECT_EQ(subset.size(), 27);
-    EXPECT_EQ(subsetSum, 1'044'900);
+    EXPECT_EQ(subset.size(), 27ul);
+    EXPECT_EQ(subsetSum, 1'044'900ul);
     EXPECT_TRUE(verifyPlan(txPlan, subset, requestedAmount, 19'150));
 }
 
@@ -565,7 +562,7 @@ TEST(TransactionPlan, ManyUtxosNonmax_5000_simple) {
         valueSum += val;
     }
     const uint64_t requestedAmount = valueSum / 20;
-    EXPECT_EQ(requestedAmount, 62'512'500);
+    EXPECT_EQ(requestedAmount, 62'512'500ul);
 
     // Use Ravencoin, because of faster non-segwit estimation, and one of the original issues was with this coin.
     auto utxos = buildTestUTXOs(values);
@@ -581,8 +578,8 @@ TEST(TransactionPlan, ManyUtxosNonmax_5000_simple) {
         subset.push_back(val);
         subsetSum += val;
     }
-    EXPECT_EQ(subset.size(), 1220);
-    EXPECT_EQ(subsetSum, 76'189'000);
+    EXPECT_EQ(subset.size(), 1220ul);
+    EXPECT_EQ(subsetSum, 76'189'000ul);
     EXPECT_TRUE(verifyPlan(txPlan, subset, requestedAmount, 1'806'380));
 }
 
@@ -614,10 +611,10 @@ TEST(TransactionPlan, ManyUtxosMax_400) {
             filteredValueSum += val;
         }
     }
-    EXPECT_EQ(valueSum, 8'020'000);
-    EXPECT_EQ(dustLimit, 1480);
-    EXPECT_EQ(filteredValues.size(), 386);
-    EXPECT_EQ(filteredValueSum, 80'09'500);
+    EXPECT_EQ(valueSum, 8'020'000ul);
+    EXPECT_EQ(dustLimit, 1480ul);
+    EXPECT_EQ(filteredValues.size(), 386ul);
+    EXPECT_EQ(filteredValueSum, 80'09'500ul);
     EXPECT_TRUE(verifyPlan(txPlan, filteredValues, 7'437'780, 571'720));
 }
 
@@ -649,10 +646,10 @@ TEST(TransactionPlan, ManyUtxosMax_5000_simple) {
             filteredValueSum += val;
         }
     }
-    EXPECT_EQ(valueSum, 1'250'250'000);
-    EXPECT_EQ(dustLimit, 1500);
-    EXPECT_EQ(filteredValues.size(), 3000);
-    EXPECT_EQ(filteredValueSum, 454'350'000);
+    EXPECT_EQ(valueSum, 1'250'250'000ul);
+    EXPECT_EQ(dustLimit, 1500ul);
+    EXPECT_EQ(filteredValues.size(), 3000ul);
+    EXPECT_EQ(filteredValueSum, 454'350'000ul);
     EXPECT_TRUE(verifyPlan(txPlan, filteredValues, 449'909'560, 4'440'440));
 }
 
@@ -683,7 +680,7 @@ TEST(TransactionPlan, OpReturn) {
     auto txPlan = TransactionBuilder::plan(signingInput);
 
     EXPECT_TRUE(verifyPlan(txPlan, {342101}, 300000, 205 * byteFee));
-    EXPECT_EQ(txPlan.outputOpReturn.size(), 59);
+    EXPECT_EQ(txPlan.outputOpReturn.size(), 59ul);
     EXPECT_EQ(hex(txPlan.outputOpReturn), "535741503a54484f522e52554e453a74686f72317470657263616d6b6b7865633071306a6b366c74646e6c7176737732396775617038776d636c3a");
 
     auto& feeCalculator = getFeeCalculator(TWCoinTypeBitcoin);
@@ -781,3 +778,4 @@ TEST(TransactionPlan, DustChangeMoveToFee) {
     ASSERT_EQ(plan.change, 0);
 
 }
+} // namespace TW::Bitcoin

@@ -1,39 +1,34 @@
-// Copyright © 2017-2021 Trust Wallet.
+// Copyright © 2017-2022 Trust Wallet.
 //
 // This file is part of Trust. The full Trust copyright notice, including
 // terms governing use, modification, and redistribution, is contained in the
 // file LICENSE at the root of the source code distribution tree.
 
+#include "Base58.h"
 #include "Bitcoin/Address.h"
-#include "Bitcoin/SegwitAddress.h"
 #include "Bitcoin/OutPoint.h"
 #include "Bitcoin/Script.h"
+#include "Bitcoin/SegwitAddress.h"
+#include "Bitcoin/SigHashType.h"
 #include "Bitcoin/Transaction.h"
 #include "Bitcoin/TransactionBuilder.h"
 #include "Bitcoin/TransactionSigner.h"
-#include "Bitcoin/SigHashType.h"
-#include "Bitcoin/SegwitAddress.h"
-#include "Base58.h"
 #include "Hash.h"
 #include "HexCoding.h"
 #include "PrivateKey.h"
-#include "proto/Bitcoin.pb.h"
 #include "TxComparisonHelper.h"
-#include "../interface/TWTestUtilities.h"
+#include "proto/Bitcoin.pb.h"
 
-#include <TrustWalletCore/TWAnySigner.h>
 #include <TrustWalletCore/TWBitcoinScript.h>
 #include <TrustWalletCore/TWCoinType.h>
-#include <TrustWalletCore/TWHash.h>
-#include <TrustWalletCore/TWPrivateKey.h>
 #include <TrustWalletCore/TWPublicKeyType.h>
 
-#include <gtest/gtest.h>
 #include <cassert>
+#include <gtest/gtest.h>
 
-using namespace TW;
-using namespace TW::Bitcoin;
+namespace TW::Bitcoin {
 
+// clang-format off
 SigningInput buildInputP2PKH(bool omitKey = false) {
     auto hash0 = parse_hex("fff7f7881a8099afa6940d42d1e7f6362bec38171ea3edf433541db4e4ad969f");
     auto hash1 = parse_hex("ef51e1b804cc89d182d279655c3aa89e815b1b309fe287d9b2b55d57b90ec68a");
@@ -75,7 +70,8 @@ SigningInput buildInputP2PKH(bool omitKey = false) {
     input.utxos.push_back(utxo0);
 
     UTXO utxo1;
-    utxo1.script = Script(parse_hex("0014" "1d0f172a0ecb48aee1be1f2687d2963ae33f71a1"));
+    utxo1.script = Script(parse_hex("0014"
+                                    "1d0f172a0ecb48aee1be1f2687d2963ae33f71a1"));
     utxo1.amount = 600'000'000;
     utxo1.outPoint = OutPoint(hash1, 1, UINT32_MAX);
     input.utxos.push_back(utxo1);
@@ -148,7 +144,7 @@ TEST(BitcoinSigning, EncodeP2WPKH) {
 
     Data unsignedData;
     unsignedTx.encode(unsignedData, Transaction::SegwitFormatMode::Segwit);
-    ASSERT_EQ(unsignedData.size(), 164);
+    ASSERT_EQ(unsignedData.size(), 164ul);
     ASSERT_EQ(hex(unsignedData),
         "01000000" // version
         "0001" // marker & flag
@@ -207,13 +203,13 @@ TEST(BitcoinSigning, SignP2WPKH_Bip143) {
     utxo1.script = utxo1Script;
     utxo1.amount = 600000000; // 0x23C34600 0046c323
     utxo1.outPoint = OutPoint(hash1, 1, UINT32_MAX);
-    input.utxos.push_back(utxo1); 
+    input.utxos.push_back(utxo1);
 
     // Set plan to force both UTXOs and exact output amounts
     TransactionPlan plan;
     plan.amount = amount;
     plan.availableAmount = 600000000 + 1000000;
-    plan.fee = 265210000; // very large, the amounts specified (in1, out0, out1) are not consistent/realistic
+    plan.fee = 265210000;    // very large, the amounts specified (in1, out0, out1) are not consistent/realistic
     plan.change = 223450000; // 0x0d519390
     plan.branchId = {0};
     plan.utxos.push_back(utxo0);
@@ -276,7 +272,8 @@ SigningInput buildInputP2WPKH(int64_t amount, TWBitcoinSigHashType hashType, int
     assert(hex(utxoPubkeyHash1) == "1d0f172a0ecb48aee1be1f2687d2963ae33f71a1");
     input.privateKeys.push_back(utxoKey1);
 
-    auto scriptPub1 = Script(parse_hex("0014" "1d0f172a0ecb48aee1be1f2687d2963ae33f71a1"));
+    auto scriptPub1 = Script(parse_hex("0014"
+                                       "1d0f172a0ecb48aee1be1f2687d2963ae33f71a1"));
     Data scriptHash;
     scriptPub1.matchPayToWitnessPublicKeyHash(scriptHash);
     auto scriptHashHex = hex(scriptHash);
@@ -292,7 +289,8 @@ SigningInput buildInputP2WPKH(int64_t amount, TWBitcoinSigHashType hashType, int
     input.utxos.push_back(utxo0);
 
     UTXO utxo1;
-    utxo1.script = Script(parse_hex("0014" "1d0f172a0ecb48aee1be1f2687d2963ae33f71a1"));
+    utxo1.script = Script(parse_hex("0014"
+                                    "1d0f172a0ecb48aee1be1f2687d2963ae33f71a1"));
     utxo1.amount = utxo1Amount;
     utxo1.outPoint = OutPoint(hash1, 1, UINT32_MAX);
     input.utxos.push_back(utxo1);
@@ -318,7 +316,7 @@ TEST(BitcoinSigning, SignP2WPKH) {
     Data serialized;
     signedTx.encode(serialized);
     EXPECT_EQ(getEncodedTxSize(signedTx), (EncodedTxSize{195, 192, 193}));
-    EXPECT_EQ(serialized.size(), 192);
+    EXPECT_EQ(serialized.size(), 192ul);
     EXPECT_TRUE(validateEstimatedSize(signedTx, -1, 1));
     ASSERT_EQ(hex(serialized), // printed using prettyPrintTransaction
         "01000000" // version
@@ -332,11 +330,11 @@ TEST(BitcoinSigning, SignP2WPKH) {
 
     {
         // Non-segwit encoded, for comparison
-        Data serialized;
-        signedTx.encode(serialized, Transaction::SegwitFormatMode::NonSegwit);
+        Data serialized_;
+        signedTx.encode(serialized_, Transaction::SegwitFormatMode::NonSegwit);
         EXPECT_EQ(getEncodedTxSize(signedTx), (EncodedTxSize{195, 192, 193}));
-        EXPECT_EQ(serialized.size(), 192);
-        ASSERT_EQ(hex(serialized), // printed using prettyPrintTransaction
+        EXPECT_EQ(serialized_.size(), 192ul);
+        ASSERT_EQ(hex(serialized_), // printed using prettyPrintTransaction
             "01000000" // version
             "01" // inputs
                 "fff7f7881a8099afa6940d42d1e7f6362bec38171ea3edf433541db4e4ad969f"  "00000000"  "49"  "483045022100c327babdd370f0fc5b24cf920736446bf7d9c5660e4a5f7df432386fd652fe280220269c4fc3690c1c248e50c8bf2435c20b4ef00f308b403575f4437f862a91c53a01"  "ffffffff"
@@ -502,7 +500,7 @@ SigningInput buildInputP2WSH(enum TWBitcoinSigHashType hashType, bool omitScript
     auto hash0 = parse_hex("0001000000000000000000000000000000000000000000000000000000000000");
     utxo0.outPoint = OutPoint(hash0, 0, UINT32_MAX);
     input.utxos.push_back(utxo0);
-    
+
     return input;
 }
 
@@ -626,7 +624,7 @@ TEST(BitcoinSigning, SignP2WSH_HashAnyoneCanPay) {
 
     Data serialized;
     signedTx.encode(serialized);
-    EXPECT_EQ(serialized.size(), 231);
+    EXPECT_EQ(serialized.size(), 231ul);
     EXPECT_EQ(getEncodedTxSize(signedTx), (EncodedTxSize{231, 119, 147}));
     EXPECT_TRUE(validateEstimatedSize(signedTx, -1, 1));
     ASSERT_EQ(hex(serialized), // printed using prettyPrintTransaction
@@ -978,7 +976,7 @@ TEST(BitcoinSigning, SignP2SH_P2WSH) {
                 "47"  "3044022044e3b59b06931d46f857c82fa1d53d89b116a40a581527eac35c5eb5b7f0785302207d0f8b5d063ffc6749fb4e133db7916162b540c70dee40ec0b21e142d8843b3a00"
                 "cf"  "56210307b8ae49ac90a048e9b53357a2354b3334e9c8bee813ecb98e99a7e07e8c3ba32103b28f0c28bfab54554ae8c658ac5c3e0ce6e79ad336331f78c428dd43eea8449b21034b8113d703413d57761b8b9781957b8c0ac1dfe69f492580ca4195f50376ba4a21033400f6afecb833092a9a21cfdf1ed1376e58c5d1f47de74683123987e967a8f42103a6d48b1131e94ba04d9737d61acdaa1322008af9602b3b14862c07a1789aac162102d8b661b0b3302ee2f162b09e07a55ad5dfbe673a9f01d9f0c19617681024306b56ae"
         "00000000" // nLockTime
-    ;
+        ;
 
     Data serialized;
     signedTx.encode(serialized);
@@ -1108,7 +1106,7 @@ TEST(BitcoinSigning, Plan_10input_MaxAmount) {
     input.toAddress = "bc1qauwlpmzamwlf9tah6z4w0t8sunh6pnyyjgk0ne";
     input.changeAddress = ownAddress;
 
-    // Plan.  
+    // Plan.
     // Estimated size: witness size: 10 * (1 + 1 + 72 + 1 + 33) + 2 = 1082; base 451; raw 451 + 1082 = 1533; vsize 451 + 1082/4 --> 722
     // Actual size:    witness size:                                  1078; base 451; raw 451 + 1078 = 1529; vsize 451 + 1078/4 --> 721
     auto plan = TransactionBuilder::plan(input);
@@ -1130,7 +1128,7 @@ TEST(BitcoinSigning, Plan_10input_MaxAmount) {
     EXPECT_EQ(getEncodedTxSize(signedTx), (EncodedTxSize{1529, 451, 721}));
     EXPECT_TRUE(validateEstimatedSize(signedTx, -1, 1));
 
-    ASSERT_EQ(serialized.size(), 1529);
+    ASSERT_EQ(serialized.size(), 1529ul);
 }
 
 TEST(BitcoinSigning, Sign_LitecoinReal_a85f) {
@@ -1297,7 +1295,7 @@ TEST(BitcoinSigning, Sign_ManyUtxos_400) {
         input.utxos.push_back(utxo);
         utxoSum += utxo.amount;
     }
-    EXPECT_EQ(utxoSum, 1'202'000);
+    EXPECT_EQ(utxoSum, 1'202'000ul);
 
     input.coinType = TWCoinTypeBitcoin;
     input.hashType = hashTypeForCoin(TWCoinTypeBitcoin);
@@ -1318,8 +1316,8 @@ TEST(BitcoinSigning, Sign_ManyUtxos_400) {
         subset.push_back(val);
         subsetSum += val;
     }
-    EXPECT_EQ(subset.size(), 66);
-    EXPECT_EQ(subsetSum, 308'550);
+    EXPECT_EQ(subset.size(), 66ul);
+    EXPECT_EQ(subsetSum, 308'550ul);
     EXPECT_TRUE(verifyPlan(plan, subset, 300'000, 4'561));
 
     // Extend input with keys, reuse plan, Sign
@@ -1336,7 +1334,7 @@ TEST(BitcoinSigning, Sign_ManyUtxos_400) {
     Data serialized;
     signedTx.encode(serialized);
 
-    EXPECT_EQ(serialized.size(), 9871);
+    EXPECT_EQ(serialized.size(), 9871ul);
 }
 
 TEST(BitcoinSigning, Sign_ManyUtxos_2000) {
@@ -1366,7 +1364,7 @@ TEST(BitcoinSigning, Sign_ManyUtxos_2000) {
         input.utxos.push_back(utxo);
         utxoSum += utxo.amount;
     }
-    EXPECT_EQ(utxoSum, 22'010'000);
+    EXPECT_EQ(utxoSum, 22'010'000ul);
 
     input.coinType = TWCoinTypeBitcoin;
     input.hashType = hashTypeForCoin(TWCoinTypeBitcoin);
@@ -1387,8 +1385,8 @@ TEST(BitcoinSigning, Sign_ManyUtxos_2000) {
         subset.push_back(val);
         subsetSum += val;
     }
-    EXPECT_EQ(subset.size(), 601);
-    EXPECT_EQ(subsetSum, 2'410'010);
+    EXPECT_EQ(subset.size(), 601ul);
+    EXPECT_EQ(subsetSum, 2'410'010ul);
     EXPECT_TRUE(verifyPlan(plan, subset, 2'000'000, 40'943));
 
     // Extend input with keys, reuse plan, Sign
@@ -1405,7 +1403,7 @@ TEST(BitcoinSigning, Sign_ManyUtxos_2000) {
     Data serialized;
     signedTx.encode(serialized);
 
-    EXPECT_EQ(serialized.size(), 89'339);
+    EXPECT_EQ(serialized.size(), 89'339ul);
 }
 
 TEST(BitcoinSigning, EncodeThreeOutput) {
@@ -1435,7 +1433,7 @@ TEST(BitcoinSigning, EncodeThreeOutput) {
 
     Data unsignedData;
     unsignedTx.encode(unsignedData, Transaction::SegwitFormatMode::Segwit);
-    EXPECT_EQ(unsignedData.size(), 147);
+    EXPECT_EQ(unsignedData.size(), 147ul);
     EXPECT_EQ(hex(unsignedData), // printed using prettyPrintTransaction
         "01000000" // version
         "0001" // marker & flag
@@ -1466,19 +1464,19 @@ TEST(BitcoinSigning, EncodeThreeOutput) {
 
     auto hashType = TWBitcoinSigHashType::TWBitcoinSigHashTypeAll;
     Data sighash = unsignedTx.getSignatureHash(redeemScript0, unsignedTx.inputs[0].previousOutput.index,
-        hashType, utxo0Amount, static_cast<SignatureVersion>(unsignedTx.version));
-    auto sig = privkey.signAsDER(sighash, TWCurveSECP256k1);
+                                               hashType, utxo0Amount, static_cast<SignatureVersion>(unsignedTx._version));
+    auto sig = privkey.signAsDER(sighash);
     ASSERT_FALSE(sig.empty());
     sig.push_back(hashType);
     EXPECT_EQ(hex(sig), "30450221008d88197a37ffcb51ecacc7e826aa588cb1068a107a82373c4b54ec42318a395c02204abbf5408504614d8f943d67e7873506c575e85a5e1bd92a02cd345e5192a82701");
-    
+
     // add witness stack
     unsignedTx.inputs[0].scriptWitness.push_back(sig);
     unsignedTx.inputs[0].scriptWitness.push_back(pubkey.bytes);
 
     unsignedData.clear();
     unsignedTx.encode(unsignedData, Transaction::SegwitFormatMode::Segwit);
-    EXPECT_EQ(unsignedData.size(), 254);
+    EXPECT_EQ(unsignedData.size(), 254ul);
     // https://blockchair.com/litecoin/transaction/9e3fe98565a904d2da5ec1b3ba9d2b3376dfc074f43d113ce1caac01bf51b34c
     EXPECT_EQ(hex(unsignedData), // printed using prettyPrintTransaction
         "01000000" // version
@@ -1549,14 +1547,14 @@ TEST(BitcoinSigning, RedeemExtendedPubkeyUTXO) {
 
     Data encoded;
     signedTx.encode(encoded);
-    EXPECT_EQ(encoded.size(), 402);
+    EXPECT_EQ(encoded.size(), 402ul);
 }
 
 TEST(BitcoinSigning, SignP2TR_5df51e) {
     const auto privateKey = "13fcaabaf9e71ffaf915e242ec58a743d55f102cf836968e5bd4881135e0c52c";
     const auto ownAddress = "bc1qpjult34k9spjfym8hss2jrwjgf0xjf40ze0pp8";
     const auto toAddress = "bc1ptmsk7c2yut2xah4pgflpygh2s7fh0cpfkrza9cjj29awapv53mrslgd5cf"; // Taproot
-    const auto coin =  TWCoinTypeBitcoin;
+    const auto coin = TWCoinTypeBitcoin;
 
     // Setup input
     SigningInput input;
@@ -1653,7 +1651,7 @@ TEST(BitcoinSigning, Build_OpReturn_THORChainSwap_eb4c) {
 
     Data unsignedData;
     unsignedTx.encode(unsignedData, Transaction::SegwitFormatMode::Segwit);
-    EXPECT_EQ(unsignedData.size(), 186);
+    EXPECT_EQ(unsignedData.size(), 186ul);
     EXPECT_EQ(hex(unsignedData), // printed using prettyPrintTransaction
         "02000000" // version
         "0001" // marker & flag
@@ -1678,7 +1676,7 @@ TEST(BitcoinSigning, Build_OpReturn_THORChainSwap_eb4c) {
 
     unsignedData.clear();
     unsignedTx.encode(unsignedData, Transaction::SegwitFormatMode::Segwit);
-    EXPECT_EQ(unsignedData.size(), 293);
+    EXPECT_EQ(unsignedData.size(), 293ul);
     // https://blockchair.com/bitcoin/transaction/eb4c1b064bfaf593d7cc6a5c73b75f932ffefe12a0478acf5a7e3145476683fc
     EXPECT_EQ(hex(unsignedData),
         "02000000000101354ecf19c1f050e419a9d3b4290e683e5e814a844cec6436de391a296029b8300100000000ffffffff03e0930400000000001600143729d3a1"
@@ -1729,7 +1727,7 @@ TEST(BitcoinSigning, Sign_OpReturn_THORChainSwap) {
         // test plan (but do not reuse plan result)
         auto plan = TransactionBuilder::plan(input);
         EXPECT_TRUE(verifyPlan(plan, {342101}, 300000, 26586));
-        EXPECT_EQ(plan.outputOpReturn.size(), 59);
+        EXPECT_EQ(plan.outputOpReturn.size(), 59ul);
     }
 
     // Sign
@@ -1758,3 +1756,5 @@ TEST(BitcoinSigning, Sign_OpReturn_THORChainSwap) {
         "00000000" // nLockTime
     );
 }
+// clang-format on
+} // namespace TW::Bitcoin

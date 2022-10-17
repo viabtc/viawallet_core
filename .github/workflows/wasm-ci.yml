@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v2
 
@@ -50,6 +50,5 @@ jobs:
 
     - name: Test
       run: |
-        npm install && npm run copy:wasm 
-        npm run build && npm run test
+        npm install && npm run build-and-test
       working-directory: wasm

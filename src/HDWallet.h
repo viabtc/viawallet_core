@@ -81,23 +81,40 @@ class HDWallet {
     /// Returns the private key at the given derivation path.
     PrivateKey getKey(const TWCoinType coin, const DerivationPath& derivationPath) const;
 
+    /// Returns the private key at the given derivation path and curve.
+    PrivateKey getKeyByCurve(TWCurve curve, const DerivationPath& derivationPath) const;
+
     /// Derives the address for a coin (default derivation).
     std::string deriveAddress(TWCoinType coin) const;
 
     /// Derives the address for a coin with given derivation.
     std::string deriveAddress(TWCoinType coin, TWDerivation derivation) const;
 
+    /// Returns the extended private key for default 0 account with the given derivation.
+    std::string getExtendedPrivateKeyDerivation(TWPurpose purpose, TWCoinType coin, TWDerivation derivation, TWHDVersion version) const {
+        return getExtendedPrivateKeyAccount(purpose, coin, derivation, version, 0);
+    }
+
+    /// Returns the extended public key for default 0 account with the given derivation.
+    std::string getExtendedPublicKeyDerivation(TWPurpose purpose, TWCoinType coin, TWDerivation derivation, TWHDVersion version) const {
+        return getExtendedPublicKeyAccount(purpose, coin, derivation, version, 0);
+    }
+
     /// Returns the extended private key for default 0 account; derivation path used is "m/purpose'/coin'/0'".
-    std::string getExtendedPrivateKey(TWPurpose purpose, TWCoinType coin, TWHDVersion version) const { return getExtendedPrivateKeyAccount(purpose, coin, version, 0); }
+    std::string getExtendedPrivateKey(TWPurpose purpose, TWCoinType coin, TWHDVersion version) const {
+        return getExtendedPrivateKeyAccount(purpose, coin, TWDerivationDefault, version, 0);
+    }
 
     /// Returns the extended public key for default 0 account; derivation path used is "m/purpose'/coin'/0'".
-    std::string getExtendedPublicKey(TWPurpose purpose, TWCoinType coin, TWHDVersion version) const { return getExtendedPublicKeyAccount(purpose, coin, version, 0); }
+    std::string getExtendedPublicKey(TWPurpose purpose, TWCoinType coin, TWHDVersion version) const {
+        return getExtendedPublicKeyAccount(purpose, coin, TWDerivationDefault, version, 0);
+    }
 
     /// Returns the extended private key for a custom account; derivation path used is "m/purpose'/coin'/account'".
-    std::string getExtendedPrivateKeyAccount(TWPurpose purpose, TWCoinType coin, TWHDVersion version, uint32_t account) const;
+    std::string getExtendedPrivateKeyAccount(TWPurpose purpose, TWCoinType coin, TWDerivation derivation, TWHDVersion version, uint32_t account) const;
 
     /// Returns the extended public key for a custom account; derivation path used is "m/purpose'/coin'/account'".
-    std::string getExtendedPublicKeyAccount(TWPurpose purpose, TWCoinType coin, TWHDVersion version, uint32_t account) const;
+    std::string getExtendedPublicKeyAccount(TWPurpose purpose, TWCoinType coin, TWDerivation derivation, TWHDVersion version, uint32_t account) const;
 
     /// Returns the BIP32 Root Key (private)
     std::string getRootKey(TWCoinType coin, TWHDVersion version) const;
@@ -117,8 +134,8 @@ class HDWallet {
       PrivateKeyTypeDefault32 = 0, // 32-byte private key
       PrivateKeyTypeDoubleExtended = 1, // used by Cardano
       PrivateKeyTypeExtended96KDA = 2, // 3*32-byte extended private key of kadena
-      PrivateKeyTypeMina = 3, // 32-byte private key of Mina
-      PrivateKeyTypeSR25519 = 4, // 32-byte private key of Mina
+      PrivateKeyTypeSR25519 = 3, // used by DOT/KSM
+      PrivateKeyTypeMina = 4, // 32-byte private key of Mina
     };
     
     // obtain privateKeyType used by the coin/curve
@@ -127,7 +144,7 @@ class HDWallet {
   private:
     void updateSeedAndEntropy(bool check = true);
 
-    // For Cardano, derive 2nd, staking derivation path from the primary one
+    // For Cardano, derive 2nd staking derivation path from the primary one
     static DerivationPath cardanoStakingDerivationPath(const DerivationPath& path);
 };
 

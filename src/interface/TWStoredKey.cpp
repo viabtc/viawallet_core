@@ -7,19 +7,19 @@
 #include <TrustWalletCore/TWStoredKey.h>
 
 #include "../Coin.h"
-#include "../Data.h"
+#include "Data.h"
 #include "../HDWallet.h"
 #include "../Keystore/StoredKey.h"
 
 #include <stdexcept>
 #include <cassert>
 
-using namespace TW::Keystore;
+namespace KeyStore = TW::Keystore;
 
 struct TWStoredKey* _Nullable TWStoredKeyLoad(TWString* _Nonnull path) {
     try {
         const auto& pathString = *reinterpret_cast<const std::string*>(path);
-        return new TWStoredKey{ StoredKey::load(pathString) };
+        return new TWStoredKey{ KeyStore::StoredKey::load(pathString) };
     } catch (...) {
         return nullptr;
     }
@@ -28,7 +28,7 @@ struct TWStoredKey* _Nullable TWStoredKeyLoad(TWString* _Nonnull path) {
 struct TWStoredKey* _Nonnull TWStoredKeyCreateLevel(TWString* _Nonnull name, TWData* _Nonnull password, enum TWStoredKeyEncryptionLevel encryptionLevel) {
     const auto& nameString = *reinterpret_cast<const std::string*>(name);
     const auto passwordData = TW::data(TWDataBytes(password), TWDataSize(password));
-    return new TWStoredKey{ StoredKey::createWithMnemonicRandom(nameString, passwordData, encryptionLevel) };
+    return new TWStoredKey{ KeyStore::StoredKey::createWithMnemonicRandom(nameString, passwordData, encryptionLevel) };
 }
 
 struct TWStoredKey* _Nonnull TWStoredKeyCreate(TWString* _Nonnull name, TWData* _Nonnull password) {
@@ -40,7 +40,7 @@ struct TWStoredKey* _Nullable TWStoredKeyImportPrivateKey(TWData* _Nonnull priva
         const auto& privateKeyData = *reinterpret_cast<const TW::Data*>(privateKey);
         const auto& nameString = *reinterpret_cast<const std::string*>(name);
         const auto passwordData = TW::data(TWDataBytes(password), TWDataSize(password));
-        return new TWStoredKey{ StoredKey::createWithPrivateKeyAddDefaultAddress(nameString, passwordData, coin, privateKeyData) };
+        return new TWStoredKey{ KeyStore::StoredKey::createWithPrivateKeyAddDefaultAddress(nameString, passwordData, coin, privateKeyData) };
     } catch (...) {
         return nullptr;
     }
@@ -51,7 +51,7 @@ struct TWStoredKey* _Nullable TWStoredKeyImportHDWallet(TWString* _Nonnull mnemo
         const auto& mnemonicString = *reinterpret_cast<const std::string*>(mnemonic);
         const auto& nameString = *reinterpret_cast<const std::string*>(name);
         const auto passwordData = TW::data(TWDataBytes(password), TWDataSize(password));
-        return new TWStoredKey{ StoredKey::createWithMnemonicAddDefaultAddress(nameString, passwordData, mnemonicString, coin) };
+        return new TWStoredKey{ KeyStore::StoredKey::createWithMnemonicAddDefaultAddress(nameString, passwordData, mnemonicString, coin) };
     } catch (...) {
         return nullptr;
     }
@@ -62,7 +62,7 @@ struct TWStoredKey* _Nullable TWStoredKeyImportHDWalletSingle(TWString* _Nonnull
         const auto& mnemonicString = *reinterpret_cast<const std::string*>(mnemonic);
         const auto& nameString = *reinterpret_cast<const std::string*>(name);
         const auto passwordData = TW::data(TWDataBytes(password), TWDataSize(password));
-        return new TWStoredKey{ StoredKey::createWithMnemonicSingleAddDefaultAddress(nameString, passwordData, mnemonicString, coin) };
+        return new TWStoredKey{ KeyStore::StoredKey::createWithMnemonicSingleAddDefaultAddress(nameString, passwordData, mnemonicString, coin) };
     } catch (...) {
         return nullptr;
     }
@@ -72,7 +72,7 @@ struct TWStoredKey* _Nullable TWStoredKeyImportJSON(TWData* _Nonnull json) {
     try {
         const auto& d = *reinterpret_cast<const TW::Data*>(json);
         const auto parsed = nlohmann::json::parse(d);
-        return new TWStoredKey{ StoredKey::createWithJson(nlohmann::json::parse(d)) };
+        return new TWStoredKey{ KeyStore::StoredKey::createWithJson(nlohmann::json::parse(d)) };
     } catch (...) {
         return nullptr;
     }
@@ -94,15 +94,15 @@ TWString* _Nonnull TWStoredKeyName(struct TWStoredKey* _Nonnull key) {
 }
 
 bool TWStoredKeyIsMnemonic(struct TWStoredKey* _Nonnull key) {
-    return key->impl.type == StoredKeyType::mnemonicPhrase;
+    return key->impl.type == KeyStore::StoredKeyType::mnemonicPhrase;
 }
 
 bool TWStoredKeyIsPrivateKey(struct TWStoredKey* _Nonnull key) {
-    return key->impl.type == StoredKeyType::privateKey;
+    return key->impl.type == TW::Keystore::StoredKeyType::privateKey;
 }
 
 bool TWStoredKeyIsMnemonicSingle(struct TWStoredKey* _Nonnull key) {
-    return key->impl.type == StoredKeyType::mnemonicSingle;
+    return key->impl.type == TW::Keystore::StoredKeyType::mnemonicSingle;
 }
 
 size_t TWStoredKeyAccountCount(struct TWStoredKey* _Nonnull key) {
