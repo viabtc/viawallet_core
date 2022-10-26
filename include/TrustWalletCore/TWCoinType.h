@@ -120,7 +120,7 @@ enum TWCoinType {
     TWCoinTypeLBRYCredits = 140,
     TWCoinTypeIRISnet = 10000118,
     TWCoinTypeConfluxNetwork = 503,
-    TWCoinTypeNervos = 309,
+    TWCoinTypeNervosCKB = 309,
     TWCoinTypeErgo = 429,
     TWCoinTypeHorizen = 121,
     TWCoinTypeHandshake = 5353,

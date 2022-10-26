@@ -37,7 +37,7 @@
 #include "NULS/Entry.h"
 #include "Nano/Entry.h"
 #include "Nebulas/Entry.h"
-#include "Nervos/Entry.h"
+#include "NervosCKB//Entry.h"
 #include "Nimiq/Entry.h"
 #include "Oasis/Entry.h"
 #include "Ontology/Entry.h"
@@ -107,7 +107,7 @@ VeChain::Entry vechainDP;
 Waves::Entry wavesDP;
 Zcash::Entry zcashDP;
 Zilliqa::Entry zilliqaDP;
-Nervos::Entry NervosDP;
+NervosCKB::Entry NervosCKBDP;
 Everscale::Entry EverscaleDP;
 ConfluxNetwork::Entry confluxNetworkDP;
 Ergo::Entry ergoDP;
@@ -162,7 +162,7 @@ CoinEntry* coinDispatcher(TWCoinType coinType) {
         case TWBlockchainThorchain: entry = &thorchainDP; break;
         case TWBlockchainRonin: entry = &roninDP; break;
         case TWBlockchainKusama: entry = &kusamaDP; break;
-        case TWBlockchainNervos: entry = &NervosDP; break;
+        case TWBlockchainNervos: entry = &NervosCKBDP; break;
         case TWBlockchainEverscale: entry = &EverscaleDP; break;
         case TWBlockchainAptos: entry = &AptosDP; break;
         case TWBlockchainConflux: entry = &confluxNetworkDP; break;

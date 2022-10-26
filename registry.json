@@ -894,30 +894,34 @@
     }
   },
   {
-    "id": "nervos",
-    "name": "Nervos",
+    "id": "nervosckb",
+    "name": "Nervos CKB",
     "coinId": 309,
     "symbol": "CKB",
     "decimals": 8,
     "blockchain": "Nervos",
     "derivation": [
       {
-        "path": "m/44'/309'/0'/0/0"
+        "path": "m/44'/309'/0'/0/0",
+        "xpub": "xpub",
+        "xprv": "xprv"
       }
     ],
     "curve": "secp256k1",
     "publicKeyType": "secp256k1",
     "hrp": "ckb",
+    "publicKeyHasher": "sha256ripemd",
+    "base58Hasher": "sha256d",
     "explorer": {
       "url": "https://explorer.nervos.org",
       "txPath": "/transaction/",
       "accountPath": "/address/"
     },
     "info": {
-      "url": "https://nervos.org",
-      "source": "https://github.com/nervosnetwork/ckb",
-      "rpc": "https://mainnet.ckb.dev/rpc",
-      "documentation": "https://github.com/nervosnetwork/rfcs"
+      "url": "https://www.nervos.org",
+      "source": "https://github.com/nervosnetwork/neuron",
+      "rpc": "",
+      "documentation": "https://docs.nervos.org"
     }
   },
   {
