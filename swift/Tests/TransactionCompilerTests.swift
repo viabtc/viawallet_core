@@ -128,7 +128,7 @@ class TransactionCompilerTests: XCTestCase {
 
         // Serialize input
         let txInputData = try signingInput.serializedData()
-        XCTAssertEqual(txInputData.count, 692)
+        XCTAssertEqual(txInputData.count, 698)
 
         /// Step 2: Obtain preimage hashes
         let preImageHashes = TransactionCompiler.preImageHashes(coinType: coin, txInputData: txInputData)
