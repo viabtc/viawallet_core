@@ -73,6 +73,12 @@ TWData* _Nonnull TWHashBlake2b(TWData* _Nonnull data, size_t outlen) {
     return TWDataCreateWithBytes(result.data(), result.size());
 }
 
+TWData* _Nonnull TWHashBlake2bPersonal(TWData* _Nonnull data, size_t outlen, TWData* _Nonnull personal) {
+    auto personalData = *reinterpret_cast<const Data*>(personal);
+    const auto result = Hash::blake2b(reinterpret_cast<const byte*>(TWDataBytes(data)), TWDataSize(data), outlen, personalData);
+    return TWDataCreateWithBytes(result.data(), result.size());
+}
+
 TWData* _Nonnull TWHashGroestl512(TWData* _Nonnull data) {
     const auto result = Hash::groestl512(reinterpret_cast<const byte*>(TWDataBytes(data)), TWDataSize(data));
     return TWDataCreateWithBytes(result.data(), result.size());

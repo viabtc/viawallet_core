@@ -99,6 +99,13 @@ TWData *_Nonnull TWHashBlake256(TWData *_Nonnull data);
 TW_EXPORT_STATIC_METHOD
 TWData *_Nonnull TWHashBlake2b(TWData *_Nonnull data, size_t size);
 
+/// Computes the Blake2b of a block of data with personal.
+///
+/// \param data Non-null block of data
+/// \return Non-null computed Blake2b block of data
+TW_EXPORT_STATIC_METHOD
+TWData *_Nonnull TWHashBlake2bPersonal(TWData *_Nonnull data, size_t size, TWData *_Nonnull personal);
+
 /// Computes the Groestl512 of a block of data.
 ///
 /// \param data Non-null block of data
