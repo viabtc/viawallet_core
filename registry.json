@@ -2051,7 +2051,7 @@
     "displayName": "Optimistic Ethereum",
     "coinId": 10000070,
     "slip44": 60,
-    "symbol": "ETH",
+    "symbol": "ETH(OP)",
     "decimals": 18,
     "blockchain": "Ethereum",
     "derivation": [
@@ -2110,7 +2110,7 @@
     "name": "Arbitrum",
     "coinId": 10042221,
     "slip44": 60,
-    "symbol": "ETH",
+    "symbol": "ETH(ARB)",
     "decimals": 18,
     "blockchain": "Ethereum",
     "derivation": [
