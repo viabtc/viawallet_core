@@ -10,8 +10,8 @@ cmake-build-debug/
 .cxx/
 .cache/
 build_pvs_studio/
-secp256k1-abc/build
-secp256k1-abc/secp256k1
+secp256k1-abc/build/
+secp256k1-abc/secp256k1/
 
 # Dependencies
 node_modules
