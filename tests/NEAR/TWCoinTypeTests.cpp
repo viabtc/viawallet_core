@@ -30,5 +30,5 @@ TEST(TWNEARCoinType, TWCoinType) {
     assertStringsEqual(txUrl, "https://explorer.near.org/transactions/FPQAMaVnvFHNwNBJWnTttXfdJhp5FvMGGDJEesB8gvbL");
     assertStringsEqual(accUrl, "https://explorer.near.org/accounts/test-trust.vlad.near");
     assertStringsEqual(id, "near");
-    assertStringsEqual(name, "NEAR");
+    assertStringsEqual(name, "NEAR Protocol");
 }
