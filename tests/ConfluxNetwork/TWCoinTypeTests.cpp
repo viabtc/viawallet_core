@@ -30,5 +30,5 @@ TEST(TWConfluxNetworkCoinType, TWCoinType) {
     assertStringsEqual(txUrl, "https://www.confluxscan.io/transaction/0xc41edb83ab232aca7ef235f0e751957887f35bf8cd9126a95d2c8c721b0ec1cb");
     assertStringsEqual(accUrl, "https://www.confluxscan.io/address/cfx:aatsut3me3yrg3h423afcnyvgrmhuzwyk6uk8g78rf");
     assertStringsEqual(id, "conflux");
-    assertStringsEqual(name, "Conflux Network");
+    assertStringsEqual(name, "Conflux");
 }

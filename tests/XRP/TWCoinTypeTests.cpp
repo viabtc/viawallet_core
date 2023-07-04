@@ -30,5 +30,5 @@ TEST(TWXRPCoinType, TWCoinType) {
     assertStringsEqual(txUrl, "https://bithomp.com/explorer/E26AB8F3372D2FC02DEC1FD5674ADAB762D684BFFDBBDF5D674E9D7CF4A47054");
     assertStringsEqual(accUrl, "https://bithomp.com/explorer/rfkH7EuS1XcSkB9pocy1R6T8F4CsNYixYU");
     assertStringsEqual(id, "ripple");
-    assertStringsEqual(name, "XRP");
+    assertStringsEqual(name, "Ripple");
 }

@@ -30,5 +30,5 @@ TEST(TWNervosCKBCoinType, TWCoinType) {
     assertStringsEqual(txUrl, "https://explorer.nervos.org/transaction/t123");
     assertStringsEqual(accUrl, "https://explorer.nervos.org/address/a12");
     assertStringsEqual(id, "nervosckb");
-    assertStringsEqual(name, "Nervos CKB");
+    assertStringsEqual(name, "Nervos");
 }
