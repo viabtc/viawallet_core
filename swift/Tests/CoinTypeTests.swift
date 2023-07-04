@@ -36,4 +36,10 @@ class CoinTypeTests: XCTestCase {
         XCTAssertEqual(CoinType.bitcoin.derivationPathWithDerivation(derivation: Derivation.bitcoinLegacy), "m/44'/0'/0'/0/0")
         XCTAssertEqual(CoinType.solana.derivationPathWithDerivation(derivation: Derivation.solanaSolana), "m/44'/501'/0'/0'")
     }
+    
+    func testFullName() {
+        XCTAssertEqual(CoinTypeConfiguration.getFullName(type: .ecochain), "Huobi Token")
+        XCTAssertEqual(CoinTypeConfiguration.getFullName(type: .smartChain), "Binance Coin")
+        XCTAssertEqual(CoinTypeConfiguration.getFullName(type: .oasis), "Oasis Network")
+    }
 }

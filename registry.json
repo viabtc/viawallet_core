@@ -45,7 +45,8 @@
       "source": "https://github.com/trezor/blockbook",
       "rpc": "",
       "documentation": "https://github.com/trezor/blockbook/blob/master/docs/api.md"
-    }
+    },
+    "fullName": "BitCoin"
   },
   {
     "id": "litecoin",
@@ -84,7 +85,8 @@
       "source": "https://github.com/trezor/blockbook",
       "rpc": "",
       "documentation": "https://github.com/trezor/blockbook/blob/master/docs/api.md"
-    }
+    },
+    "fullName": "Litecoin"
   },
   {
     "id": "doge",
@@ -116,7 +118,8 @@
       "source": "https://github.com/trezor/blockbook",
       "rpc": "",
       "documentation": "https://github.com/trezor/blockbook/blob/master/docs/api.md"
-    }
+    },
+    "fullName": "Dogecoin"
   },
   {
     "id": "dash",
@@ -148,7 +151,8 @@
       "source": "https://github.com/trezor/blockbook",
       "rpc": "",
       "documentation": "https://github.com/trezor/blockbook/blob/master/docs/api.md"
-    }
+    },
+    "fullName": "Dash"
   },
   {
     "id": "viacoin",
@@ -247,7 +251,8 @@
       "source": "https://github.com/trezor/blockbook",
       "rpc": "",
       "documentation": "https://github.com/trezor/blockbook/blob/master/docs/api.md"
-    }
+    },
+    "fullName": "DigiByte"
   },
   {
     "id": "monacoin",
@@ -313,7 +318,8 @@
       "source": "https://github.com/trezor/blockbook",
       "rpc": "",
       "documentation": "https://github.com/trezor/blockbook/blob/master/docs/api.md"
-    }
+    },
+    "fullName": "Decred"
   },
   {
     "id": "ethereum",
@@ -343,7 +349,8 @@
       "source": "https://github.com/ethereum/go-ethereum",
       "rpc": "https://mainnet.infura.io",
       "documentation": "https://eth.wiki/json-rpc/API"
-    }
+    },
+    "fullName": "Ethereum"
   },
   {
     "id": "classic",
@@ -371,7 +378,8 @@
       "source": "https://github.com/ethereumclassic/go-ethereum",
       "rpc": "https://www.ethercluster.com/etc",
       "documentation": "https://eth.wiki/json-rpc/API"
-    }
+    },
+    "fullName": "Ethereum Classic"
   },
   {
     "id": "icon",
@@ -397,7 +405,8 @@
       "source": "https://github.com/icon-project/icon-rpc-server",
       "rpc": "http://ctz.icxstation.com:9000/api/v3",
       "documentation": "https://www.icondev.io/docs/icon-json-rpc-v3"
-    }
+    },
+    "fullName": "ICON"
   },
   {
     "id": "aptos",
@@ -432,7 +441,7 @@
   {
     "id": "cosmos",
     "name": "Cosmos",
-    "displayName": "Cosmos Hub",
+    "displayName": "Cosmos",
     "coinId": 118,
     "symbol": "ATOM",
     "decimals": 6,
@@ -457,7 +466,8 @@
       "source": "https://github.com/cosmos/cosmos-sdk",
       "rpc": "https://stargate.cosmos.network",
       "documentation": "https://cosmos.network/rpc"
-    }
+    },
+    "fullName": "Cosmos"
   },
   {
     "id": "zcash",
@@ -490,7 +500,8 @@
       "source": "https://github.com/trezor/blockbook",
       "rpc": "",
       "documentation": "https://github.com/trezor/blockbook/blob/master/docs/api.md"
-    }
+    },
+    "fullName": "Zcash"
   },
   {
     "id": "firo",
@@ -527,6 +538,7 @@
   {
     "id": "ripple",
     "name": "XRP",
+    "displayName": "Ripple",
     "coinId": 144,
     "symbol": "XRP",
     "decimals": 6,
@@ -550,7 +562,8 @@
       "source": "https://github.com/ripple/rippled",
       "rpc": "https://s2.ripple.com:51234",
       "documentation": "https://xrpl.org/rippled-api.html"
-    }
+    },
+    "fullName": "Ripple"
   },
   {
     "id": "bitcoincash",
@@ -583,7 +596,8 @@
       "source": "https://github.com/trezor/blockbook",
       "rpc": "",
       "documentation": "https://github.com/trezor/blockbook/blob/master/docs/api.md"
-    }
+    },
+    "fullName": "Bitcoin Cash"
   },
   {
     "id": "stellar",
@@ -609,7 +623,8 @@
       "source": "https://github.com/stellar/go",
       "rpc": "https://horizon.stellar.org",
       "documentation": "https://www.stellar.org/developers/horizon/reference"
-    }
+    },
+    "fullName": "Stellar"
   },
   {
     "id": "bitcoingold",
@@ -703,7 +718,8 @@
       "source": "https://github.com/trezor/blockbook",
       "rpc": "",
       "documentation": "https://github.com/trezor/blockbook/blob/master/docs/api.md"
-    }
+    },
+    "fullName": "Ravencoin"
   },
   {
     "id": "poa",
@@ -783,7 +799,8 @@
       "source": "https://github.com/tronprotocol/java-tron",
       "rpc": "https://api.trongrid.io",
       "documentation": "https://developers.tron.network/docs/tron-wallet-rpc-api"
-    }
+    },
+    "fullName": "Tron"
   },
   {
     "id": "fio",
@@ -864,7 +881,8 @@
       "source": "https://github.com/algorand/go-algorand",
       "rpc": "https://indexer.algorand.network",
       "documentation": "https://developer.algorand.org/docs/algod-rest-paths"
-    }
+    },
+    "fullName": "Algorand"
   },
   {
     "id": "iotex",
@@ -896,6 +914,7 @@
   {
     "id": "nervosckb",
     "name": "Nervos CKB",
+    "displayName": "Nervos",
     "coinId": 309,
     "symbol": "CKB",
     "decimals": 8,
@@ -922,7 +941,8 @@
       "source": "https://github.com/nervosnetwork/neuron",
       "rpc": "",
       "documentation": "https://docs.nervos.org"
-    }
+    },
+    "fullName": "Nervos"
   },
   {
     "id": "zilliqa",
@@ -949,11 +969,13 @@
       "source": "https://github.com/Zilliqa/Zilliqa",
       "rpc": "https://api.zilliqa.com",
       "documentation": "https://apidocs.zilliqa.com"
-    }
+    },
+    "fullName": "Zilliqa"
   },
   {
     "id": "terra",
     "name": "Terra",
+    "displayName": "Terra Classic",
     "coinId": 20000330,
     "slip44": 330,
     "symbol": "LUNA",
@@ -979,7 +1001,8 @@
       "source": "https://github.com/terra-money/core",
       "rpc": "https://rpc.terra.dev",
       "documentation": "https://docs.terra.money"
-    }
+    },
+    "fullName": "Terra Classic"
   },
   {
     "id": "terraclassic",
@@ -1009,7 +1032,8 @@
       "source": "https://github.com/terra-project/core",
       "rpc": "https://classic.fcd.terra.dev",
       "documentation": "https://docs.terra.money"
-    }
+    },
+    "fullName": "Terra Classic"
   },
   {
     "id": "polkadot",
@@ -1036,7 +1060,8 @@
       "source": "https://github.com/paritytech/polkadot",
       "rpc": "",
       "documentation": "https://polkadot.js.org/api/substrate/rpc.html"
-    }
+    },
+    "fullName": "Polkadot"
   },
   {
     "id": "everscale",
@@ -1069,6 +1094,7 @@
   {
     "id": "near",
     "name": "NEAR",
+    "displayName": "NEAR Protocol",
     "coinId": 397,
     "symbol": "NEAR",
     "decimals": 24,
@@ -1090,7 +1116,8 @@
       "source": "https://github.com/nearprotocol/nearcore",
       "rpc": "https://rpc.nearprotocol.com",
       "documentation": "https://docs.nearprotocol.com"
-    }
+    },
+    "fullName": "NEAR Protocol"
   },
   {
     "id": "aion",
@@ -1145,7 +1172,8 @@
       "source": "https://github.com/paritytech/polkadot",
       "rpc": "wss://kusama-rpc.polkadot.io/",
       "documentation": "https://polkadot.js.org/api/substrate/rpc.html"
-    }
+    },
+    "fullName": "Kusama"
   },
   {
     "id": "aeternity",
@@ -1202,7 +1230,8 @@
       "source": "https://github.com/kava-labs/kava",
       "rpc": "https://data.kava.io",
       "documentation": "https://rpc.kava.io"
-    }
+    },
+    "fullName": "Kava"
   },
   {
     "id": "filecoin",
@@ -1435,7 +1464,8 @@
       "source": "https://github.com/vechain/thor",
       "rpc": "",
       "documentation": "https://doc.vechainworld.io/docs"
-    }
+    },
+    "fullName": "VeChain"
   },
   {
     "id": "callisto",
@@ -1581,6 +1611,7 @@
   {
     "id": "oasis",
     "name": "Oasis",
+    "displayName": "Oasis Network",
     "coinId": 474,
     "symbol": "ROSE",
     "decimals": 9,
@@ -1605,7 +1636,8 @@
       "source": "https://github.com/oasisprotocol/oasis-core",
       "rpc": "https://rosetta.oasis.dev/api/v1",
       "documentation": "https://docs.oasis.dev/oasis-core/"
-    }
+    },
+    "fullName": "Oasis Network"
   },
   {
     "id": "ontology",
@@ -1631,7 +1663,8 @@
       "source": "https://github.com/ontio/ontology",
       "rpc": "http://dappnode1.ont.io:20336",
       "documentation": "https://github.com/ontio/ontology/blob/master/docs/specifications/rpc_api.md"
-    }
+    },
+    "fullName": "Ontology"
   },
   {
     "id": "tezos",
@@ -1657,7 +1690,8 @@
       "source": "https://gitlab.com/tezos/tezos",
       "rpc": "https://rpc.tulip.tools/mainnet",
       "documentation": "https://tezos.gitlab.io/tezos/api/rpc.html"
-    }
+    },
+    "fullName": "Tezos"
   },
   {
     "id": "cardano",
@@ -1686,7 +1720,8 @@
       "source": "https://github.com/input-output-hk/cardano-sl",
       "rpc": "",
       "documentation": "https://cardanodocs.com/introduction/"
-    }
+    },
+    "fullName": "Cardano"
   },
   {
     "id": "kin",
@@ -1954,7 +1989,7 @@
   {
     "id": "smartchain",
     "name": "Smart Chain",
-    "displayName": "BNB Smart Chain",
+    "displayName": "Binance Smart Chain",
     "coinId": 20000714,
     "slip44": 60,
     "symbol": "BNB",
@@ -1982,7 +2017,8 @@
       "rpc": "https://bsc-dataseed1.binance.org",
       "documentation": "https://eth.wiki/json-rpc/API"
     },
-    "testFolderName" : "Binance"
+    "testFolderName" : "Binance",
+    "fullName": "Binance Coin"
   },
   {
     "id": "polygon",
@@ -2013,7 +2049,8 @@
       "source": "https://github.com/maticnetwork/contracts",
       "rpc": "https://polygon-rpc.com",
       "documentation": "https://eth.wiki/json-rpc/API"
-    }
+    },
+    "fullName": "Polygon"
   },
   {
     "id": "thorchain",
@@ -2073,7 +2110,8 @@
       "source": "https://github.com/ethereum-optimism/optimism",
       "rpc": "https://mainnet.optimism.io",
       "documentation": "https://eth.wiki/json-rpc/API"
-    }
+    },
+    "fullName": "Ethereum(OP)"
   },
   {
     "id": "zksync",
@@ -2132,7 +2170,8 @@
       "source": "https://github.com/OffchainLabs/arbitrum",
       "rpc": "https://node.offchainlabs.com:8547",
       "documentation": "https://developer.offchainlabs.com"
-    }
+    },
+    "fullName": "Ethereum(ARB)"
   },
   {
     "id": "heco",
@@ -2163,7 +2202,8 @@
       "rpc": "https://http-mainnet-node.huobichain.com",
       "documentation": "https://eth.wiki/json-rpc/API"
     },
-    "testFolderName" : "ECO"
+    "testFolderName" : "ECO",
+    "fullName": "Huobi Token"
   },
   {
     "id": "avalanchec",
@@ -2195,7 +2235,8 @@
       "clientPublic": "https://api.avax.network/ext/bc/C/rpc",
       "clientDocs": "https://docs.avax.network/"
     },
-    "testFolderName" : "Avalanche"
+    "testFolderName" : "Avalanche",
+    "fullName": "Avalanche"
   },
   {
     "id": "xdai",
@@ -2258,7 +2299,8 @@
       "client": "https://github.com/openethereum/openethereum",
       "clientPublic": "https://rpc.ftm.tools",
       "clientDocs": "https://eth.wiki/json-rpc/API"
-    }
+    },
+    "fullName": "Fantom"
   },
   {
     "id": "cryptoorg",
@@ -2419,7 +2461,8 @@
       "source": "https://github.com/trezor/blockbook",
       "rpc": "https://blockbook.fabien.cash:9197",
       "documentation": "https://github.com/trezor/blockbook/blob/master/docs/api.md"
-    }
+    },
+    "fullName": "eCash"
   },
   {
     "id": "cronos",
@@ -2878,7 +2921,8 @@
       "source": "https://github.com/freecashorg/freecash",
       "rpc": "",
       "documentation": "https://github.com/freecashorg/freecash/blob/master/doc/README.md"
-    }
+    },
+    "fullName": "Freecash"
   },
   {
     "id": "coinexsmartchain",
@@ -2908,7 +2952,8 @@
       "source": "https://www.coinex.org/",
       "rpc": "https://api.coinex.net/",
       "documentation": "https://docs.coinex.org/#/"
-    }
+    },
+    "fullName": "CoinEx Token"
   },
   {
     "id": "syscoin",
@@ -2941,7 +2986,8 @@
       "source": "https://github.com/syscoin/syscoin",
       "rpc": "",
       "documentation": "https://syscoin.readme.io/v4.2.0/docs"
-    }
+    },
+    "fullName": "Syscoin"
   },
   {
     "id": "bitcoinsv",
@@ -2973,7 +3019,8 @@
       "source": "https://github.com/bitcoin-sv/bitcoin-sv",
       "rpc": "",
       "documentation": "https://github.com/bitcoin-sv/bitcoin-sv/tree/master/doc"
-    }
+    },
+    "fullName": "Bitcoin SV"
   },
   {
     "id": "lbry",
@@ -3006,7 +3053,8 @@
       "source": "https://github.com/lbryio/lbry-sdk",
       "rpc": "",
       "documentation": "https://github.com/lbryio/lbry-sdk/blob/master/docs/api.json"
-    }
+    },
+    "fullName": "LBRY Credits"
   },
   {
     "id": "iris",
@@ -3036,11 +3084,13 @@
       "source": "https://github.com/irisnet/irishub",
       "rpc": "",
       "documentation": "https://www.irisnet.org/docs"
-    }
+    },
+    "fullName": "IRISnet"
   },
   {
     "id": "conflux",
     "name": "Conflux Network",
+    "displayName": "Conflux",
     "coinId": 503,
     "symbol": "CFX",
     "decimals": 18,
@@ -3062,7 +3112,8 @@
       "source": "https://github.com/conflux-chain",
       "rpc": "",
       "documentation": "https://github.com/Conflux-Chain/conflux-doc"
-    }
+    },
+    "fullName": "Conflux"
   },
   {
     "id": "ergo",
@@ -3092,7 +3143,8 @@
       "source": "https://github.com/ergoplatform",
       "rpc": "",
       "documentation": "https://ergoplatform.org/cn/contribute/"
-    }
+    },
+    "fullName": "Ergo"
   },
   {
     "id": "horizen",
@@ -3125,7 +3177,8 @@
       "source": "https://github.com/HorizenOfficial/zen",
       "rpc": "",
       "documentation": "https://github.com/HorizenOfficial/zen/tree/master/doc"
-    }
+    },
+    "fullName": "Horizen"
   },
   {
     "id": "handshake",
@@ -3156,7 +3209,8 @@
       "source": "https://github.com/handshake-org/hsd",
       "rpc": "",
       "documentation": "https://hsd-dev.org"
-    }
+    },
+    "fullName": "Handshake"
   },
   {
     "id": "mina",
@@ -3186,7 +3240,8 @@
       "source": "https://github.com/MinaProtocol/mina",
       "rpc": "",
       "documentation": "https://github.com/MinaProtocol/mina/blob/develop/README.md"
-    }
+    },
+    "fullName": "Mina"
   },
   {
     "id": "kadena",
@@ -3212,6 +3267,7 @@
       "source": "https://github.com/kadena-io/chainweb-node",
       "rpc": "",
       "documentation": "https://github.com/kadena-io/chainweb-node/blob/master/README.md"
-    }
+    },
+    "fullName": "Kadena"
   }
 ]

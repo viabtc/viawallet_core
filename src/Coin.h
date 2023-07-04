@@ -107,6 +107,7 @@ enum TWHRP hrp(TWCoinType coin);
 /// Returns chain ID.
 const char* chainId(TWCoinType coin);
 
+
 // Note: use output parameter to avoid unneeded copies
 void anyCoinSign(TWCoinType coinType, const Data& dataIn, Data& dataOut);
 
@@ -155,7 +156,8 @@ struct CoinInfo {
     const char* explorerTransactionUrl;
     const char* explorerAccountUrl;
     uint32_t slip44;
-
+    const char* fullName;
+    
     // returns default derivation
     const Derivation defaultDerivation() const {
         return (derivation.size() > 0) ? derivation[0] : Derivation();

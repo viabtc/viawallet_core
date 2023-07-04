@@ -396,3 +396,7 @@ TWString* _Nonnull TWCoinTypeConfigurationGetID(enum TWCoinType coin) {
 TWString* _Nonnull TWCoinTypeConfigurationGetName(enum TWCoinType coin) {
     return TWStringCreateWithUTF8Bytes(getCoinInfo(coin).name);
 }
+
+TWString* _Nullable TWCoinTypeConfigurationGetFullName(enum TWCoinType coin) {
+    return TWStringCreateWithUTF8Bytes(getCoinInfo(coin).fullName);
+}
