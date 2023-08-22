@@ -76,6 +76,7 @@ This list is generated from [./registry.json](../registry.json)
 | 2718    | Nebulas          | NAS    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/nebulas/info/logo.png" width="32" />      | <https://nebulas.io>          |
 | 5353    | Handshake        | HNS    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/handshake/info/logo.png" width="32" />    | <https://handshake.org>       |
 | 6060    | GoChain          | GO     | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/gochain/info/logo.png" width="32" />      | <https://gochain.io>          |
+| 8453    | Base             | ETH    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/base/info/logo.png" width="32" />         | <https://base.mirror.xyz/>    |
 | 8964    | NULS             | NULS   | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/nuls/info/logo.png" width="32" />         | <https://nuls.io>             |
 | 12586   | Mina             | MINA   | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/mina/info/logo.png" width="32" />         | <https://minaprotocol.com/>   |
 | 18000   | Meter            | MTR    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/meter/info/logo.png" width="32" />        | <https://meter.io/>           |
