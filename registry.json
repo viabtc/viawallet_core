@@ -3275,7 +3275,7 @@
       "name": "Base",
       "coinId": 8453,
       "slip44": 60,
-      "symbol": "ETH",
+      "symbol": "BASE",
       "decimals": 18,
       "blockchain": "Ethereum",
       "derivation": [

@@ -23,7 +23,7 @@ TEST(TWBaseCoinType, TWCoinType) {
 
     assertStringsEqual(id, "base");
     assertStringsEqual(name, "Base");
-    assertStringsEqual(symbol, "ETH");
+    assertStringsEqual(symbol, "BASE");
     ASSERT_EQ(TWCoinTypeConfigurationGetDecimals(coin), 18);
     ASSERT_EQ(TWCoinTypeBlockchain(coin), TWBlockchainEthereum);
     ASSERT_EQ(TWCoinTypeP2shPrefix(coin), 0x0);
