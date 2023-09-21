@@ -28,8 +28,8 @@
     ],
     "curve": "secp256k1",
     "publicKeyType": "secp256k1",
-    "p2pkhPrefix": 0,
-    "p2shPrefix": 5,
+    "p2pkhPrefix": 111,
+    "p2shPrefix": 196,
     "hrp": "bc",
     "publicKeyHasher": "sha256ripemd",
     "base58Hasher": "sha256d",
@@ -69,8 +69,8 @@
     ],
     "curve": "secp256k1",
     "publicKeyType": "secp256k1",
-    "p2pkhPrefix": 48,
-    "p2shPrefix": 50,
+    "p2pkhPrefix": 111,
+    "p2shPrefix": 58,
     "hrp": "ltc",
     "publicKeyHasher": "sha256ripemd",
     "base58Hasher": "sha256d",
@@ -102,8 +102,8 @@
     ],
     "curve": "secp256k1",
     "publicKeyType": "secp256k1",
-    "p2pkhPrefix": 30,
-    "p2shPrefix": 22,
+    "p2pkhPrefix": 113,
+    "p2shPrefix": 196,
     "publicKeyHasher": "sha256ripemd",
     "base58Hasher": "sha256d",
     "explorer": {
@@ -349,12 +349,13 @@
     "id": "classic",
     "name": "Ethereum Classic",
     "coinId": 61,
+    "slip44": 60,
     "symbol": "ETC",
     "decimals": 18,
     "blockchain": "Ethereum",
     "derivation": [
       {
-        "path": "m/44'/61'/0'/0/0"
+        "path": "m/44'/60'/0'/0/0"
       }
     ],
     "curve": "secp256k1",
@@ -568,9 +569,9 @@
     ],
     "curve": "secp256k1",
     "publicKeyType": "secp256k1",
-    "p2pkhPrefix": 0,
-    "p2shPrefix": 5,
-    "hrp": "bitcoincash",
+    "p2pkhPrefix": 111,
+    "p2shPrefix": 196,
+    "hrp": "bchtest",
     "publicKeyHasher": "sha256ripemd",
     "base58Hasher": "sha256d",
     "explorer": {
