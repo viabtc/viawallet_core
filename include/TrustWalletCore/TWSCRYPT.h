@@ -11,7 +11,7 @@
 
 TW_EXTERN_C_BEGIN
 
-/// Password-Based Key Derivation Function 2
+/// SCRYPT Derivation Function
 TW_EXPORT_STRUCT
 struct TWSCRYPT;
 
@@ -25,7 +25,7 @@ struct TWSCRYPT;
 /// \param dkLen is the desired byte-length of the derived key
 /// \return the derived key data.
 TW_EXPORT_STATIC_METHOD
-TWData *_Nullable TWScrypt(TWData *_Nonnull password, TWData *_Nonnull salt, uint64_t N, uint32_t r, uint32_t p, uint32_t dkLen);
+TWData *_Nullable TWSCRYPTScrypt(TWData *_Nonnull password, TWData *_Nonnull salt, uint64_t N, uint32_t r, uint32_t p, uint32_t dkLen);
 
 
 TW_EXTERN_C_END
