@@ -12,7 +12,7 @@
 
 using namespace TW;
 
-TWData *_Nullable TWScrypt(TWData *_Nonnull password, TWData *_Nonnull salt, uint64_t N, uint32_t r, uint32_t p, uint32_t dkLen) {
+TWData *_Nullable TWSCRYPTScrypt(TWData *_Nonnull password, TWData *_Nonnull salt, uint64_t N, uint32_t r, uint32_t p, uint32_t dkLen) {
 
     Data key(dkLen);
     int passLen = static_cast<int>(TWDataSize(password));
