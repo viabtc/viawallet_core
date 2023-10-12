@@ -80,6 +80,15 @@ public:
     static bool isValid(const std::string& string) noexcept {
         return CashAddress::isValid(gECashHrp, string);
     }
-};  
+};
+
+inline bool operator==(const class CashAddress& lhs, const class CashAddress& rhs) {
+    return lhs.bytes == rhs.bytes;
+}
 
 } // namespace TW::Bitcoin
+
+/// Wrapper for C interface.
+struct TWCashAddress {
+    TW::Bitcoin::CashAddress impl;
+};
