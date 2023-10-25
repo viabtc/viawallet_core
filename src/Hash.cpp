@@ -120,6 +120,12 @@ Data Hash::blake2b(const byte* data, size_t dataSize, size_t hashSize, const Dat
     return result;
 }
 
+Data Hash:: blake2bDigest(const byte* data, size_t dataSize, size_t hashSize, const Data& personal) {
+    Data result(hashSize);
+    ::blake2b_Key(data, static_cast<uint32_t>(dataSize), personal.data(), personal.size(), result.data(), hashSize);
+    return result;
+}
+
 Data Hash::groestl512(const byte* data, size_t size) {
     GROESTL512_CTX ctx;
     Data result(sha512Size);

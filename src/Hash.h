@@ -91,6 +91,8 @@ Data blake2b(const byte* data, size_t dataSize, size_t hashSize);
 
 Data blake2b(const byte* data, size_t dataSize, size_t hsshSize, const Data& personal);
 
+Data blake2bDigest(const byte* data, size_t dataSize, size_t hashSize, const Data& personal);
+
 /// Computes the Groestl 512 hash.
 Data groestl512(const byte* data, size_t size);
 
@@ -184,6 +186,11 @@ Data blake2b(const T& data, size_t size) {
 template <typename T>
 Data blake2b(const T& data, size_t size, const Data& personal) {
     return blake2b(reinterpret_cast<const byte*>(data.data()), data.size(), size, personal);
+}
+
+template <typename T>
+Data blake2bDigest(const T& data, size_t size, const Data& personal) {
+    return blake2bDigest(reinterpret_cast<const byte*>(data.data()), data.size(), size, personal);
 }
 
 /// Computes the Groestl512 hash.

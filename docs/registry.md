@@ -82,6 +82,7 @@ This list is generated from [./registry.json](../registry.json)
 | 18000   | Meter            | MTR    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/meter/info/logo.png" width="32" />        | <https://meter.io/>           |
 | 19167   | Flux             | FLUX   | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/zelcash/info/logo.png" width="32" />      | <https://runonflux.io>        |
 | 52752   | Celo             | CELO   | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/celo/info/logo.png" width="32" />         | <https://celo.org>            |
+| 111111  | Kaspa            | KAS    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/kaspa/info/logo.png" width="32" />        | <https://kaspa.org/>          |
 | 1000052 | CoinEx Smart Chain | CET    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/coinexsmartchain/info/logo.png" width="32" /> | <https://www.coinex.org/>     |
 | 5718350 | Wanchain         | WAN    | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/wanchain/info/logo.png" width="32" />     | <https://wanchain.org>        |
 | 5741564 | Waves            | WAVES  | <img src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/waves/info/logo.png" width="32" />        | <https://wavesplatform.com>   |

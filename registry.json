@@ -3301,5 +3301,38 @@
         "documentation": "https://docs.base.org/"
       },
       "fullName": "Ethereum(Base)"
-    }
+    },
+  {
+    "id": "kaspa",
+    "name": "Kaspa",
+    "displayName": "Kaspa",
+    "coinId": 111111,
+    "symbol": "KAS",
+    "decimals": 8,
+    "blockchain": "Kaspa",
+    "derivation": [
+      {
+        "path": "m/44'/111111'/0'/0/0",
+        "xpub": "xpub",
+        "xprv": "xprv"
+      }
+    ],
+    "curve": "secp256k1",
+    "publicKeyType": "secp256k1",
+    "hrp": "kaspa",
+    "publicKeyHasher": "sha256ripemd",
+    "base58Hasher": "sha256d",
+    "explorer": {
+      "url": "https://explorer.kaspa.org/",
+      "txPath": "/txs/",
+      "accountPath": "/address/"
+    },
+    "info": {
+      "url": "https://kaspa.org/",
+      "source": "https://github.com/kaspanet/kaspad",
+      "rpc": "https://api.kaspa.org",
+      "documentation": "https://github.com/kaspanet/docs"
+    },
+    "fullName": "Kaspa"
+  }
 ]

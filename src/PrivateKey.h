@@ -93,6 +93,9 @@ class PrivateKey {
     /// Signs a digest using given bch schnorr, returns schnorr signature
     Data signBCHSchnorr(const Data& message) const;
 
+    /// Signs a digest using given ECDSA curve, returns Kaspa ecdsa signature
+    Data signKASECDSA(const Data& digest) const;
+
     /// Cleanup contents (fill with 0s), called before destruction
     void cleanup();
 };
