@@ -110,5 +110,6 @@ class CoinAddressDerivationTests {
         ERGO -> assertEquals("9gqy7gkUt6wati2AT5hXPiWeRSe5F74J2o34oWxJxgnkqiuUuAQ", address)
         HORIZEN -> assertEquals("znUmzvod1f4P9LYsBhNxjqCDQvNSStAmYEX", address)
         HANDSHAKE -> assertEquals("hs1q8nds85ejsvl2t7xvj8lauyvgjm9ar4t7dzssk0", address)
+        KASPA -> assertEquals("kaspa:qypxd7yefzcz7td5lfrmfum8v8x0mt4xx62d53063rrq5zvjqcltchcs9xxxrdk", address)
     }
 }

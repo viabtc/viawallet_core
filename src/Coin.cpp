@@ -61,6 +61,7 @@
 #include "Handshake/Entry.h"
 #include "Mina/Entry.h"
 #include "Kadena/Entry.h"
+#include "Kaspa/Entry.h"
 // end_of_coin_includes_marker_do_not_modify
 
 using namespace TW;
@@ -115,6 +116,7 @@ Horizen::Entry horizenDP;
 Handshake::Entry handshakeDP;
 Mina::Entry minaDP;
 Kadena::Entry kadenaDP;
+Kaspa::Entry KaspaDP;
 // end_of_coin_dipatcher_declarations_marker_do_not_modify
 
 CoinEntry* coinDispatcher(TWCoinType coinType) {
@@ -171,6 +173,7 @@ CoinEntry* coinDispatcher(TWCoinType coinType) {
         case TWBlockchainHandshake: entry = &handshakeDP; break;
         case TWBlockchainMina: entry = &minaDP; break;
         case TWBlockchainKadena: entry = &kadenaDP; break;
+        case TWBlockchainKaspa: entry = &KaspaDP; break;
         // end_of_coin_dipatcher_switch_marker_do_not_modify
 
         default: entry = nullptr; break;
