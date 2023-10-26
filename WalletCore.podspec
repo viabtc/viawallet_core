@@ -150,8 +150,8 @@ Pod::Spec.new do |s|
       'HEADER_SEARCH_PATHS' => '$(inherited) ' \
         '$(SRCROOT)/../../wallet-core ' \
         '${SRCROOT}/../../trezor-crypto/crypto ' \
-        '${SRCROOT}/../../secp256k1-abc/build/ios/include',
-        '${SRCROOT}/../../sr25519/include',
+        '${SRCROOT}/../../secp256k1-abc/build/ios/include', \
+        '${SRCROOT}/../../sr25519/include', \
       'SYSTEM_HEADER_SEARCH_PATHS' => '$(inherited) ' \
         '/usr/local/include ' \
         '${SRCROOT}/../../include ' \
