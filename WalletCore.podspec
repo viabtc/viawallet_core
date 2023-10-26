@@ -166,6 +166,6 @@ Pod::Spec.new do |s|
       'OTHER_CFLAGS' => '-DHAVE_PTHREAD=1',
       'OTHER_LDFLAGS' => '$(inherited) -fprofile-instr-generate -lsecp256k1 -lsr25519crust'
     }
-    ss.dependency 'WalletCore/Types'
+    ss.dependency 'TrustWalletCore/Types'
   end
 end
