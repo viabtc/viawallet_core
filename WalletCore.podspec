@@ -151,7 +151,7 @@ Pod::Spec.new do |s|
         '$(SRCROOT)/../../wallet-core ' \
         '${SRCROOT}/../../trezor-crypto/crypto ' \
         '${SRCROOT}/../../secp256k1-abc/build/ios/include', \
-        '${SRCROOT}/../../sr25519/include', \
+        '${SRCROOT}/../../sr25519/include',
       'SYSTEM_HEADER_SEARCH_PATHS' => '$(inherited) ' \
         '/usr/local/include ' \
         '${SRCROOT}/../../include ' \
