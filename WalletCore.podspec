@@ -1,13 +1,13 @@
 version = '2.6.5'
 
 Pod::Spec.new do |s|
-  s.name         = 'WalletCore'
+  s.name         = 'TrustWalletCore'
   s.version      = version
   s.summary      = 'Trust Wallet core data structures and algorithms.'
   s.homepage     = 'https://github.com/trustwallet/wallet-core'
   s.license      = 'MIT'
   s.authors      = { 'Alejandro Isaza' => 'al@isaza.ca' }
-  s.module_name  = 'WalletCore'
+  s.module_name  = 'TrustWalletCore'
   
   s.ios.deployment_target = '12.0'
   s.osx.deployment_target = '10.12'
