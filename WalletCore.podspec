@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.homepage     = 'https://github.com/trustwallet/wallet-core'
   s.license      = 'MIT'
   s.authors      = { 'Alejandro Isaza' => 'al@isaza.ca' }
-  s.module_name  = 'TrustWalletCore'
+  s.module_name  = 'WalletCore'
   
   s.ios.deployment_target = '12.0'
   s.osx.deployment_target = '10.12'
@@ -148,18 +148,18 @@ Pod::Spec.new do |s|
 
     ss.xcconfig = {
       'HEADER_SEARCH_PATHS' => '$(inherited) ' \
-        '$(SRCROOT)/../../wallet-core ' \
-        '${SRCROOT}/../../trezor-crypto/crypto ' \
-        '${SRCROOT}/../../secp256k1-abc/build/ios/include ' \
-        '${SRCROOT}/../../sr25519/include ',
+        '${PODS_ROOT}/TrustWalletCore/wallet-core ' \
+        '${PODS_ROOT}/TrustWalletCore/trezor-crypto/crypto ' \
+        '${PODS_ROOT}/TrustWalletCore/secp256k1-abc/build/ios/include ' \
+        '${PODS_ROOT}/TrustWalletCore/sr25519/include ',
       'SYSTEM_HEADER_SEARCH_PATHS' => '$(inherited) ' \
         '/usr/local/include ' \
-        '${SRCROOT}/../../include ' \
-        '${SRCROOT}/../../../build/local/include ' \
-        "${SRCROOT}/../../trezor-crypto/include " \
-        "${SRCROOT}/../../protobuf ",
-      'LIBRARY_SEARCH_PATHS' => '${SRCROOT}/../../secp256k1-abc/build/ios/lib' \
-        '${SRCROOT}/../../sr25519/lib/ios/apple-ios',
+        '${PODS_ROOT}/TrustWalletCore/include ' \
+        '${PODS_ROOT}/TrustWalletCore/build/local/include ' \
+        "${PODS_ROOT}/TrustWalletCore/trezor-crypto/include " \
+        "${PODS_ROOT}/TrustWalletCore/protobuf ",
+      'LIBRARY_SEARCH_PATHS' => '${PODS_ROOT}/TrustWalletCore/secp256k1-abc/build/ios/lib' \
+        '${PODS_ROOT}/TrustWalletCore/sr25519/lib/ios/apple-ios',
       'GCC_WARN_UNUSED_FUNCTION' => 'NO',
       'GCC_WARN_64_TO_32_BIT_CONVERSION' => 'NO',
       'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
