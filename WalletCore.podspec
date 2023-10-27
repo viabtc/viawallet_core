@@ -148,7 +148,7 @@ Pod::Spec.new do |s|
 
     ss.xcconfig = {
       'HEADER_SEARCH_PATHS' => '$(inherited) ' \
-        '${PODS_ROOT}/TrustWalletCore/wallet-core ' \
+        '${PODS_ROOT}/TrustWalletCore/src ' \
         '${PODS_ROOT}/TrustWalletCore/trezor-crypto/crypto ' \
         '${PODS_ROOT}/TrustWalletCore/secp256k1-abc/build/ios/include ' \
         '${PODS_ROOT}/TrustWalletCore/sr25519/include ',
@@ -157,7 +157,9 @@ Pod::Spec.new do |s|
         '${PODS_ROOT}/TrustWalletCore/include ' \
         '${PODS_ROOT}/TrustWalletCore/build/local/include ' \
         "${PODS_ROOT}/TrustWalletCore/trezor-crypto/include " \
-        "${PODS_ROOT}/TrustWalletCore/protobuf ",
+        "${PODS_ROOT}/TrustWalletCore/protobuf ", \
+        "${PODS_ROOT}/TrustWalletCore/#{protobuf_source_dir}/src " \
+        "${PODS_ROOT}/TrustWalletCore/#{include_dir} ",
       'LIBRARY_SEARCH_PATHS' => '${PODS_ROOT}/TrustWalletCore/secp256k1-abc/build/ios/lib' \
         '${PODS_ROOT}/TrustWalletCore/sr25519/lib/ios/apple-ios',
       'GCC_WARN_UNUSED_FUNCTION' => 'NO',
@@ -168,5 +170,5 @@ Pod::Spec.new do |s|
     }
     ss.dependency 'TrustWalletCore/Types'
   end
-   s.prepare_command = 'tools/install-dependencies && tools/generate-files'
+   
 end
