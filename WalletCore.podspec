@@ -157,9 +157,7 @@ Pod::Spec.new do |s|
         '${PODS_ROOT}/TrustWalletCore/include ' \
         '${PODS_ROOT}/TrustWalletCore/build/local/include ' \
         "${PODS_ROOT}/TrustWalletCore/trezor-crypto/include " \
-        "${PODS_ROOT}/TrustWalletCore/protobuf ", \
-        "${PODS_ROOT}/TrustWalletCore/#{protobuf_source_dir}/src " \
-        "${PODS_ROOT}/TrustWalletCore/#{include_dir} ",
+        "${PODS_ROOT}/TrustWalletCore/protobuf ",
       'LIBRARY_SEARCH_PATHS' => '${PODS_ROOT}/TrustWalletCore/secp256k1-abc/build/ios/lib' \
         '${PODS_ROOT}/TrustWalletCore/sr25519/lib/ios/apple-ios',
       'GCC_WARN_UNUSED_FUNCTION' => 'NO',
