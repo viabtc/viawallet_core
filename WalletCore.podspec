@@ -1,7 +1,7 @@
 version = '2.6.5'
 
 Pod::Spec.new do |s|
-  s.name         = 'TrustWalletCore'
+  s.name         = 'WalletCore'
   s.version      = version
   s.summary      = 'Trust Wallet core data structures and algorithms.'
   s.homepage     = 'https://github.com/trustwallet/wallet-core'
