@@ -380,7 +380,7 @@ Data PrivateKey::signKASECDSA(const TW::Data& digest) const {
     Data result;
     bool success = false;
     result.resize(64);
-    success = ecdsa_sign_digest_checked(&secp256k1, key().data(), digest.data(), digest.size(), result.data(), result.data() + 64, nullptr) == 0;
+    success = ecdsa_sign_digest_checked(&secp256k1, key().data(), digest.data(), digest.size(), result.data(), nullptr, nullptr) == 0;
     if (!success) {
         return {};
     }
