@@ -17,9 +17,8 @@ using namespace TW;
 // TODO: Finalize tests
 
 TEST(TWAnySignerKaspa, Sign) {
-    auto key1 = PrivateKey(parse_hex("4a08d405f8db0f11010c41b7a51debb2baacb62b1ee0bdf23e0ec35973559de9"));
-    auto key2 = PrivateKey(parse_hex("fdcb07a2dfe68f34e68ecc4c170b48df431626d3a6d2b43c17a87c1482c1be1c"));
-    auto key3 = PrivateKey(parse_hex("0ddc6c6b255c89add0b05926d82e29494336467fb757ccf1dac4c34acfb5e689"));
+    auto key1 = PrivateKey(parse_hex("0ddc6c6b255c89add0b05926d82e29494336467fb757ccf1dac4c34acfb5e689"));
+    auto key2 = PrivateKey(parse_hex("4a08d405f8db0f11010c41b7a51debb2baacb62b1ee0bdf23e0ec35973559de9"));
 
     Kaspa::Proto::SigningInput input;
     auto transfer = input.mutable_transfer();
@@ -29,7 +28,6 @@ TEST(TWAnySignerKaspa, Sign) {
     transfer->set_changeaddress("kaspa:qyp6vqamd8gyy0v570wzfk9p5lvhysvt0w9zxg0ypgarrmmv6cx4llgnngkk9s6");
     transfer->add_private_key(key1.bytes.data(), key1.bytes.size());
     transfer->add_private_key(key2.bytes.data(), key2.bytes.size());
-    transfer->add_private_key(key3.bytes.data(), key3.bytes.size());
 
     auto utxo1 = transfer->add_unspentoutput();
     utxo1->set_amount(599110000);

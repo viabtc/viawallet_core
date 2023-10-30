@@ -9,6 +9,7 @@
 #include "BitcoinUnspentOutput.h"
 #include "KaspaOutput.h"
 #include "Data.h"
+#include <map>
 
 namespace TW::Kaspa {
 
@@ -17,11 +18,8 @@ public:
     std::vector<BitcoinUnspentOutput> inputs;
     std::vector<KaspaOutput> outputs;
     std::vector<std::string> hashes;
-    std::vector<Data> privateKeyDatas;
+    std::map<std::string, Data> privateKeys;
 
-    Transaction(std::vector<BitcoinUnspentOutput> inputs, std::vector<KaspaOutput> outputs) :
-        inputs(inputs),
-        outputs(outputs) {}
     Data hashForSignatureWitness(int inputIndex, Data connectedScript, uint64_t prevValue) const;
 private:
     Data hashPrevouts() const;
