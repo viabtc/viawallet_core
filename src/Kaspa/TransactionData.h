@@ -20,10 +20,6 @@ public:
     std::vector<KaspaOutput> outputs;
     int lockTime = 0;
     std::string subnetworkId = "0000000000000000000000000000000000000000";
-
-    TransactionData(std::vector<KaspaInput> inputs, std::vector<KaspaOutput> outputs) :
-        inputs(inputs),
-        outputs(outputs) {}
 };
 
 } // namespace TW

@@ -103,11 +103,15 @@ static Transaction unsignedTransaction(const Proto::TransferMessage &message) {
         std::string sourceAddressScript = hex(scriptPublicKey(message.changeaddress()));
         output.push_back(KaspaOutput(change, KaspaScriptPublicKey(sourceAddressScript)));
     }
-    Transaction tx = Transaction(utxos, output);
+    Transaction tx = Transaction();
+    for (const auto& i : utxos) {
+        tx.inputs.emplace_back(i);
+    }
+    for (const auto& o : output) {
+        tx.outputs.emplace_back(o);
+    }
     std::vector<std::string> hashs;
-    std::vector<Data> privateKeyDatas;
     std::map<std::string, Data> privateKeys;
-    std::vector<std::string> addresses;
     for (unsigned long index = 0; index<utxos.size(); index++) {
         BitcoinUnspentOutput unspentOutput = utxos[index];
         int64_t amount = unspentOutput.amount;
@@ -116,39 +120,24 @@ static Transaction unsignedTransaction(const Proto::TransferMessage &message) {
         if (!Address::isValid(unspentOutput.address)) {
             throw std::invalid_argument("Invalid address string");
         }
-        addresses.emplace_back(unspentOutput.address);
     }
 
     for (int index = 0; index<message.private_key_size(); index++) {
         const auto privateKeyData = data(message.private_key(index));
+        const auto hash = hashs[index];
         if (!PrivateKey::isValid(privateKeyData)) {
             throw std::invalid_argument("Invalid private key");
         }
-        const auto privateKey = PrivateKey(privateKeyData);
-        const auto publicKey = privateKey.getPublicKey(TWPublicKeyTypeSECP256k1);
-        const auto address = Address(publicKey);
-        privateKeys[address.string()] = privateKeyData;
+        privateKeys[hash] = privateKeyData;
     }
 
-    std::vector<std::string> addressesUnique;
-    for (auto& a: addresses) {
-        if (find(addressesUnique.begin(), addressesUnique.end(), a) == addressesUnique.end()) {
-            addressesUnique.emplace_back(a);
-        }
+    for (const auto& h : hashs) {
+        tx.hashes.emplace_back(h);
     }
 
-    for (auto& a : addressesUnique) {
-        const auto privateKeyFind = privateKeys.find(a);
-        Data privateKeyData;
-        if (privateKeyFind != privateKeys.end()) {
-            privateKeyData = privateKeyFind->second;
-        } else {
-            throw std::invalid_argument("Error missing private key");
-        }
-        privateKeyDatas.push_back(privateKeyData);
+    for (const auto& p : privateKeys) {
+        tx.privateKeys[p.first] = p.second;
     }
-    tx.hashes = hashs;
-    tx.privateKeyDatas = privateKeyDatas;
     return tx;
 }
 
@@ -169,7 +158,13 @@ static TransactionData signTransaction(const Transaction &tx, std::vector<std::s
         KaspaInput result = KaspaInput(outpoint, signatureScriptHex);
         inputData.push_back(result);
     }
-    TransactionData data = TransactionData(inputData, tx.outputs);
+    TransactionData data = TransactionData();
+    for (const auto& i : tx.outputs) {
+        data.outputs.emplace_back(i);
+    }
+    for (const auto& i : inputData) {
+        data.inputs.emplace_back(i);
+    }
     return data;
 }
 
@@ -180,7 +175,7 @@ Proto::SigningOutput Signer::sign(const Proto::SigningInput &input) noexcept {
         std::vector<std::string> signatures;
         for (int index = 0; index < tx.hashes.size(); ++index) {
             const auto hash = parse_hex(tx.hashes[index]);
-            const auto privateData = tx.privateKeyDatas[index];
+            const auto privateData = tx.privateKeys.find(tx.hashes[index])->second;
             const PrivateKey privateKey = PrivateKey(privateData);
             auto sign = privateKey.signKASECDSA(hash);
             signatures.push_back(hex(sign));

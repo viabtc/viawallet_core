@@ -26,9 +26,9 @@ class TestKaspaSigner {
 
     @Test
     fun KaspaTransactionSigning() {
-        val private1Key = Numeric.hexStringToByteArray("4a08d405f8db0f11010c41b7a51debb2baacb62b1ee0bdf23e0ec35973559de9")
-        val private2Key = Numeric.hexStringToByteArray("fdcb07a2dfe68f34e68ecc4c170b48df431626d3a6d2b43c17a87c1482c1be1c")
-        val private3Key = Numeric.hexStringToByteArray("0ddc6c6b255c89add0b05926d82e29494336467fb757ccf1dac4c34acfb5e689")
+
+        val private1Key = Numeric.hexStringToByteArray("0ddc6c6b255c89add0b05926d82e29494336467fb757ccf1dac4c34acfb5e689")
+        val private2Key = Numeric.hexStringToByteArray("4a08d405f8db0f11010c41b7a51debb2baacb62b1ee0bdf23e0ec35973559de9")
 
         val transfer = Kaspa.TransferMessage.newBuilder()
             .setTo("kaspa:qypu7vn4dkvv4pzhwy9gp5r6n80ym3c6wdfgpum5zpg6de8gznl9xnghhscjnpt")
@@ -36,7 +36,6 @@ class TestKaspaSigner {
             .setAmount(800000)
             .setPrivateKey(0, ByteString.copyFrom(private1Key))
             .setPrivateKey(1, ByteString.copyFrom(private2Key))
-            .setPrivateKey(2, ByteString.copyFrom(private3Key))
             .setChangeAddress("kaspa:qyp6vqamd8gyy0v570wzfk9p5lvhysvt0w9zxg0ypgarrmmv6cx4llgnngkk9s6")
             .build()
         val signingInput = Kaspa.SigningInput.newBuilder()
