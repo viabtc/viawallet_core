@@ -122,8 +122,17 @@ static Transaction unsignedTransaction(const Proto::TransferMessage &message) {
         }
     }
 
-    for (int index = 0; index<message.private_key_size(); index++) {
-        const auto privateKeyData = data(message.private_key(index));
+    if (message.private_key_size() <= 0) {
+        throw std::invalid_argument("Invalid private key");
+    }
+    for (int index = 0; index<hashs.size(); index++) {
+        Data privateKeyData;
+        //Single
+        if (message.private_key().size() == 1) {
+            privateKeyData = data(message.private_key(0));
+        } else {
+            privateKeyData = data(message.private_key(index));
+        }
         const auto hash = hashs[index];
         if (!PrivateKey::isValid(privateKeyData)) {
             throw std::invalid_argument("Invalid private key");
@@ -141,12 +150,12 @@ static Transaction unsignedTransaction(const Proto::TransferMessage &message) {
     return tx;
 }
 
-static TransactionData signTransaction(const Transaction &tx, std::vector<std::string> signatures) {
+static TransactionData signTransaction(const Transaction &tx, std::vector<Data> &signatures) {
     std::vector<KaspaInput> inputData;
     for (unsigned long index = 0; index < tx.inputs.size(); index++) {
         auto input = tx.inputs[index];
         uint8_t sigHashAll = 1;
-        auto script = parse_hex(signatures[index]);
+        auto script = signatures[index];
         append(script, sigHashAll);
         auto size = static_cast<uint8_t>(script.size());
         Data signatureScript;
@@ -172,18 +181,17 @@ Proto::SigningOutput Signer::sign(const Proto::SigningInput &input) noexcept {
     auto protoOutput = Proto::SigningOutput();
     if (input.has_transfer()) {
         Transaction tx = unsignedTransaction(input.transfer());
-        std::vector<std::string> signatures;
+        std::vector<Data> signatures;
         for (int index = 0; index < tx.hashes.size(); ++index) {
             const auto hash = parse_hex(tx.hashes[index]);
             const auto privateData = tx.privateKeys.find(tx.hashes[index])->second;
             const PrivateKey privateKey = PrivateKey(privateData);
             auto sign = privateKey.signKASECDSA(hash);
-            signatures.push_back(hex(sign));
+            signatures.emplace_back(sign);
         }
         auto data = signTransaction(tx, signatures);
         auto txJson = transactionJSON(data);
         protoOutput.set_json(txJson.dump());
-        return protoOutput;
     }
     return protoOutput;
 }
