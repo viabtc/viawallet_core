@@ -1,0 +1,8 @@
+#!/bin/bash
+cp ../../registry/coldwallet-testnet/registry.json ../../registry.json
+cd ../../android
+./gradlew clean
+./gradlew assembleRelease --stacktrace
+cp trustwalletcore/build/outputs/aar/trustwalletcore-release.aar ../build/trustwalletcore-coldwallet-testnet.aar
+cd ..
+echo "Android build success"
