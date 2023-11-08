@@ -1,0 +1,10 @@
+#!/bin/bash
+
+python3 tools/apply_environment.py "coldwallet_mainnet"
+./tools/generate-files
+pushd android
+./gradlew clean
+./gradlew assembleRelease --stacktrace
+cp trustwalletcore/build/outputs/aar/trustwalletcore-release.aar ../build/walletcore-coldwallet-mainnet.aar
+popd
+echo "Build Android Success"
