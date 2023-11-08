@@ -1,6 +1,5 @@
 #!/bin/bash
 
-python3 tools/apply_environment.py "default_mainnet"
 ./tools/generate-files
 pushd android
 ./gradlew clean

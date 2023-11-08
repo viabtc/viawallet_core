@@ -7,45 +7,13 @@ environment = args[1]
 with open('registry.json') as file:
     data = json.load(file)
 
-if environment == 'default_mainnet':
-    for item in data:
-        if item['id'] == 'classic':
-            if 'slip44' in item:
-                del item['slip44']
-            for derivation in item['derivation']:
-                derivation['path'] = "m/44'/61'/0'/0/0"
-        if item['id'] == 'bitcoin':
-            item['p2pkhPrefix'] = 0
-            item['p2shPrefix'] = 5
-        if item['id'] == 'litecoin':
-            item['p2pkhPrefix'] = 48
-            item['p2shPrefix'] = 50
-        if item['id'] == 'doge':
-            item['p2pkhPrefix'] = 30
-            item['p2shPrefix'] = 22
-        if item['id'] == 'bitcoincash':
-            item['p2pkhPrefix'] = 0
-            item['p2shPrefix'] = 5
-            item['hrp'] = 'bitcoincash'
-elif environment == 'coldwallet_mainnet':
+if environment == 'coldwallet_mainnet':
     for item in data:
         if item['id'] == 'classic':
             item['slip44'] = 60
             for derivation in item['derivation']:
                 derivation['path'] = "m/44'/60'/0'/0/0"
-        if item['id'] == 'bitcoin':
-            item['p2pkhPrefix'] = 0
-            item['p2shPrefix'] = 5
-        if item['id'] == 'litecoin':
-            item['p2pkhPrefix'] = 48
-            item['p2shPrefix'] = 50
-        if item['id'] == 'doge':
-            item['p2pkhPrefix'] = 30
-            item['p2shPrefix'] = 22
-        if item['id'] == 'bitcoincash':
-            item['p2pkhPrefix'] = 0
-            item['p2shPrefix'] = 5
-            item['hrp'] = 'bitcoincash'
+            break
 elif environment == 'coldwallet_testnet':
     for item in data:
         if item['id'] == 'classic':

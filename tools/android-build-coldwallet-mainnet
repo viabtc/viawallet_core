@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cp registry.json backup.json
 python3 tools/apply_environment.py "coldwallet_mainnet"
 ./tools/generate-files
 pushd android
@@ -7,4 +8,7 @@ pushd android
 ./gradlew assembleRelease --stacktrace
 cp trustwalletcore/build/outputs/aar/trustwalletcore-release.aar ../build/walletcore-coldwallet-mainnet.aar
 popd
+cp backup.json registry.json
+rm backup.json
+./tools/generate-files
 echo "Build Android Success"
