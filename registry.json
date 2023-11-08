@@ -1984,7 +1984,7 @@
       "documentation": "https://eth.wiki/json-rpc/API"
     },
     "deprecated": true,
-    "testFolderName" : "Binance"
+    "testFolderName": "Binance"
   },
   {
     "id": "smartchain",
@@ -2017,7 +2017,7 @@
       "rpc": "https://bsc-dataseed1.binance.org",
       "documentation": "https://eth.wiki/json-rpc/API"
     },
-    "testFolderName" : "Binance",
+    "testFolderName": "Binance",
     "fullName": "Binance Coin"
   },
   {
@@ -2202,7 +2202,7 @@
       "rpc": "https://http-mainnet-node.huobichain.com",
       "documentation": "https://eth.wiki/json-rpc/API"
     },
-    "testFolderName" : "ECO",
+    "testFolderName": "ECO",
     "fullName": "Huobi Token"
   },
   {
@@ -2235,7 +2235,7 @@
       "clientPublic": "https://api.avax.network/ext/bc/C/rpc",
       "clientDocs": "https://docs.avax.network/"
     },
-    "testFolderName" : "Avalanche",
+    "testFolderName": "Avalanche",
     "fullName": "Avalanche"
   },
   {
@@ -2492,7 +2492,7 @@
       "clientPublic": "https://evm-cronos.crypto.org",
       "clientDocs": "https://eth.wiki/json-rpc/API"
     },
-    "testFolderName" : "Cronos"
+    "testFolderName": "Cronos"
   },
   {
     "id": "kavaevm",
@@ -2553,7 +2553,7 @@
       "rpc": "https://smartbch.fountainhead.cash/mainnet",
       "documentation": "https://github.com/smartbch/docs/blob/main/developers-guide/jsonrpc.md"
     },
-    "testFolderName" : "Bitcoin"
+    "testFolderName": "Bitcoin"
   },
   {
     "id": "kcc",
@@ -2585,7 +2585,7 @@
       "rpc": "https://rpc-mainnet.kcc.network",
       "documentation": "https://docs.kcc.io/#/en-us/"
     },
-    "testFolderName" : "KuCoinCommunityChain"
+    "testFolderName": "KuCoinCommunityChain"
   },
   {
     "id": "boba",
@@ -3271,37 +3271,37 @@
     "fullName": "Kadena"
   },
   {
-      "id": "base",
-      "name": "Base",
-      "coinId": 8453,
-      "slip44": 60,
-      "symbol": "BASE",
-      "decimals": 18,
-      "blockchain": "Ethereum",
-      "derivation": [
-        {
-          "path": "m/44'/60'/0'/0/0"
-        }
-      ],
-      "curve": "secp256k1",
-      "publicKeyType": "secp256k1Extended",
-      "chainId": "8453",
-      "addressHasher": "keccak256",
-      "explorer": {
-        "url": "https://basescan.org",
-        "txPath": "/tx/",
-        "accountPath": "/address/",
-        "sampleTx": "0x4acb15506b7696a2dfac4258f3f86392b4b2b717a3f316a8aa78509b2c3b6ab4",
-        "sampleAccount": "0xb8ff877ed78ba520ece21b1de7843a8a57ca47cb"
-      },
-      "info": {
-        "url": "https://base.mirror.xyz/",
-        "source": "https://github.com/base-org",
-        "rpc": "https://mainnet.base.org",
-        "documentation": "https://docs.base.org/"
-      },
-      "fullName": "Ethereum(Base)"
+    "id": "base",
+    "name": "Base",
+    "coinId": 8453,
+    "slip44": 60,
+    "symbol": "BASE",
+    "decimals": 18,
+    "blockchain": "Ethereum",
+    "derivation": [
+      {
+        "path": "m/44'/60'/0'/0/0"
+      }
+    ],
+    "curve": "secp256k1",
+    "publicKeyType": "secp256k1Extended",
+    "chainId": "8453",
+    "addressHasher": "keccak256",
+    "explorer": {
+      "url": "https://basescan.org",
+      "txPath": "/tx/",
+      "accountPath": "/address/",
+      "sampleTx": "0x4acb15506b7696a2dfac4258f3f86392b4b2b717a3f316a8aa78509b2c3b6ab4",
+      "sampleAccount": "0xb8ff877ed78ba520ece21b1de7843a8a57ca47cb"
     },
+    "info": {
+      "url": "https://base.mirror.xyz/",
+      "source": "https://github.com/base-org",
+      "rpc": "https://mainnet.base.org",
+      "documentation": "https://docs.base.org/"
+    },
+    "fullName": "Ethereum(Base)"
+  },
   {
     "id": "kaspa",
     "name": "Kaspa",
