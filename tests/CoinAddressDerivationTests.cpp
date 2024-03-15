@@ -273,6 +273,9 @@ TEST(Coin, DeriveAddress) {
         case TWCoinTypeMina:
             EXPECT_EQ(address, "B62qnDZG9yKrQgxpBkK1GQAvaQjBdcmbBBo6F4dKzZLtQNhJKqyXgap");
             break;
+        case TWCoinTypeSui:
+            EXPECT_EQ(address, "0x870deb25d5c0a4d7250d52d5cd58dacca2d51eb2a120a979b13384cd52e21e1b");
+            break;
             // no default branch here, intentionally, to better notice any missing coins
         }
     }

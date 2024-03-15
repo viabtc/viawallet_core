@@ -111,5 +111,6 @@ class CoinAddressDerivationTests {
         HORIZEN -> assertEquals("znUmzvod1f4P9LYsBhNxjqCDQvNSStAmYEX", address)
         HANDSHAKE -> assertEquals("hs1q8nds85ejsvl2t7xvj8lauyvgjm9ar4t7dzssk0", address)
         KASPA -> assertEquals("kaspa:qypxd7yefzcz7td5lfrmfum8v8x0mt4xx62d53063rrq5zvjqcltchcs9xxxrdk", address)
+        SUI -> assertEquals("0xada112cfb90b44ba889cc5d39ac2bf46281e4a91f7919c693bcd9b8323e81ed2", address)
     }
 }

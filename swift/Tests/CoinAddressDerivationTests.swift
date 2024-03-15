@@ -294,6 +294,9 @@ class CoinAddressDerivationTests: XCTestCase {
                 case .kaspa:
                     let expectedResult = "kaspa:qypxd7yefzcz7td5lfrmfum8v8x0mt4xx62d53063rrq5zvjqcltchcs9xxxrdk"
                     assertCoinDerivation(coin, expectedResult, derivedAddress, address)
+                case .sui:
+                    let expectedResult = "0xada112cfb90b44ba889cc5d39ac2bf46281e4a91f7919c693bcd9b8323e81ed2";
+                    assertCoinDerivation(coin, expectedResult, derivedAddress, address)
                 @unknown default:
                     fatalError()
                 }

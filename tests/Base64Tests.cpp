@@ -61,4 +61,10 @@ TEST(Base64, UrlFormat) {
     EXPECT_EQ(const1, hex(decoded));
 }
 
+TEST(Base64, EncodeDecodeSui) {
+    auto value = "AAIAAAAAAAAAAAAAAAAAAAAAAAAAAgEAAAAAAAAAINaXMihjlCd4CQVFRPjcNb7QfYP4wGgQyl1xbplvEKUCA3N1aQh0cmFuc2ZlcgACAQCDlY9/fBVEt0yclyDF8RrjSRBfRRsAAAAAAAAAIJttZrU/26Bim7ku4dwY8d3fdabngn0B6dY/hLKgb6+xABQv0f6HrJCZ/1cuDVuxh1BL12XMeC21AKyRnN3jUaw243EdgyxtuXZpG62iKzFvYdk6RMGXxnoWd8RcfwkUAQAAAAAAACDi9GYNIZ0FXpPPi+zdDUuzHfs6MDoxzPuXGPZJq8ZfOAEAAAAAAAAA0AcAAAAAAAA=";
+    auto decoded = decode(value);
+    auto encoded = encode(decoded);
+    ASSERT_EQ(encoded, value);
+}
 } // namespace TW::Base64::tests
