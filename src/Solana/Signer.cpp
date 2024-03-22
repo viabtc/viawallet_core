@@ -50,7 +50,9 @@ Proto::SigningOutput Signer::sign(const Proto::SigningInput& input) noexcept {
             /* value */ protoMessage.value(),
             /* recent_blockhash */ blockhash,
             /* memo */ protoMessage.memo(),
-            convertReferences(protoMessage.references()));
+            convertReferences(protoMessage.references()),
+            /* ComputeUnitPrice */ input.priority_fee_price().price(),
+            /* ComputeUnitLimit */ input.priority_fee_limit().limit());
         signerKeys.push_back(key);
     } break;
 
@@ -72,7 +74,9 @@ Proto::SigningOutput Signer::sign(const Proto::SigningInput& input) noexcept {
             /* stakeAddress */ stakeAddress.value(),
             /* voteAddress */ validatorAddress,
             /* value */ protoMessage.value(),
-            /* recent_blockhash */ blockhash);
+            /* recent_blockhash */ blockhash,
+            /* ComputeUnitPrice */ input.priority_fee_price().price(),
+            /* ComputeUnitLimit */ input.priority_fee_limit().limit());
         signerKeys.push_back(key);
     } break;
 
@@ -83,7 +87,9 @@ Proto::SigningOutput Signer::sign(const Proto::SigningInput& input) noexcept {
         message = Message::createStakeDeactivate(
             /* signer */ userAddress,
             /* stakeAddress */ stakeAddress,
-            /* recent_blockhash */ blockhash);
+            /* recent_blockhash */ blockhash,
+            /* ComputeUnitPrice */ input.priority_fee_price().price(),
+            /* ComputeUnitLimit */ input.priority_fee_limit().limit());
         signerKeys.push_back(key);
     } break;
 
@@ -94,7 +100,7 @@ Proto::SigningOutput Signer::sign(const Proto::SigningInput& input) noexcept {
         for (auto i = 0; i < protoMessage.stake_accounts_size(); ++i) {
             addresses.emplace_back(Address(protoMessage.stake_accounts(i)));
         }
-        message = Message::createStakeDeactivateAll(userAddress, addresses, blockhash);
+        message = Message::createStakeDeactivateAll(userAddress, addresses, blockhash, input.priority_fee_price().price(), input.priority_fee_limit().limit());
         signerKeys.push_back(key);
     } break;
 
@@ -106,7 +112,9 @@ Proto::SigningOutput Signer::sign(const Proto::SigningInput& input) noexcept {
             /* signer */ userAddress,
             /* stakeAddress */ stakeAddress,
             /* value */ protoMessage.value(),
-            /* recent_blockhash */ blockhash);
+            /* recent_blockhash */ blockhash,
+            /* ComputeUnitPrice */ input.priority_fee_price().price(),
+            /* ComputeUnitLimit */ input.priority_fee_limit().limit());
         signerKeys.push_back(key);
     } break;
 
@@ -119,7 +127,7 @@ Proto::SigningOutput Signer::sign(const Proto::SigningInput& input) noexcept {
                 Address(protoMessage.stake_accounts(i).stake_account()),
                 protoMessage.stake_accounts(i).value()));
         }
-        message = Message::createStakeWithdrawAll(userAddress, stakes, blockhash);
+        message = Message::createStakeWithdrawAll(userAddress, stakes, blockhash, input.priority_fee_price().price(), input.priority_fee_limit().limit());
         signerKeys.push_back(key);
     } break;
 
@@ -129,7 +137,7 @@ Proto::SigningOutput Signer::sign(const Proto::SigningInput& input) noexcept {
         auto mainAddress = Address(protoMessage.main_address());
         auto tokenMintAddress = Address(protoMessage.token_mint_address());
         auto tokenAddress = Address(protoMessage.token_address());
-        message = Message::createTokenCreateAccount(userAddress, mainAddress, tokenMintAddress, tokenAddress, blockhash);
+        message = Message::createTokenCreateAccount(userAddress, mainAddress, tokenMintAddress, tokenAddress, blockhash, input.priority_fee_price().price(), input.priority_fee_limit().limit());
         signerKeys.push_back(key);
     } break;
 
@@ -143,7 +151,7 @@ Proto::SigningOutput Signer::sign(const Proto::SigningInput& input) noexcept {
         auto decimals = static_cast<uint8_t>(protoMessage.decimals());
         const auto memo = protoMessage.memo();
         message = Message::createTokenTransfer(userAddress, tokenMintAddress, senderTokenAddress, recipientTokenAddress, amount, decimals, blockhash,
-                                               memo, convertReferences(protoMessage.references()));
+                                               memo, convertReferences(protoMessage.references()), input.priority_fee_price().price(), input.priority_fee_limit().limit());
         signerKeys.push_back(key);
     } break;
 
@@ -158,7 +166,7 @@ Proto::SigningOutput Signer::sign(const Proto::SigningInput& input) noexcept {
         auto decimals = static_cast<uint8_t>(protoMessage.decimals());
         const auto memo = protoMessage.memo();
         message = Message::createTokenCreateAndTransfer(userAddress, recipientMainAddress, tokenMintAddress, recipientTokenAddress, senderTokenAddress, amount, decimals, blockhash,
-                                                        memo, convertReferences(protoMessage.references()));
+                                                        memo, convertReferences(protoMessage.references()), input.priority_fee_price().price(), input.priority_fee_limit().limit());
         signerKeys.push_back(key);
     } break;
 
