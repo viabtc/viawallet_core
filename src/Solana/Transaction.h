@@ -28,6 +28,7 @@ const std::string STAKE_CONFIG_ID_ADDRESS = "StakeConfig111111111111111111111111
 const std::string NULL_ID_ADDRESS = "11111111111111111111111111111111";
 const std::string SYSVAR_STAKE_HISTORY_ID_ADDRESS = "SysvarStakeHistory1111111111111111111111111";
 const std::string MEMO_PROGRAM_ID_ADDRESS = "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr";
+const std::string Compute_Budget_ID_ADDRESS = "ComputeBudget111111111111111111111111111111";
 
 template <typename T>
 Data shortVecLength(std::vector<T> vec) {
@@ -75,6 +76,11 @@ enum TokenAuthorityType {
     FreezeAccount = 1,
     AccountOwner = 2,
     CloseAccount = 3,
+};
+
+enum ComputeBudgetProgram {
+    SetComputeUnitLimit = 2,
+    SetComputeUnitPrice = 3,
 };
 
 struct AccountMeta {
@@ -178,6 +184,24 @@ struct Instruction {
         auto data = TW::data(memo);
         std::vector<AccountMeta> accounts; // empty
         return Instruction(Address(MEMO_PROGRAM_ID_ADDRESS), accounts, data);
+    }
+
+    static Instruction creatComputeUnitLimit(uint32_t units) {
+        const ComputeBudgetProgram type = SetComputeUnitLimit;
+        auto data = Data();
+        data.push_back(static_cast<uint32_t>(type));
+        encode32LE(units, data);
+        std::vector<AccountMeta> accounts; // empty
+        return Instruction(Address(Compute_Budget_ID_ADDRESS), accounts, data);
+    }
+
+    static Instruction creatComputeUnitPrice(uint64_t microLamports) {
+        const ComputeBudgetProgram type = SetComputeUnitPrice;
+        auto data = Data();
+        data.push_back(static_cast<uint64_t>(type));
+        encode64LE(microLamports, data);
+        std::vector<AccountMeta> accounts; // empty
+        return Instruction(Address(Compute_Budget_ID_ADDRESS), accounts, data);
     }
 };
 
@@ -292,9 +316,17 @@ class Message {
 
     // This constructor creates a default single-signer Transfer message
     static Message createTransfer(const Address& from, const Address& to, uint64_t value, Hash recentBlockhash,
-        std::string memo = "", std::vector<Address> references = {}
+        std::string memo = "", std::vector<Address> references = {}, uint64_t priorityFeeprice = 0, uint32_t priorityFeeLimit = 0
     ) {
         std::vector<Instruction> instructions;
+        if (priorityFeeprice > 0) {
+            instructions.push_back(Instruction::creatComputeUnitPrice(priorityFeeprice));
+        }
+
+        if (priorityFeeLimit > 0) {
+            instructions.push_back(Instruction::creatComputeUnitLimit(priorityFeeLimit));
+        }
+
         if (memo.length() > 0) {
             // Optional memo. Order: before transfer, as per documentation.
             instructions.push_back(Instruction::createMemo(memo));
@@ -310,14 +342,30 @@ class Message {
 
     // This constructor creates a create_account_with_seed_and_delegate_stake message
     // see delegate_stake() solana/programs/stake/src/stake_instruction.rs
-    static Message createStake(const Address& signer, const Address& stakeAddress, const Address& voteAddress, uint64_t value, Hash recentBlockhash) {
+    static Message createStake(const Address& signer, const Address& stakeAddress, const Address& voteAddress, uint64_t value, Hash recentBlockhash, uint64_t priorityFeeprice = 0, uint32_t priorityFeeLimit = 0) {
         auto sysvarRentId = Address(SYSVAR_RENT_ID_ADDRESS);
         auto sysvarClockId = Address(SYSVAR_CLOCK_ID_ADDRESS);
         auto stakeConfigId = Address(STAKE_CONFIG_ID_ADDRESS);
         auto sysvarStakeHistoryId = Address(SYSVAR_STAKE_HISTORY_ID_ADDRESS);
         auto stakeProgramId = Address(STAKE_PROGRAM_ID_ADDRESS);
         std::vector<Instruction> instructions;
-        instructions.reserve(3);
+        int size = 3;
+        if(priorityFeeprice > 0) {
+            size++;
+        }
+
+        if(priorityFeeLimit > 0) {
+            size++;
+        }
+        instructions.reserve(size);
+        if (priorityFeeprice > 0) {
+            instructions.push_back(Instruction::creatComputeUnitPrice(priorityFeeprice));
+        }
+
+        if (priorityFeeLimit > 0) {
+            instructions.push_back(Instruction::creatComputeUnitLimit(priorityFeeLimit));
+        }
+
         // create_account_with_seed instruction
         Address seed = Address(data(recentBlockhash.bytes.data(), recentBlockhash.bytes.size()));
         auto createAccountInstruction = Instruction::createAccountWithSeed(std::vector<AccountMeta>{
@@ -347,20 +395,37 @@ class Message {
     }
 
     // This constructor creates a deactivate_stake message
-    static Message createStakeDeactivate(const Address& signer, const Address& stakeAddress, Hash recentBlockhash) {
+    static Message createStakeDeactivate(const Address& signer, const Address& stakeAddress, Hash recentBlockhash, uint64_t priorityFeeprice = 0, uint32_t priorityFeeLimit = 0) {
         auto sysvarClockId = Address(SYSVAR_CLOCK_ID_ADDRESS);
+        std::vector<Instruction> instructions;
+        if (priorityFeeprice > 0) {
+            instructions.push_back(Instruction::creatComputeUnitPrice(priorityFeeprice));
+        }
+
+        if (priorityFeeLimit > 0) {
+            instructions.push_back(Instruction::creatComputeUnitLimit(priorityFeeLimit));
+        }
+
         auto instruction = Instruction::createStake(Deactivate, std::vector<AccountMeta>{
             AccountMeta(stakeAddress, false, false),    // 0. `[WRITE]` Delegated stake account
             AccountMeta(sysvarClockId, false, true),    // 1. `[]` Clock sysvar
             AccountMeta(signer, true, false),           // 2. `[SIGNER]` Stake authority
         });
-        return Message(recentBlockhash, {instruction});
+        instructions.push_back(instruction);
+        return Message(recentBlockhash, instructions);
     }
 
     // This constructor creates a deactivate_stake message with multiple stake accounts
-    static Message createStakeDeactivateAll(const Address& signer, const std::vector<Address>& stakeAddresses, Hash recentBlockhash) {
+    static Message createStakeDeactivateAll(const Address& signer, const std::vector<Address>& stakeAddresses, Hash recentBlockhash, uint64_t priorityFeeprice = 0, uint32_t priorityFeeLimit = 0) {
         auto sysvarClockId = Address(SYSVAR_CLOCK_ID_ADDRESS);
         std::vector<Instruction> instructions;
+        if (priorityFeeprice > 0) {
+            instructions.push_back(Instruction::creatComputeUnitPrice(priorityFeeprice));
+        }
+
+        if (priorityFeeLimit > 0) {
+            instructions.push_back(Instruction::creatComputeUnitLimit(priorityFeeLimit));
+        }
         for(auto& address: stakeAddresses) {
             auto instruction = Instruction::createStake(Deactivate, std::vector<AccountMeta>{
                 AccountMeta(address, false, false),         // 0. `[WRITE]` Delegated stake account
@@ -373,9 +438,17 @@ class Message {
     }
 
     // This constructor creates a withdraw message, with the signer as the default recipient
-    static Message createStakeWithdraw(const Address& signer, const Address& stakeAddress, uint64_t value, Hash recentBlockhash) {
+    static Message createStakeWithdraw(const Address& signer, const Address& stakeAddress, uint64_t value, Hash recentBlockhash, uint64_t priorityFeeprice = 0, uint32_t priorityFeeLimit = 0) {
         auto sysvarClockId = Address(SYSVAR_CLOCK_ID_ADDRESS);
         auto sysvarStakeHistoryId = Address(SYSVAR_STAKE_HISTORY_ID_ADDRESS);
+        std::vector<Instruction> instructions;
+        if (priorityFeeprice > 0) {
+            instructions.push_back(Instruction::creatComputeUnitPrice(priorityFeeprice));
+        }
+
+        if (priorityFeeLimit > 0) {
+            instructions.push_back(Instruction::creatComputeUnitLimit(priorityFeeLimit));
+        }
         auto instruction = Instruction::createStakeWithdraw(std::vector<AccountMeta>{
             AccountMeta(stakeAddress, false, false),            // 0. `[WRITE]` Stake account from which to withdraw
             AccountMeta(signer, false, false),                  // 1. `[WRITE]` Recipient account
@@ -383,14 +456,22 @@ class Message {
             AccountMeta(sysvarStakeHistoryId, false, true),     // 3. `[]` Stake history sysvar that carries stake warmup/cooldown history
             AccountMeta(signer, true, false),                   // 4. `[SIGNER]` Withdraw authority
         }, value);
-        return Message(recentBlockhash, {instruction});
+        instructions.push_back(instruction);
+        return Message(recentBlockhash, instructions);
     }
 
     // This constructor creates a withdraw message, with multiple stake accounts
-    static Message createStakeWithdrawAll(const Address& signer, const std::vector<std::pair<Address, uint64_t>>& stakes, Hash recentBlockhash) {
+    static Message createStakeWithdrawAll(const Address& signer, const std::vector<std::pair<Address, uint64_t>>& stakes, Hash recentBlockhash, uint64_t priorityFeeprice = 0, uint32_t priorityFeeLimit = 0) {
         auto sysvarClockId = Address(SYSVAR_CLOCK_ID_ADDRESS);
         auto sysvarStakeHistoryId = Address(SYSVAR_STAKE_HISTORY_ID_ADDRESS);
         std::vector<Instruction> instructions;
+        if (priorityFeeprice > 0) {
+            instructions.push_back(Instruction::creatComputeUnitPrice(priorityFeeprice));
+        }
+
+        if (priorityFeeLimit > 0) {
+            instructions.push_back(Instruction::creatComputeUnitLimit(priorityFeeLimit));
+        }
         for(auto& stake: stakes) {
             auto instruction = Instruction::createStakeWithdraw(std::vector<AccountMeta>{
                 AccountMeta(stake.first, false, false),         // 0. `[WRITE]` Stake account from which to withdraw
@@ -406,10 +487,18 @@ class Message {
 
     // This constructor creates a createAccount token message
     // see create_associated_token_account() solana-program-library/associated-token-account/program/src/lib.rs
-    static Message createTokenCreateAccount(const Address& signer, const Address& otherMainAccount, const Address& tokenMintAddress, const Address& tokenAddress, Hash recentBlockhash) {
+    static Message createTokenCreateAccount(const Address& signer, const Address& otherMainAccount, const Address& tokenMintAddress, const Address& tokenAddress, Hash recentBlockhash, uint64_t priorityFeeprice = 0, uint32_t priorityFeeLimit = 0) {
         auto sysvarRentId = Address(SYSVAR_RENT_ID_ADDRESS);
         auto systemProgramId = Address(SYSTEM_PROGRAM_ID_ADDRESS);
         auto tokenProgramId = Address(TOKEN_PROGRAM_ID_ADDRESS);
+        std::vector<Instruction> instructions;
+        if (priorityFeeprice > 0) {
+            instructions.push_back(Instruction::creatComputeUnitPrice(priorityFeeprice));
+        }
+
+        if (priorityFeeLimit > 0) {
+            instructions.push_back(Instruction::creatComputeUnitLimit(priorityFeeLimit));
+        }
         auto instruction = Instruction::createTokenCreateAccount(std::vector<AccountMeta>{
             AccountMeta(signer, true, false), // fundingAddress,
             AccountMeta(tokenAddress, false, false),
@@ -419,16 +508,24 @@ class Message {
             AccountMeta(tokenProgramId, false, true),
             AccountMeta(sysvarRentId, false, true),
         });
-        return Message(recentBlockhash, {instruction});
+        instructions.push_back(instruction);
+        return Message(recentBlockhash, instructions);
     }
 
     // This constructor creates a transfer token message.
     // see transfer_checked() solana-program-library/token/program/src/instruction.rs
     static Message createTokenTransfer(const Address& signer, const Address& tokenMintAddress,
         const Address& senderTokenAddress, const Address& recipientTokenAddress, uint64_t amount, uint8_t decimals, Hash recentBlockhash,
-        std::string memo = "", std::vector<Address> references = {}
+        std::string memo = "", std::vector<Address> references = {}, uint64_t priorityFeeprice = 0, uint32_t priorityFeeLimit = 0
     ) {
         std::vector<Instruction> instructions;
+        if (priorityFeeprice > 0) {
+            instructions.push_back(Instruction::creatComputeUnitPrice(priorityFeeprice));
+        }
+
+        if (priorityFeeLimit > 0) {
+            instructions.push_back(Instruction::creatComputeUnitLimit(priorityFeeLimit));
+        }
         if (memo.length() > 0) {
             // Optional memo. Order: before transfer, as per documentation.
             instructions.push_back(Instruction::createMemo(memo));
@@ -447,13 +544,29 @@ class Message {
     // This constructor creates a createAndTransferToken message, combining createAccount and transfer.
     static Message createTokenCreateAndTransfer(const Address& signer, const Address& recipientMainAddress, const Address& tokenMintAddress,
         const Address& recipientTokenAddress, const Address& senderTokenAddress, uint64_t amount, uint8_t decimals, Hash recentBlockhash,
-        std::string memo = "", std::vector<Address> references = {}
+        std::string memo = "", std::vector<Address> references = {}, uint64_t priorityFeeprice = 0, uint32_t priorityFeeLimit = 0
     ) {
         const auto sysvarRentId = Address(SYSVAR_RENT_ID_ADDRESS);
         const auto systemProgramId = Address(SYSTEM_PROGRAM_ID_ADDRESS);
         const auto tokenProgramId = Address(TOKEN_PROGRAM_ID_ADDRESS);
         std::vector<Instruction> instructions;
-        instructions.reserve(3);
+        int size = 3;
+        if(priorityFeeprice > 0) {
+            size++;
+        }
+
+        if(priorityFeeLimit > 0) {
+            size++;
+        }
+        instructions.reserve(size);
+        if (priorityFeeprice > 0) {
+            instructions.push_back(Instruction::creatComputeUnitPrice(priorityFeeprice));
+        }
+
+        if (priorityFeeLimit > 0) {
+            instructions.push_back(Instruction::creatComputeUnitLimit(priorityFeeLimit));
+        }
+
         instructions.emplace_back(Instruction::createTokenCreateAccount(std::vector<AccountMeta>{
             AccountMeta(signer, true, false), // fundingAddress,
             AccountMeta(recipientTokenAddress, false, false),

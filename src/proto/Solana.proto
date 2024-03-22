@@ -3,6 +3,15 @@ syntax = "proto3";
 package TW.Solana.Proto;
 option java_package = "wallet.core.jni.proto";
 
+message PriorityFeePrice {
+    uint64 price = 1;
+}
+
+// Compute unit price in "micro-lamports" to pay a higher transaction fee for higher transaction prioritization.
+message PriorityFeeLimit {
+    uint32 limit = 1;
+}
+
 // Transfer transaction
 message Transfer {
     // destination address
@@ -150,6 +159,12 @@ message SigningInput {
         TokenTransfer token_transfer_transaction = 10;
         CreateAndTransferToken create_and_transfer_token_transaction = 11;
     }
+
+    // Optional. Set a specific compute unit limit that the transaction is allowed to consume.
+    PriorityFeePrice priority_fee_price = 12;
+
+    // Optional. Set a compute unit price in "micro-lamports" to pay a higher transaction
+    PriorityFeeLimit priority_fee_limit = 13;
 }
 
 // Result containing the signed and encoded transaction.

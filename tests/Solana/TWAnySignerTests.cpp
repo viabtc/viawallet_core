@@ -394,4 +394,40 @@ TEST(TWAnySignerSolana, SignJSON) {
     assertStringsEqual(result, expectedString1);
 }
 
+TEST(TWAnySignerSolana, SignTransferWithPriorityFee) {
+    auto privateKeyData = parse_hex("1eb5264f82747294e7481ecae700bd1d21e50db620bcf0d2af7582f712c71b40");
+    auto input = Solana::Proto::SigningInput();
+    auto& message = *input.mutable_transfer_transaction();
+    message.set_recipient("HwHDGHYeYfXdzwvCZu7zm21SzQ7ZLBGTLNkuscyFdpvZ");
+    message.set_value(1001);
+
+    input.mutable_priority_fee_limit()->set_limit(2000);
+    input.mutable_priority_fee_price()->set_price(2);
+    input.set_private_key(privateKeyData.data(), privateKeyData.size());
+    input.set_recent_blockhash("ABdaGDKfoBe2SJAYkD31sojYVwTM8ainsdBD7ZM9dut1");
+    Proto::SigningOutput output;
+    ANY_SIGN(input, TWCoinTypeSolana);
+    auto expectedString =
+        "4WReC2rmup9nZjtFQbBbha5uADkVb54CRd6a3vbAoptbuzYvdud2Xau2tkzCejZsfsUC2ppqhMqbXXzaoiSpYH8XEDo6QtUV8EGXcE3GFxVjjtBT2U8abtC2qcBMDGAghtzpsmKWfWMxmQj8wWKjpmzamiU6PjfMbuAyAX5VPhQxZQ84Ay2HtQJBK8LA9CJ9qva9ehmu7g41wKBXLPq22NGjeSHq6ubjcNLQrFx34sKGtPJ68Z2oZgrju7XjKFhtnKzqUCWcgVUjUsyHyyBJ3awaExYHEw2uKq9NVoKmf9JDkjf2LBjNpUJ3EGzFHrfwnVEQ7B5XCX4nQRPir7eLuunLwVKhrdATKDbxin3ANe5D";
+    ASSERT_EQ(output.encoded(), expectedString);
+}
+
+TEST(TWAnySignerSolana, SignTransferWithPriorityFeeLimit) {
+    auto privateKeyData = parse_hex("1eb5264f82747294e7481ecae700bd1d21e50db620bcf0d2af7582f712c71b40");
+    auto input = Solana::Proto::SigningInput();
+    auto& message = *input.mutable_transfer_transaction();
+    message.set_recipient("HwHDGHYeYfXdzwvCZu7zm21SzQ7ZLBGTLNkuscyFdpvZ");
+    message.set_value(160000);
+
+    input.mutable_priority_fee_limit()->set_limit(1000);
+    input.set_private_key(privateKeyData.data(), privateKeyData.size());
+    input.set_recent_blockhash("8mhXYg8vpezXr7y7eP5q3oztzY9FRwTPSvyB3izzF88m");
+    Proto::SigningOutput output;
+    ANY_SIGN(input, TWCoinTypeSolana);
+    // https://solscan.io/tx/4ei1iejYd1Yr11hdi7ziFjc6GyUAtNnUQqURqssBXB7H6kYJ4CXxYiSks3PjoPdJfZFMXTSAYTp7wqYrjCKgKxcV
+    auto expectedString =
+        "23MBXQ2GgD4CWLXG5MrhmXa6YDf4ghZdxEAzdrG9U457PMBAeg3WbSy7WA7H7a8VEFZ5eYR8TSvSAJ4ZBqhS4bLT7e8VSTszLDu159RmeKcfXtn7Ae4hQybb6uALWSkdBjSHyURYZoto6HWzS57htjUQkmAimaWFG5nwfkox9wqxAZqDNVAFYEAzM3eNWwWeN2rCnNy4vLfyKSZeNTRdvPg8PjUFyXrWcKkd3NFTqSchQmZsccaxpN32sNjg2Br2thCrcazon3rBY9T1BwuaWTtZsvm653dhhKENNajaD3TyA79K1m4rP6wYVaEs6UWr6qcwsdR6WD5TCkwmmmEjVYeQp2Py";
+    ASSERT_EQ(output.encoded(), expectedString);
+}
+
 } // namespace TW::Solana::tests
