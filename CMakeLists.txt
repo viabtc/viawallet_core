@@ -35,6 +35,7 @@ if (TW_COMPILE_WASM)
     add_subdirectory(wasm)
 endif ()
 
+set(BOOST_ROOT "/opt/homebrew/opt/boost")
 find_host_package(Boost REQUIRED)
 
 include(ExternalProject)
