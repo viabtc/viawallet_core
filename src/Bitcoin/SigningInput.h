@@ -61,6 +61,12 @@ public:
 
     uint32_t lockTime = 0;
 
+    // If use default fee or segwit fee
+    bool defaultFee = false;
+
+    // Transaction data format version (note, this is signed)
+    int32_t version = 1;
+
 public:
     SigningInput() = default;
 

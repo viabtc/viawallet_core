@@ -23,13 +23,29 @@ struct TransactionBuilder {
         return Bitcoin::TransactionBuilder::plan(input);
     }
 
-    /// Builds a transaction by selecting UTXOs and calculating fees.
+    /// Builds a transaction by selecting UTXOs, and one main output and an optional change output.
     template <typename Transaction>
     static Transaction build(const Bitcoin::TransactionPlan& plan, const std::string& toAddress,
-                             const std::string& changeAddress, enum TWCoinType coin, uint32_t lockTime) {
+                             const std::string& changeAddress, enum TWCoinType coin, uint32_t lockTime, int32_t version) {
         coin = TWCoinTypeZcash;
         Transaction tx =
-            Bitcoin::TransactionBuilder::build<Transaction>(plan, toAddress, changeAddress, coin, lockTime);
+            Bitcoin::TransactionBuilder::build<Transaction>(plan, toAddress, changeAddress, coin, lockTime, version);
+        // if not set, always use latest consensus branch id
+        if (plan.branchId.empty()) {
+            std::copy(BlossomBranchID.begin(), BlossomBranchID.end(), tx.branchId.begin());
+        } else {
+            std::copy(plan.branchId.begin(), plan.branchId.end(), tx.branchId.begin());
+        }
+        return tx;
+    }
+
+    /// Builds a transaction with the selected input UTXOs, and multiple outputs and an optional change output.
+    template <typename Transaction>
+    static Transaction build(const Bitcoin::TransactionPlan& plan,
+                             const std::string& changeAddress, enum TWCoinType coin, uint32_t lockTime, int32_t version) {
+        coin = TWCoinTypeZcash;
+        Transaction tx =
+            Bitcoin::TransactionBuilder::build<Transaction>(plan, changeAddress, coin, lockTime, version);
         // if not set, always use latest consensus branch id
         if (plan.branchId.empty()) {
             std::copy(BlossomBranchID.begin(), BlossomBranchID.end(), tx.branchId.begin());

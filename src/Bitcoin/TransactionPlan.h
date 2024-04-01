@@ -8,6 +8,7 @@
 
 #include "Amount.h"
 #include "UTXO.h"
+#include "Transfer.h"
 #include "Data.h"
 #include "../proto/Bitcoin.pb.h"
 
@@ -41,6 +42,9 @@ struct TransactionPlan {
     /// Horizen block hash
     std::string blockHash;
 
+    /// Multiple transfer outputs
+    Transfers transfers;
+
     Common::Proto::SigningError error = Common::Proto::SigningError::OK;
 
     TransactionPlan() = default;
@@ -55,6 +59,7 @@ struct TransactionPlan {
         , outputOpReturn(plan.output_op_return().begin(), plan.output_op_return().end())
         , blockHeight(plan.block_height())
         , blockHash(plan.block_hash())
+        , transfers(std::vector<Transfer>(plan.transfers().begin(), plan.transfers().end()))
         , error(plan.error())
     {}
 
@@ -71,6 +76,9 @@ struct TransactionPlan {
         plan.set_output_op_return(outputOpReturn.data(), outputOpReturn.size());
         plan.set_block_height(blockHeight);
         plan.set_block_hash(blockHash);
+        for (auto& transfer: transfers) {
+            *plan.add_transfers() = transfer.proto();
+        }
         plan.set_error(error);
         return plan;
     }

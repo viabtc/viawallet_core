@@ -27,7 +27,7 @@ Result<Transaction, Common::Proto::SigningError> TransactionSigner<Transaction, 
     } else {
         plan = TransactionBuilder::plan(input);
     }
-    auto transaction = TransactionBuilder::template build<Transaction>(plan, input.toAddress, input.changeAddress, input.coinType, input.lockTime);
+    auto transaction = TransactionBuilder::template build<Transaction>(plan, input.toAddress, input.changeAddress, input.coinType, input.lockTime, input.version);
     SigningMode signingMode =
         estimationMode ? SigningMode_SizeEstimationOnly : optionalExternalSigs.has_value() ? SigningMode_External
                                                                                            : SigningMode_Normal;
@@ -43,7 +43,15 @@ Result<HashPubkeyList, Common::Proto::SigningError> TransactionSigner<Transactio
     } else {
         plan = TransactionBuilder::plan(input);
     }
-    auto transaction = TransactionBuilder::template build<Transaction>(plan, input.toAddress, input.changeAddress, input.coinType, input.lockTime);
+
+    Transaction transaction;
+    if (!plan.transfers.empty()) {
+        // build multiple transaction outputs
+        transaction = TransactionBuilder::template build<Transaction>(plan, input.changeAddress, input.coinType, input.lockTime, input.version);
+    } else {
+        transaction = TransactionBuilder::template build<Transaction>(plan, input.toAddress, input.changeAddress, input.coinType, input.lockTime, input.version);
+    }
+
     SignatureBuilder<Transaction> signer(std::move(input), plan, transaction, SigningMode_HashOnly);
     auto signResult = signer.sign();
     if (!signResult) {

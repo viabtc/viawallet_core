@@ -209,4 +209,10 @@ struct TWBitcoinScript* _Nonnull TWBitcoinScriptLockScriptForAddress(TWString* _
 TW_EXPORT_STATIC_METHOD
 uint32_t TWBitcoinScriptHashTypeForCoin(enum TWCoinType coinType);
 
+/// Extracts an operand at the given index.
+///
+/// \return the operand.
+TW_EXPORT_METHOD
+TWData* _Nullable TWBitcoinScriptGetScriptOp(const struct TWBitcoinScript* _Nonnull script, size_t index);
+
 TW_EXTERN_C_END

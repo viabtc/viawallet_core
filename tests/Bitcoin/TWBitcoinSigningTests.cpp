@@ -1464,7 +1464,7 @@ TEST(BitcoinSigning, EncodeThreeOutput) {
 
     auto hashType = TWBitcoinSigHashType::TWBitcoinSigHashTypeAll;
     Data sighash = unsignedTx.getSignatureHash(redeemScript0, unsignedTx.inputs[0].previousOutput.index,
-                                               hashType, utxo0Amount, static_cast<SignatureVersion>(unsignedTx._version));
+                                               hashType, utxo0Amount, static_cast<SignatureVersion>(unsignedTx.version));
     auto sig = privkey.signAsDER(sighash);
     ASSERT_FALSE(sig.empty());
     sig.push_back(hashType);

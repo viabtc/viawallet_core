@@ -157,3 +157,10 @@ struct TWBitcoinScript *_Nonnull TWBitcoinScriptLockScriptForAddress(TWString *_
 uint32_t TWBitcoinScriptHashTypeForCoin(enum TWCoinType coinType) {
     return TW::Bitcoin::hashTypeForCoin(coinType);
 }
+
+TWData* _Nullable TWBitcoinScriptGetScriptOp(const struct TWBitcoinScript* _Nonnull script, size_t index) {
+    uint8_t opcode;
+    std::vector<uint8_t> data;
+    script->impl.getScriptOp(index, opcode, data);
+    return TWDataCreateWithBytes(data.data(), data.size());
+}
