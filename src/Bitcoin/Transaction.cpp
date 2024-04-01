@@ -22,7 +22,7 @@ Data Transaction::getPreImage(const Script& scriptCode, size_t index,
     Data data;
 
     // Version
-    encode32LE(_version, data);
+    encode32LE(version, data);
 
     // Input prevouts (none/all, depending on flags)
     if ((hashType & TWBitcoinSigHashTypeAnyoneCanPay) == 0) {
@@ -114,7 +114,7 @@ void Transaction::encode(Data& data, enum SegwitFormatMode segwitFormat) const {
         break;
     }
 
-    encode32LE(_version, data);
+    encode32LE(version, data);
 
     if (useWitnessFormat) {
         // Use extended format in case witnesses are to be serialized.
@@ -177,7 +177,7 @@ Data Transaction::getSignatureHashBase(const Script& scriptCode, size_t index,
 
     Data data;
 
-    encode32LE(_version, data);
+    encode32LE(version, data);
 
     auto serializedInputCount =
         (hashType & TWBitcoinSigHashTypeAnyoneCanPay) != 0 ? 1 : inputs.size();
@@ -238,7 +238,7 @@ void Transaction::serializeInput(size_t subindex, const Script& scriptCode, size
 
 Proto::Transaction Transaction::proto() const {
     auto protoTx = Proto::Transaction();
-    protoTx.set_version(_version);
+    protoTx.set_version(version);
     protoTx.set_locktime(lockTime);
 
     for (const auto& input : inputs) {

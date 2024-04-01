@@ -26,13 +26,51 @@ public:
     /// Builds a transaction with the selected input UTXOs, and one main output and an optional change output.
     template <typename Transaction>
     static Transaction build(const TransactionPlan& plan, const std::string& toAddress,
-                             const std::string& changeAddress, enum TWCoinType coin, uint32_t lockTime) {
+                             const std::string& changeAddress, enum TWCoinType coin, uint32_t lockTime, int32_t version) {
         Transaction tx;
         tx.lockTime = lockTime;
+        if (version > 0) {
+            tx.version = version;
+        }
 
         auto outputTo = prepareOutputWithScript(toAddress, plan.amount, coin);
         if (!outputTo.has_value()) { return {}; }
         tx.outputs.push_back(outputTo.value());
+
+        if (plan.change > 0) {
+            auto outputChange = prepareOutputWithScript(changeAddress, plan.change, coin);
+            if (!outputChange.has_value()) { return {}; }
+            tx.outputs.push_back(outputChange.value());
+        }
+
+        const auto emptyScript = Script();
+        for (auto& utxo : plan.utxos) {
+            tx.inputs.emplace_back(utxo.outPoint, emptyScript, utxo.outPoint.sequence);
+        }
+
+        // Optional OP_RETURN output
+        if (plan.outputOpReturn.size() > 0) {
+            auto lockingScriptOpReturn = Script::buildOpReturnScript(plan.outputOpReturn);
+            tx.outputs.emplace_back(0, lockingScriptOpReturn);
+        }
+
+        return tx;
+    }
+
+    /// Builds a transaction with the selected input UTXOs, and multiple outputs and an optional change output.
+    template <typename Transaction>
+    static Transaction build(const TransactionPlan& plan, const std::string& changeAddress, enum TWCoinType coin, uint32_t lockTime, int32_t version) {
+        Transaction tx;
+        tx.lockTime = lockTime;
+        if (version > 0) {
+            tx.version = version;
+        }
+
+        for (auto& transfer : plan.transfers) {
+            auto outputTo = prepareOutputWithScript(transfer.to_address, transfer.value, coin);
+            if (!outputTo.has_value()) { return {}; }
+            tx.outputs.push_back(outputTo.value());
+        }
 
         if (plan.change > 0) {
             auto outputChange = prepareOutputWithScript(changeAddress, plan.change, coin);

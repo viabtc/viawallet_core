@@ -33,7 +33,7 @@ Data Transaction::getPreImage(const Bitcoin::Script& scriptCode, size_t index, e
     auto data = Data{};
 
     // header
-    encode32LE(_version, data);
+    encode32LE(version, data);
 
     // nVersionGroupId
     encode32LE(versionGroupId, data);
@@ -149,7 +149,7 @@ Data Transaction::getShieldedOutputsHash() const {
 }
 
 void Transaction::encode(Data& data) const {
-    encode32LE(_version, data);
+    encode32LE(version, data);
     encode32LE(versionGroupId, data);
 
     // vin
@@ -191,7 +191,7 @@ Data Transaction::getSignatureHash(const Bitcoin::Script& scriptCode, size_t ind
 
 Bitcoin::Proto::Transaction Transaction::proto() const {
     auto protoTx = Bitcoin::Proto::Transaction();
-    protoTx.set_version(_version);
+    protoTx.set_version(version);
     protoTx.set_locktime(lockTime);
 
     for (const auto& input : inputs) {

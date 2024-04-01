@@ -38,21 +38,40 @@ static constexpr DefaultFeeCalculator defaultFeeCalculator{};
 static constexpr DecredFeeCalculator decredFeeCalculator{};
 static constexpr SegwitFeeCalculator segwitFeeCalculator{};
 
-const FeeCalculator& getFeeCalculator(TWCoinType coinType) noexcept {
-    switch (coinType) {
-    case TWCoinTypeDecred:
-        return decredFeeCalculator;
+const FeeCalculator& getFeeCalculator(TWCoinType coinType, bool defaultFee) noexcept {
+    if (defaultFee) {
+        switch (coinType) {
+        case TWCoinTypeDecred:
+            return decredFeeCalculator;
 
-    case TWCoinTypeBitcoin:
-    case TWCoinTypeBitcoinGold:
-    case TWCoinTypeDigiByte:
-    case TWCoinTypeLitecoin:
-    case TWCoinTypeViacoin:
-    case TWCoinTypeGroestlcoin:
-        return segwitFeeCalculator;
 
-    default:
-        return defaultFeeCalculator;
+        case TWCoinTypeBitcoinGold:
+        case TWCoinTypeDigiByte:
+        case TWCoinTypeViacoin:
+        case TWCoinTypeGroestlcoin:
+            return segwitFeeCalculator;
+
+        default:
+        case TWCoinTypeBitcoin:
+        case TWCoinTypeLitecoin:
+            return defaultFeeCalculator;
+        }
+    } else {
+        switch (coinType) {
+        case TWCoinTypeDecred:
+            return decredFeeCalculator;
+
+        case TWCoinTypeBitcoin:
+        case TWCoinTypeBitcoinGold:
+        case TWCoinTypeDigiByte:
+        case TWCoinTypeLitecoin:
+        case TWCoinTypeViacoin:
+        case TWCoinTypeGroestlcoin:
+            return segwitFeeCalculator;
+
+        default:
+            return defaultFeeCalculator;
+        }
     }
 }
 

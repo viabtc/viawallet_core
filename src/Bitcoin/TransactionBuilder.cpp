@@ -39,7 +39,7 @@ int64_t estimateSimpleFee(const FeeCalculator& feeCalculator, const TransactionP
 /// Estimate encoded size by invoking sign(sizeOnly), get actual size
 int64_t estimateSegwitFee(const FeeCalculator& feeCalculator, const TransactionPlan& plan, int outputSize, const SigningInput& input) {
     TWPurpose coinPurpose = TW::purpose(static_cast<TWCoinType>(input.coinType));
-    if (coinPurpose != TWPurposeBIP84) {
+    if (coinPurpose != TWPurposeBIP84 || input.defaultFee) {
         // not segwit, return default simple estimate
         return estimateSimpleFee(feeCalculator, plan, outputSize, input.byteFee);
     }
@@ -94,7 +94,7 @@ TransactionPlan TransactionBuilder::plan(const SigningInput& input) {
     } else if (input.utxos.empty()) {
         plan.error = Common::Proto::Error_missing_input_utxos;
     } else {
-        const auto& feeCalculator = getFeeCalculator(static_cast<TWCoinType>(input.coinType));
+        const auto& feeCalculator = getFeeCalculator(static_cast<TWCoinType>(input.coinType), input.defaultFee);
         auto inputSelector = InputSelector<UTXO>(input.utxos, feeCalculator);
         auto inputSum = InputSelector<UTXO>::sum(input.utxos);
 

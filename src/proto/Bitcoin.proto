@@ -111,6 +111,12 @@ message SigningInput {
 
     // Optional zero-amount, OP_RETURN output
     bytes output_op_return = 13;
+
+    // Set if use default fee(true) or segwit fee(false)
+    bool default_fee = 14;
+
+    int32 version = 15;
+
 }
 
 // Describes a preliminary transaction plan.
@@ -144,6 +150,9 @@ message TransactionPlan {
 
     // Horizen block hash
     string block_hash = 10;
+
+    // Multiple transfer outputs
+    repeated Transfer transfers = 11;
 };
 
 // Result containing the signed and encoded transaction.
@@ -184,4 +193,13 @@ message PreSigningOutput {
 
     /// error description
     string error_message = 3;
+}
+
+// Bitcoin transfer.
+message Transfer {
+    // Transaction amount.
+    int64 value = 1;
+
+    // Recipient's address
+    string to_address = 2;
 }

@@ -219,6 +219,14 @@ TEST(TWBitcoinScript, LockScriptForCashAddress) {
     assertHexEqual(scriptData2, "76a9146cfa0e96c34fce09c0e4e671fcd43338c14812e588ac");
 }
 
+TEST(TWBitcoinScript, GetScriptOp) {
+    const auto signatureWithPubkey = DATA("4730440220706dac7b291c4563c7a68c23377c5ac3aafc2f6e0acfa5e56087808b3a3eaedf02202e974791378777f8abfcd8b837248b428d711866fc5fbc32faeb59a8a9c0411f0121021bbe3b4bfebe3139f2f859b9e95a1d7baa045b91675018d125bce7b3574d4810");
+    const auto script = WRAP(TWBitcoinScript, TWBitcoinScriptCreateWithData(signatureWithPubkey.get()));
+    ASSERT_TRUE(script.get() != nullptr);
+    const auto operand = TWBitcoinScriptGetScriptOp(script.get(), 0);
+    assertHexEqual(WRAPD(operand), "30440220706dac7b291c4563c7a68c23377c5ac3aafc2f6e0acfa5e56087808b3a3eaedf02202e974791378777f8abfcd8b837248b428d711866fc5fbc32faeb59a8a9c0411f01");
+}
+
 TEST(TWBitcoinSigHashType, HashTypeForCoin) {
     EXPECT_EQ(TWBitcoinScriptHashTypeForCoin(TWCoinTypeBitcoin), (uint32_t)TWBitcoinSigHashTypeAll);
     EXPECT_EQ(TWBitcoinScriptHashTypeForCoin(TWCoinTypeLitecoin), (uint32_t)TWBitcoinSigHashTypeAll);
