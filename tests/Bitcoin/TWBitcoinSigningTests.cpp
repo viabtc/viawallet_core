@@ -511,7 +511,7 @@ TEST(BitcoinSigning, SignP2WSH) {
     {
         // test plan (but do not reuse plan result)
         auto plan = TransactionBuilder::plan(input);
-        EXPECT_TRUE(verifyPlan(plan, {1'226}, 1'000, 147));
+        EXPECT_TRUE(verifyPlan(plan, {1'226}, 1'000, 226));
     }
 
     // Sign
@@ -522,18 +522,17 @@ TEST(BitcoinSigning, SignP2WSH) {
 
     Data serialized;
     signedTx.encode(serialized);
-    EXPECT_EQ(getEncodedTxSize(signedTx), (EncodedTxSize{231, 119, 147}));
-    EXPECT_TRUE(validateEstimatedSize(signedTx, -1, 1));
+    EXPECT_EQ(getEncodedTxSize(signedTx), (EncodedTxSize{196, 85, 113}));
+    EXPECT_TRUE(validateEstimatedSize(signedTx, 112, 114));
     ASSERT_EQ(hex(serialized), // printed using prettyPrintTransaction
         "01000000" // version
         "0001" // marker & flag
         "01" // inputs
             "0001000000000000000000000000000000000000000000000000000000000000"  "00000000"  "00"  ""  "ffffffff"
-        "02" // outputs
+        "01" // outputs
             "e803000000000000"  "19"  "76a914769bdff96a02f9135a1d19b749db6a78fe07dc9088ac"
-            "4f00000000000000"  "19"  "76a9149e089b6889e032d46e3b915a3392edfd616fb1c488ac"
         // witness
-            "02"  "48"  "30450221009eefc1befe96158f82b74e6804f1f713768c6172636ca11fcc975c316ea86f75022057914c48bc24f717498b851a47a2926f96242e3943ebdf08d5a97a499efc8b9001"  "23"  "2103596d3451025c19dbbdeb932d6bf8bfb4ad499b95b6f88db8899efac102e5fc71ac"
+            "02"  "47"  "30440220252e92b8757f1e5577c54ce5deb8072914c1f03333128777dee96ebceeb6a99b02202b7298789316779d0aa7595abeedc03054405c42ab9859e67d9253d2c9a0cdfa01"  "23"  "2103596d3451025c19dbbdeb932d6bf8bfb4ad499b95b6f88db8899efac102e5fc71ac"
         "00000000" // nLockTime
     );
 }
@@ -545,7 +544,7 @@ TEST(BitcoinSigning, SignP2WSH_HashNone) {
     {
         // test plan (but do not reuse plan result)
         auto plan = TransactionBuilder::plan(input);
-        EXPECT_TRUE(verifyPlan(plan, {1'226}, 1'000, 147));
+        EXPECT_TRUE(verifyPlan(plan, {1'226}, 1'000, 226));
     }
 
     // Sign
@@ -556,18 +555,18 @@ TEST(BitcoinSigning, SignP2WSH_HashNone) {
 
     Data serialized;
     signedTx.encode(serialized);
-    EXPECT_EQ(getEncodedTxSize(signedTx), (EncodedTxSize{231, 119, 147}));
-    EXPECT_TRUE(validateEstimatedSize(signedTx, -1, 1));
+    EXPECT_EQ(getEncodedTxSize(signedTx), (EncodedTxSize{197, 85, 113}));
+    EXPECT_TRUE(validateEstimatedSize(signedTx, 112, 114));
     ASSERT_EQ(hex(serialized), // printed using prettyPrintTransaction
         "01000000" // version
         "0001" // marker & flag
         "01" // inputs
             "0001000000000000000000000000000000000000000000000000000000000000"  "00000000"  "00"  ""  "ffffffff"
-        "02" // outputs
+        "01" // outputs
             "e803000000000000"  "19"  "76a914769bdff96a02f9135a1d19b749db6a78fe07dc9088ac"
-            "4f00000000000000"  "19"  "76a9149e089b6889e032d46e3b915a3392edfd616fb1c488ac"
+            "02483045022100ca"  "a5"  "85732cfc50226a90834a306d23d5d2ab1e94af2c66136a637e"
         // witness
-            "02"  "48"  "3045022100caa585732cfc50226a90834a306d23d5d2ab1e94af2c66136a637e3d9bad3688022069028750908e53a663bb1f434fd655bcc0cf8d394c6fa1fd5a4983790135722e02"  "23"  "2103596d3451025c19dbbdeb932d6bf8bfb4ad499b95b6f88db8899efac102e5fc71ac"
+            "3d"  "9b"  "ad3688022069028750908e53a663bb1f434fd655bcc0cf8d394c6fa1fd5a4983790135722e02"  "23"  "2103596d3451025c19dbbdeb932d6bf8bfb4ad499b95b6f88db8899efac102e5fc71ac"
         "00000000" // nLockTime
     );
 }
@@ -579,7 +578,7 @@ TEST(BitcoinSigning, SignP2WSH_HashSingle) {
     {
         // test plan (but do not reuse plan result)
         auto plan = TransactionBuilder::plan(input);
-        EXPECT_TRUE(verifyPlan(plan, {1'226}, 1'000, 147));
+        EXPECT_TRUE(verifyPlan(plan, {1'226}, 1'000, 226));
     }
 
     // Sign
@@ -590,16 +589,15 @@ TEST(BitcoinSigning, SignP2WSH_HashSingle) {
 
     Data serialized;
     signedTx.encode(serialized);
-    EXPECT_EQ(getEncodedTxSize(signedTx), (EncodedTxSize{230, 119, 147}));
-    EXPECT_TRUE(validateEstimatedSize(signedTx, -1, 1));
+    EXPECT_EQ(getEncodedTxSize(signedTx), (EncodedTxSize{196, 85, 113}));
+    EXPECT_TRUE(validateEstimatedSize(signedTx, 112, 114));
     ASSERT_EQ(hex(serialized), // printed using prettyPrintTransaction
         "01000000" // version
         "0001" // marker & flag
         "01" // inputs
             "0001000000000000000000000000000000000000000000000000000000000000"  "00000000"  "00"  ""  "ffffffff"
-        "02" // outputs
+        "01" // outputs
             "e803000000000000"  "19"  "76a914769bdff96a02f9135a1d19b749db6a78fe07dc9088ac"
-            "4f00000000000000"  "19"  "76a9149e089b6889e032d46e3b915a3392edfd616fb1c488ac"
         // witness
             "02"  "47"  "304402201ba80b2c48fe82915297dc9782ae2141e40263001fafd21b02c04a092503f01e0220666d6c63475c6c52abd09371c200ac319bcf4a7c72eb3782e95790f5c847f0b903"  "23"  "2103596d3451025c19dbbdeb932d6bf8bfb4ad499b95b6f88db8899efac102e5fc71ac"
         "00000000" // nLockTime
@@ -613,7 +611,7 @@ TEST(BitcoinSigning, SignP2WSH_HashAnyoneCanPay) {
     {
         // test plan (but do not reuse plan result)
         auto plan = TransactionBuilder::plan(input);
-        EXPECT_TRUE(verifyPlan(plan, {1'226}, 1'000, 147));
+        EXPECT_TRUE(verifyPlan(plan, {1'226}, 1'000, 226));
     }
 
     // Sign
@@ -624,19 +622,18 @@ TEST(BitcoinSigning, SignP2WSH_HashAnyoneCanPay) {
 
     Data serialized;
     signedTx.encode(serialized);
-    EXPECT_EQ(serialized.size(), 231ul);
-    EXPECT_EQ(getEncodedTxSize(signedTx), (EncodedTxSize{231, 119, 147}));
-    EXPECT_TRUE(validateEstimatedSize(signedTx, -1, 1));
+    EXPECT_EQ(serialized.size(), 196ul);
+    EXPECT_EQ(getEncodedTxSize(signedTx), (EncodedTxSize{196, 85, 113}));
+    EXPECT_TRUE(validateEstimatedSize(signedTx, 112, 114));
     ASSERT_EQ(hex(serialized), // printed using prettyPrintTransaction
         "01000000" // version
         "0001" // marker & flag
         "01" // inputs
             "0001000000000000000000000000000000000000000000000000000000000000"  "00000000"  "00"  ""  "ffffffff"
-        "02" // outputs
+        "01" // outputs
             "e803000000000000"  "19"  "76a914769bdff96a02f9135a1d19b749db6a78fe07dc9088ac"
-            "4f00000000000000"  "19"  "76a9149e089b6889e032d46e3b915a3392edfd616fb1c488ac"
         // witness
-            "02"  "48"  "3045022100d14699fc9b7337768bcd1430098d279cfaf05f6abfa75dd542da2dc038ae1700022063f0751c08796c086ac23b39c25f4320f432092e0c11bec46af0723cc4f55a3980"  "23"  "2103596d3451025c19dbbdeb932d6bf8bfb4ad499b95b6f88db8899efac102e5fc71ac"
+            "02"  "47"  "304402206fc6f499c9b0080dd444b410ca0599b59321e7891fc8e59ab215f6d2995b2e5f0220182466b434e91d14c9d247d3726d3c7f22a2a1cbf6c172314e1155b307f467b080"  "23"  "2103596d3451025c19dbbdeb932d6bf8bfb4ad499b95b6f88db8899efac102e5fc71ac"
         "00000000" // nLockTime
     );
 }
@@ -647,7 +644,7 @@ TEST(BitcoinSigning, SignP2WSH_NegativeMissingScript) {
     {
         // test plan (but do not reuse plan result)
         auto plan = TransactionBuilder::plan(input);
-        EXPECT_TRUE(verifyPlan(plan, {1'226}, 1'000, 174));
+        EXPECT_TRUE(verifyPlan(plan, {1'226}, 1'000, 226));
     }
 
     // Sign
@@ -663,7 +660,7 @@ TEST(BitcoinSigning, SignP2WSH_NegativeMissingKeys) {
     {
         // test plan (but do not reuse plan result). Plan works even with missing keys.
         auto plan = TransactionBuilder::plan(input);
-        EXPECT_TRUE(verifyPlan(plan, {1'226}, 1'000, 147));
+        EXPECT_TRUE(verifyPlan(plan, {1'226}, 1'000, 226));
     }
 
     // Sign
