@@ -95,7 +95,7 @@ TEST(TransactionPlan, OneMoreRequested) {
 TEST(TransactionPlan, OneFitsExactly) {
     auto utxos = buildTestUTXOs({100'000});
     auto byteFee = 1;
-    auto expectedFee = 147;
+    auto expectedFee = 174;
     auto sigingInput = buildSigningInput(100'000 - 174, byteFee, utxos);
 
     auto txPlan = TransactionBuilder::plan(sigingInput);
@@ -109,7 +109,7 @@ TEST(TransactionPlan, OneFitsExactly) {
 TEST(TransactionPlan, OneFitsExactlyHighFee) {
     auto utxos = buildTestUTXOs({100'000});
     auto byteFee = 10;
-    auto expectedFee = 1470;
+    auto expectedFee = 1740;
     auto sigingInput = buildSigningInput(100'000 - 1740, byteFee, utxos);
 
     auto txPlan = TransactionBuilder::plan(sigingInput);
